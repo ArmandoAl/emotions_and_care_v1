@@ -1,0 +1,88 @@
+import '../../../helpers/paths.dart';
+
+enum EstadoCarta { enviada, expirada }
+
+class CartModel {
+  int? id;
+  int idEmisor;
+  String letraEmisor;
+  String contenido;
+  EstadoCarta estado;
+  List<CartResponse>? respuestas;
+  bool visible = false;
+
+  CartModel({
+    this.id,
+    required this.idEmisor,
+    required this.letraEmisor,
+    required this.contenido,
+    this.estado = EstadoCarta.enviada,
+    this.respuestas,
+  });
+
+  CartModel copyWith({
+    int? id,
+    int? idEmisor,
+    String? letraEmisor,
+    String? contenido,
+    EstadoCarta? estado,
+    List<CartResponse>? respuestas,
+  }) {
+    return CartModel(
+      id: id ?? this.id,
+      idEmisor: idEmisor ?? this.idEmisor,
+      letraEmisor: letraEmisor ?? this.letraEmisor,
+      contenido: contenido ?? this.contenido,
+      estado: estado ?? this.estado,
+      respuestas: respuestas ?? this.respuestas,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'IdEmisor': idEmisor,
+      'inicialEmisor': letraEmisor,
+      'Contenido': contenido,
+    };
+  }
+
+  factory CartModel.fromJson(Map<String, dynamic> json) {
+    return CartModel(
+      id: json['idCarta'],
+      idEmisor: json['idEmisor'],
+      letraEmisor: json['inicialEmisor'],
+      contenido: json['contenido'],
+      estado: EstadoCarta.values[json['estado']],
+      respuestas: List<CartResponse>.from(
+          json['respuestas']?.map((x) => CartResponse.fromJson(x))),
+    );
+  }
+}
+
+class GoalWithCart {
+  final int id;
+  final GoalModel? goalModel;
+
+  GoalWithCart({
+    required this.id,
+    required this.goalModel,
+  });
+
+  GoalWithCart copyWith({
+    int? id,
+    GoalModel? goalModel,
+  }) {
+    return GoalWithCart(
+      id: id ?? this.id,
+      goalModel: goalModel ?? this.goalModel,
+    );
+  }
+
+  factory GoalWithCart.fromJson(Map<String, dynamic> json) {
+    return GoalWithCart(
+      id: json['idCarta'],
+      goalModel:
+          json['logro'] != null ? GoalModel.fromJson(json['logro']) : null,
+    );
+  }
+}

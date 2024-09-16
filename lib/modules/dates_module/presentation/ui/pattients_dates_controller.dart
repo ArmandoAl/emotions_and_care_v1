@@ -1,0 +1,65 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../helpers/paths.dart';
+
+class PattientsDatesController extends StatefulWidget {
+  final int idUser;
+  final Function changeIndex;
+  const PattientsDatesController(
+      {super.key, required this.idUser, required this.changeIndex});
+
+  @override
+  State<PattientsDatesController> createState() =>
+      _PattientsDatesControllerState();
+}
+
+class _PattientsDatesControllerState extends State<PattientsDatesController> {
+  @override
+  void initState() {
+    context.read<PattientsDatesCubit>().getPattientsDates(widget.idUser);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<PattientsDatesCubit, PattientsDatesState>(
+        bloc: context.read<PattientsDatesCubit>(),
+        buildWhen: (previous, current) => previous != current,
+        builder: (context, state) {
+          if (state.status == PattientsDatesStatus.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final dates = state.dates;
+
+          if (dates.isEmpty) {
+            return const Scaffold(
+                body: Center(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                  'No tienes solicitudes de citas pendientes, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ));
+          }
+
+          return SpecialistDatesScreen(
+            title: 'Solcitudes de citas',
+            datesRequest: dates,
+            userId: widget.idUser,
+            onItemTap: (DateModel date) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DateDetail(
+                            speciaistId: widget.idUser,
+                            date: date,
+                          )));
+            },
+          );
+        });
+  }
+}

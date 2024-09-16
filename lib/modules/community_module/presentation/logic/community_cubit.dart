@@ -1,0 +1,98 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../helpers/paths.dart';
+
+class CommunityCubit extends Cubit<CommunityState> {
+  final CartRepository repository;
+
+  CommunityCubit({
+    required this.repository,
+  }) : super(const CommunityState());
+
+  Future<void> initCommunity(int userId) async {
+    emit(state.copyWith(status: CommunityStatus.loading));
+    try {
+      final cartList = await repository.initCommunity(userId);
+      emit(state.copyWith(
+        cartFromCommunity: cartList,
+        status: CommunityStatus.loaded,
+      ));
+    } catch (e) {
+      emit(state.copyWith(status: CommunityStatus.error));
+    }
+  }
+
+  // Future<void> getPosts() async {
+  //   emit(state.copyWith(status: CommunityStatus.loading));
+  //   try {
+  //     final posts = await postRepository.getPostList();
+  //     emit(state.copyWith(posts: posts, status: CommunityStatus.loaded));
+  //   } catch (e) {
+  //     emit(state.copyWith(status: CommunityStatus.error));
+  //   }
+  // }
+
+  Future<void> getCartFromUser(int userId, bool isPatient) async {
+    emit(state.copyWith(status: CommunityStatus.loading));
+    try {
+      final cartList = await repository.getCartList(userId, isPatient);
+      emit(state.copyWith(
+        cartFromUser: cartList,
+        status: CommunityStatus.loaded,
+      ));
+    } catch (e) {
+      emit(state.copyWith(status: CommunityStatus.error));
+    }
+  }
+
+  Future<GoalWithCart> addCart(
+      CartModel cart, int idUser, bool isPatient) async {
+    emit(state.copyWith(status: CommunityStatus.loading));
+    try {
+      GoalWithCart result = await repository.addCart(
+          cart,
+          idUser,
+          isPatient,
+          state.cartFromUser
+              .where((element) => element.idEmisor == idUser)
+              .isEmpty);
+
+      //encuentra la carta en la lista de cartas de la del usuario
+      if (result.id != 0) {
+        cart = cart.copyWith(id: result.id);
+        emit(state.copyWith(
+            cartFromUser: [...state.cartFromUser, cart],
+            //elimina la carta de la lista de cartas de la comunidad
+            status: CommunityStatus.success));
+
+        return result;
+      }
+
+      emit(state.copyWith(status: CommunityStatus.error));
+      throw Exception('Failed to add note');
+    } catch (e) {
+      emit(state.copyWith(status: CommunityStatus.error));
+      throw Exception('Failed to add note');
+    }
+  }
+
+  Future<GoalWithResponseCart> addResponse(
+      CartResponse cartResponse, int idCart, bool isPatient) async {
+    emit(state.copyWith(status: CommunityStatus.loading));
+    try {
+      GoalWithResponseCart result =
+          await repository.addResponse(cartResponse, idCart, isPatient);
+
+      emit(state.copyWith(
+          cartFromCommunity: state.cartFromCommunity
+              .where((element) => element.id != idCart)
+              .toList(),
+          status: CommunityStatus.success));
+
+      return result;
+    } catch (e) {
+      emit(state.copyWith(status: CommunityStatus.error));
+      throw Exception('Failed to add note');
+    }
+  }
+}

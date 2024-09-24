@@ -1,5 +1,3 @@
-import 'package:provider/provider.dart';
-
 import '../../../../helpers/paths.dart';
 
 class TestHistoryQuestionsScreen extends StatefulWidget {
@@ -64,7 +62,7 @@ class _TestHistoryQuestionsScreenState
 
 Widget testHistoryQuestion(
     BuildContext context, TestQuestionWithAnswer question, int index) {
-  final uiProvider = Provider.of<UIProvider>(context);
+  final uiProvider = getIt<UICubit>();
   return Container(
     width: double.infinity,
     padding: const EdgeInsets.all(10),
@@ -101,7 +99,8 @@ Widget testHistoryQuestion(
             question.answer,
             style: TextStyle(
               fontSize: MediaQuery.of(context).size.width * 0.04,
-              color: uiProvider.theme == uiProvider.themes[3]
+              color: uiProvider.state.themes![uiProvider.state.selectedTheme] ==
+                      uiProvider.state.themes![3]
                   ? Colors.black
                   : Colors.white,
             ),

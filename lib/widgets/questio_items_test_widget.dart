@@ -1,6 +1,4 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-
 import '../helpers/paths.dart';
 
 Widget questionItems(
@@ -19,7 +17,7 @@ Widget questionItems(
   Function(String result) setResultState,
   Function(GoalModel? goal) setGoal,
 ) {
-  final uiProvider = context.read<UIProvider>();
+  final uiProvider = getIt<UICubit>();
   return Padding(
     padding: EdgeInsets.symmetric(
       horizontal: MediaQuery.of(context).size.width * 0.07,
@@ -160,8 +158,9 @@ Widget questionItems(
                                         MediaQuery.of(context).size.width *
                                             0.055,
                                     color: !answer.isSelected
-                                        ? uiProvider.theme ==
-                                                uiProvider.themes[3]
+                                        ? uiProvider.state.themes![uiProvider
+                                                    .state.selectedTheme] ==
+                                                uiProvider.state.themes![3]
                                             ? Colors.white
                                             : Colors.black
                                         : Colors.white,
@@ -188,7 +187,7 @@ Widget questionItems(
             ),
             onPressed: () async {
               final RegisterPatientFlow? registerFlow =
-                  context.read<UserProvider>().registerPatientFlow;
+                  context.read<BegginCubit>().state.registerPatientFlow;
               //if the last question
               if (index == state.testList[testId - 1].questions.length) {
                 setLoadingState(true);
@@ -199,8 +198,7 @@ Widget questionItems(
                         registerFlow != RegisterPatientFlow.homeUiChanged);
 
                 if (result.goalModel != null && context.mounted) {
-                  final UIProvider uiProvider =
-                      Provider.of<UIProvider>(context, listen: false);
+                  final UICubit uiProvider = getIt<UICubit>();
 
                   await uiProvider.getSticker(result.goalModel!.idSticker!);
                 }

@@ -1,6 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-
 import '../../../../helpers/paths.dart';
 
 class CompleteTest extends StatefulWidget {
@@ -32,8 +30,7 @@ class _CompleteTestState extends State<CompleteTest> {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: false);
+    final BegginCubit userProvider = getIt<BegginCubit>();
 
     return Scaffold(
       body: SizedBox(

@@ -7,7 +7,7 @@ Widget stickerWidget(
     StickerModel? sticker,
     AnimationController? controller,
     Animation<double>? animation,
-    UIProvider uiProvider,
+    UICubit uiProvider,
     int index,
     bool customEnable) {
   return SizedBox(

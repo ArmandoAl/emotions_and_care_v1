@@ -1,6 +1,4 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-
 import '../helpers/paths.dart';
 
 Widget containerContentWidget(
@@ -33,11 +31,10 @@ Widget containerContentWidget(
                     if (isPatient) {
                       GoalwithDate res = await context
                           .read<ScheduleCubit>()
-                          .addDate(id, date, patientModel!.specialist!.id);
+                          .addDate(id, date, patientModel!.specialist!.id!);
 
                       if (res.goal != null && context.mounted) {
-                        final UIProvider uiProvider =
-                            Provider.of<UIProvider>(context, listen: false);
+                        final UICubit uiProvider = context.read<UICubit>();
 
                         await uiProvider.getSticker(res.goal!.idSticker!);
 
@@ -53,7 +50,7 @@ Widget containerContentWidget(
                           .firstWhere((element) => element.id == id);
 
                       await context.read<ScheduleCubit>().addDateBySpecialist(
-                          especialistaModel!.id, date, patient);
+                          especialistaModel!.id!, date, patient);
                     }
                   },
                 ),

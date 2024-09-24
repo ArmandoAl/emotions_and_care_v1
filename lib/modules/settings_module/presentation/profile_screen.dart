@@ -4,7 +4,7 @@ class ProfileScreen extends StatefulWidget {
   final PatientModel? patientModel;
   final SpecialistModel? specialistModel;
   final bool isPatient;
-  final UserProvider userProvider;
+  final BegginCubit userProvider;
 
   const ProfileScreen(
       {super.key,
@@ -55,9 +55,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Text(
                     widget.isPatient
                         ? textToUpperCateFirstLetter(
-                            widget.userProvider.patientModel!.name)
+                            widget.userProvider.state.patientModel!.name!)
                         : textToUpperCateFirstLetter(
-                            widget.userProvider.specialistModel!.name),
+                            widget.userProvider.state.specialistModel!.name!),
                     style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width * 0.05,
                         color: Colors.black),
@@ -67,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       : Container(),
                   !widget.isPatient
                       ? Text(
-                          widget.specialistModel!.tokenForRelate,
+                          widget.specialistModel!.tokenForRelate!,
                           style: TextStyle(
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.05,
@@ -81,8 +81,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             profileItem(
               context,
               widget.isPatient
-                  ? widget.userProvider.patientModel!.email
-                  : widget.userProvider.specialistModel!.email,
+                  ? widget.userProvider.state.patientModel!.email!
+                  : widget.userProvider.state.specialistModel!.email!,
               "Correo electrónico",
               Icon(
                 Icons.email,
@@ -93,12 +93,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await showChangeDataDialog(
                     context,
                     widget.isPatient
-                        ? widget.userProvider.patientModel!.email
-                        : widget.userProvider.specialistModel!.email,
+                        ? widget.userProvider.state.patientModel!.email!
+                        : widget.userProvider.state.specialistModel!.email!,
                     "Correo electrónico",
                     widget.isPatient
-                        ? widget.userProvider.patientModel!
-                        : widget.userProvider.specialistModel!,
+                        ? widget.userProvider.state.patientModel!
+                        : widget.userProvider.state.specialistModel!,
                     controller, () {
                   if (validateEmail(controller.text) == false) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -117,8 +117,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             profileItem(
               context,
               widget.isPatient
-                  ? widget.userProvider.patientModel!.phone
-                  : widget.userProvider.specialistModel!.phone,
+                  ? widget.userProvider.state.patientModel!.phone!
+                  : widget.userProvider.state.specialistModel!.phone!,
               "Teléfono",
               Icon(
                 Icons.phone,
@@ -129,12 +129,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await showChangeDataDialog(
                     context,
                     widget.isPatient
-                        ? widget.userProvider.patientModel!.phone
-                        : widget.userProvider.specialistModel!.phone,
+                        ? widget.userProvider.state.patientModel!.phone!
+                        : widget.userProvider.state.specialistModel!.phone!,
                     "Teléfono",
                     widget.isPatient
-                        ? widget.userProvider.patientModel!
-                        : widget.userProvider.specialistModel!,
+                        ? widget.userProvider.state.patientModel!
+                        : widget.userProvider.state.specialistModel!,
                     controller, () {
                   if (controller.text.length != 10 ||
                       validatePhone(controller.text) == false) {
@@ -154,8 +154,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             profileItem(
               context,
               widget.isPatient
-                  ? widget.userProvider.patientModel!.age.toString()
-                  : widget.userProvider.specialistModel!.age.toString(),
+                  ? widget.userProvider.state.patientModel!.age.toString()
+                  : widget.userProvider.state.specialistModel!.age.toString(),
               "Edad",
               Icon(
                 Icons.person,
@@ -166,12 +166,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await showChangeDataDialog(
                     context,
                     widget.isPatient
-                        ? widget.userProvider.patientModel!.age.toString()
-                        : widget.userProvider.specialistModel!.age.toString(),
+                        ? widget.userProvider.state.patientModel!.age.toString()
+                        : widget.userProvider.state.specialistModel!.age
+                            .toString(),
                     "Edad",
                     widget.isPatient
-                        ? widget.userProvider.patientModel!
-                        : widget.userProvider.specialistModel!,
+                        ? widget.userProvider.state.patientModel!
+                        : widget.userProvider.state.specialistModel!,
                     controller, () {
                   if (int.parse(controller.text) < 17 ||
                       int.parse(controller.text) > 100) {
@@ -191,8 +192,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             profileItem(
               context,
               widget.isPatient
-                  ? widget.userProvider.patientModel!.password
-                  : widget.userProvider.specialistModel!.password,
+                  ? widget.userProvider.state.patientModel!.password!
+                  : widget.userProvider.state.specialistModel!.password!,
               "Contraseña",
               Icon(
                 Icons.lock,
@@ -203,12 +204,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await showChangePasswordDialog(
                     context,
                     widget.isPatient
-                        ? widget.userProvider.patientModel!.password
-                        : widget.userProvider.specialistModel!.password,
+                        ? widget.userProvider.state.patientModel!.password!
+                        : widget.userProvider.state.specialistModel!.password!,
                     "Contraseña",
                     widget.isPatient
-                        ? widget.userProvider.patientModel!
-                        : widget.userProvider.specialistModel!,
+                        ? widget.userProvider.state.patientModel!
+                        : widget.userProvider.state.specialistModel!,
                     widget.isPatient,
                     widget.userProvider,
                     controller,
@@ -256,7 +257,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             !widget.isPatient
                 ? profileItem(
                     context,
-                    widget.specialistModel!.focus,
+                    widget.specialistModel!.focus!,
                     "Enfoque",
                     Icon(
                       Icons.lock,
@@ -272,9 +273,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             !widget.isPatient
                 ? profileItem(
                     context,
-                    widget.userProvider.specialistModel!.institution == ""
+                    widget.userProvider.state.specialistModel!.institution == ""
                         ? "No especificado"
-                        : widget.userProvider.specialistModel!.institution!,
+                        : widget
+                            .userProvider.state.specialistModel!.institution!,
                     "Carta de presentación",
                     null,
                     () async {},
@@ -409,7 +411,7 @@ Future<void> showChangePasswordDialog(
   String title,
   dynamic model,
   bool isPatient,
-  UserProvider userProvider,
+  BegginCubit userProvider,
   TextEditingController controller,
   TextEditingController controllerP,
 ) {
@@ -458,7 +460,7 @@ Future<void> showChangePasswordDialog(
 }
 
 Future<void> showDeleteUserDialog(
-    BuildContext context, UserProvider userProvider) {
+    BuildContext context, BegginCubit userProvider) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -475,7 +477,8 @@ Future<void> showDeleteUserDialog(
           TextButton(
             child: const Text('Aceptar'),
             onPressed: () async {
-              await userProvider.deletePatient(userProvider.patientModel!.id);
+              await userProvider
+                  .deletePatient(userProvider.state.patientModel!.id!);
 
               // if (context.mounted) {
               //   Navigator.of(context).pushAndRemoveUntil(

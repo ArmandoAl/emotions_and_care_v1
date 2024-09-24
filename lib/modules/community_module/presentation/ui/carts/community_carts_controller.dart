@@ -20,12 +20,12 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
   @override
   void initState() {
     context.read<CommunityCubit>().initCommunity(
-          widget.isPatient ? widget.patient!.id : widget.specialist!.id,
+          widget.isPatient ? widget.patient!.id! : widget.specialist!.id!,
         );
 
     //todo: remove after expo
     context.read<CommunityCubit>().getCartFromUser(
-          widget.isPatient ? widget.patient!.id : widget.specialist!.id,
+          widget.isPatient ? widget.patient!.id! : widget.specialist!.id!,
           widget.isPatient,
         );
 
@@ -84,11 +84,11 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
                     builder: (context) => AnswerCartScreen(
                       cart: cart,
                       userId: widget.isPatient
-                          ? widget.patient!.id
-                          : widget.specialist!.id,
+                          ? widget.patient!.id!
+                          : widget.specialist!.id!,
                       letraEmisor: widget.isPatient
-                          ? widget.patient!.name
-                          : widget.specialist!.name,
+                          ? widget.patient!.name!
+                          : widget.specialist!.name!,
                       onSend: (CartResponse cartResponse) async {
                         GoalWithResponseCart res =
                             await context.read<CommunityCubit>().addResponse(
@@ -97,13 +97,14 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
                                   widget.isPatient,
                                 );
                         if (res.goalModel != null) {
-                          final UIProvider uiProvider =
-                              Provider.of<UIProvider>(context, listen: false);
+                          final UICubit uiProvider = getIt<UICubit>();
 
                           await uiProvider
                               .getSticker(res.goalModel!.idSticker!);
 
-                          await showStickerDialog(context, res.goalModel!);
+                          if (context.mounted) {
+                            await showStickerDialog(context, res.goalModel!);
+                          }
                         }
                       },
                     ),
@@ -120,26 +121,24 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
                   MaterialPageRoute(
                       builder: (context) => NewRequestCartScreen(
                           userId: widget.isPatient
-                              ? widget.patient!.id
-                              : widget.specialist!.id,
+                              ? widget.patient!.id!
+                              : widget.specialist!.id!,
                           userLetter: widget.isPatient
-                              ? widget.patient!.name[0]
-                              : widget.specialist!.name[0],
+                              ? widget.patient!.name![0]
+                              : widget.specialist!.name![0],
                           isPatient: widget.isPatient,
                           onSend: (CartModel cart) async {
                             GoalWithCart res =
                                 await context.read<CommunityCubit>().addCart(
                                       cart,
                                       widget.isPatient
-                                          ? widget.patient!.id
-                                          : widget.specialist!.id,
+                                          ? widget.patient!.id!
+                                          : widget.specialist!.id!,
                                       widget.isPatient,
                                     );
 
                             if (res.goalModel != null && context.mounted) {
-                              final UIProvider uiProvider =
-                                  Provider.of<UIProvider>(context,
-                                      listen: false);
+                              final UICubit uiProvider = getIt<UICubit>();
 
                               await uiProvider
                                   .getSticker(res.goalModel!.idSticker!);

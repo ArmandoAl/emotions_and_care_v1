@@ -60,9 +60,11 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
                         .deleteDate(widget.dateModel!.id!);
                   });
 
-                  await context
-                      .read<ScheduleCubit>()
-                      .getDatesForSpecialist(widget.especialistaModel!.id);
+                  if (context.mounted) {
+                    await context
+                        .read<ScheduleCubit>()
+                        .getDatesForSpecialist(widget.especialistaModel!.id!);
+                  }
 
                   if (context.mounted) Navigator.of(context).pop();
                 },

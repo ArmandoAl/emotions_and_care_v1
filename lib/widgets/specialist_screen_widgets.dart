@@ -1,13 +1,11 @@
-import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../helpers/paths.dart';
 
 Future<void> showTableCaledarBottomSheet(
     {required BuildContext context,
     required DateTime initialDate,
     required Function(DateTime) onDaySelected}) {
-  final uiProvider = Provider.of<UIProvider>(context, listen: false);
+  final uiCubit = getIt<UICubit>();
 
   showModalBottomSheet(
     context: context,
@@ -17,7 +15,8 @@ Future<void> showTableCaledarBottomSheet(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           //si el tema es oscuro el color de fondo sera gris oscuro
-          color: uiProvider.theme == uiProvider.themes[3]
+          color: uiCubit.state.themes![uiCubit.state.selectedTheme] ==
+                  uiCubit.state.themes![3]
               ? Colors.black
               : Theme.of(context).scaffoldBackgroundColor,
 

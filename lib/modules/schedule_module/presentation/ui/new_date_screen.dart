@@ -29,12 +29,12 @@ class _NewDateScreenState extends State<NewDateScreen> {
   DateTime _selectedDate = DateTime.now();
   DateTime _time = DateTime.now();
   PatientModel? pattient;
-  late UIProvider uiProvider;
+  late UICubit uiProvider;
 
   @override
   void initState() {
     super.initState();
-    uiProvider = context.read<UIProvider>();
+    uiProvider = getIt<UICubit>();
   }
 
   @override
@@ -102,7 +102,9 @@ class _NewDateScreenState extends State<NewDateScreen> {
                       Text(
                         '${_selectedDate.day} de ${Utils.getMonthName(_selectedDate.month)} de ${_selectedDate.year}',
                         style: TextStyle(
-                          color: uiProvider.theme == uiProvider.themes[3]
+                          color: uiProvider.state.themes![
+                                      uiProvider.state.selectedTheme] ==
+                                  uiProvider.state.themes![3]
                               ? Colors.white
                               : Colors.black,
                           fontSize: MediaQuery.of(context).size.width * 0.03,
@@ -151,7 +153,9 @@ class _NewDateScreenState extends State<NewDateScreen> {
                               ? '${_time.hour - 12}:${_time.minute.toString().padLeft(2, '0')} PM'
                               : '${_time.hour}:${_time.minute.toString().padLeft(2, '0')} AM',
                           style: TextStyle(
-                            color: uiProvider.theme == uiProvider.themes[3]
+                            color: uiProvider.state.themes![
+                                        uiProvider.state.selectedTheme] ==
+                                    uiProvider.state.themes![3]
                                 ? Colors.white
                                 : Colors.black,
                             fontSize: MediaQuery.of(context).size.width * 0.03,
@@ -277,14 +281,14 @@ class _NewDateScreenState extends State<NewDateScreen> {
                   );
 
                   if (widget.isPatient) {
-                    await widget.onSave!(date, widget.patientModel!.id);
+                    await widget.onSave!(date, widget.patientModel!.id!);
                   } else {
                     if (pattient == null) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('Por favor, seleccione un paciente'),
                       ));
                     } else {
-                      await widget.onSave!(date, pattient!.id);
+                      await widget.onSave!(date, pattient!.id!);
                     }
                   }
 
@@ -369,7 +373,7 @@ Widget pattientPicker(
               items: pattients
                   .map((e) => DropdownMenuItem<int>(
                         value: e.id,
-                        child: Text(e.name),
+                        child: Text(e.name!),
                       ))
                   .toList(),
               onChanged: (int? value) {

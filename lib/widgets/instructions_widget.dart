@@ -75,7 +75,7 @@ Widget testResultWidget(
   PageController pageController,
   int userId,
   String? result,
-  UserProvider userProvider,
+  BegginCubit userProvider,
   GoalModel? goal,
 ) {
   return Column(
@@ -132,7 +132,7 @@ Widget testResultWidget(
                     await showStickerDialog(context, goal);
                   }
 
-                  if (userProvider.registerPatientFlow ==
+                  if (userProvider.state.registerPatientFlow ==
                       RegisterPatientFlow.registerSucess) {
                     userProvider.setRegisterFlow(
                         RegisterPatientFlow.firstTestCompleted);

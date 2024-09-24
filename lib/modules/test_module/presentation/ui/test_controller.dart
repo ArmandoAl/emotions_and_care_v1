@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import '../../../../config/assets/assets.dart';
 import '../../../../helpers/paths.dart';
 
@@ -18,13 +17,13 @@ class _TestControllerState extends State<TestController> {
   @override
   void initState() {
     super.initState();
-    context.read<TestCubit>().getTest(widget.patientModel.id);
+    context.read<TestCubit>().getTest(widget.patientModel.id!);
   }
 
   @override
   Widget build(BuildContext context) {
     final RegisterPatientFlow? registerFlow =
-        Provider.of<UserProvider>(context, listen: true).registerPatientFlow;
+        context.watch<BegginCubit>().state.registerPatientFlow;
 
     return BlocBuilder<TestCubit, TestState>(
       bloc: context.read<TestCubit>(),
@@ -114,7 +113,7 @@ class _TestControllerState extends State<TestController> {
                       MaterialPageRoute(
                         builder: (context) => CompleteTest(
                           testId: test.id,
-                          userId: widget.patientModel.id,
+                          userId: widget.patientModel.id!,
                           onTap: (int testId, int questionId, int responseId) {
                             context.read<TestCubit>().onSelectResponse(
                                   testId,
@@ -127,7 +126,7 @@ class _TestControllerState extends State<TestController> {
                     );
                   },
                   onRefresh: () async {
-                    context.read<TestCubit>().getTest(widget.patientModel.id);
+                    context.read<TestCubit>().getTest(widget.patientModel.id!);
                   },
                 ),
         );

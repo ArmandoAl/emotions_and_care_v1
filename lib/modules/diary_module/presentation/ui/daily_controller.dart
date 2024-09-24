@@ -23,7 +23,7 @@ class _DailyControllerState extends State<DailyController> {
   @override
   void initState() {
     super.initState();
-    context.read<DailyCubit>().getNotes(widget.patientModel.id);
+    context.read<DailyCubit>().getNotes(widget.patientModel.id!);
     context.read<EmotionCubit>().getEmotions();
   }
 
@@ -108,7 +108,7 @@ class _DailyControllerState extends State<DailyController> {
                         reload: () async {
                           context
                               .read<DailyCubit>()
-                              .getNotes(widget.patientModel.id);
+                              .getNotes(widget.patientModel.id!);
                         },
                       ),
             floatingActionButton: widget.isPattient
@@ -119,7 +119,7 @@ class _DailyControllerState extends State<DailyController> {
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => NewNoteScreen(
-                              id: widget.patientModel.id,
+                              id: widget.patientModel.id!,
                               patientModel: widget.patientModel,
                               onNoteCreated: (NoteModel note, id) async {
                                 GoalWithNote res = await context
@@ -127,8 +127,8 @@ class _DailyControllerState extends State<DailyController> {
                                     .addNote(note, id);
 
                                 if (res.goalModel != null && context.mounted) {
-                                  final UIProvider uiProvider =
-                                      Provider.of<UIProvider>(context,
+                                  final UICubit uiProvider =
+                                      Provider.of<UICubit>(context,
                                           listen: false);
 
                                   await uiProvider
@@ -159,8 +159,8 @@ class _DailyControllerState extends State<DailyController> {
 }
 
 Future<void> showStickerDialog(BuildContext context, GoalModel goal) async {
-  final uiProvider = Provider.of<UIProvider>(context, listen: false);
-  final sticker = uiProvider.stickers.last;
+  final uiProvider = getIt<UICubit>();
+  final sticker = uiProvider.state.stickers.last;
   return showDialog(
     context: context,
     barrierDismissible: false,

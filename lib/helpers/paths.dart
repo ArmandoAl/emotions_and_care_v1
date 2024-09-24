@@ -6,6 +6,8 @@ export 'package:emotions_and_care_v1/modules/dates_module/presentation/logic/pat
 export 'package:emotions_and_care_v1/modules/dates_module/presentation/logic/pattients_dates_state.dart';
 export 'package:emotions_and_care_v1/modules/dates_module/presentation/ui/pattients_dates_controller.dart';
 
+export 'package:emotions_and_care_v1/helpers/service_locator.dart';
+
 export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/search_specialist/search_specialist_controller.dart';
 
 export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/new_date_screen.dart';
@@ -118,8 +120,7 @@ export 'package:emotions_and_care_v1/modules/auth_module/presentation/ui/login_s
 export 'package:emotions_and_care_v1/modules/auth_module/presentation/ui/register_screen.dart';
 export 'package:emotions_and_care_v1/modules/auth_module/presentation/ui/start_screen.dart';
 
-export 'package:emotions_and_care_v1/helpers/ui_provider.dart';
-export 'package:emotions_and_care_v1/helpers/user_provider.dart';
+export 'package:emotions_and_care_v1/helpers/ui_bloc.dart';
 
 export 'package:emotions_and_care_v1/modules/auth_module/presentation/logic/beggin_cubit.dart';
 export 'package:emotions_and_care_v1/modules/auth_module/presentation/logic/beggin_state.dart';

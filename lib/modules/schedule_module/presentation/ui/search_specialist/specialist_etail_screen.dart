@@ -45,7 +45,7 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                           SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.01),
-                          Text(widget.specialistModel!.name),
+                          Text(widget.specialistModel!.name!),
                         ],
                       ),
                       const Spacer(),
@@ -65,7 +65,7 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                   ),
                   Row(
                     children: [
-                      Text(widget.specialistModel!.email),
+                      Text(widget.specialistModel!.email!),
                       const Spacer(),
                     ],
                   ),
@@ -83,7 +83,7 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                   ),
                   Row(
                     children: [
-                      Text(widget.specialistModel!.phone),
+                      Text(widget.specialistModel!.phone!),
                       const Spacer(),
                     ],
                   ),
@@ -101,7 +101,7 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                   ),
                   Row(
                     children: [
-                      Text(widget.specialistModel!.sex,
+                      Text(widget.specialistModel!.sex!,
                           style: TextStyle(
                               fontSize:
                                   MediaQuery.of(context).size.height * 0.02)),
@@ -143,7 +143,7 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                   ),
                   Row(
                     children: [
-                      Text(widget.specialistModel!.focus,
+                      Text(widget.specialistModel!.focus!,
                           style: TextStyle(
                               fontSize:
                                   MediaQuery.of(context).size.height * 0.02)),
@@ -223,8 +223,8 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                         setState(() {
                           isloading = !isloading;
                         });
-                        bool result = await widget
-                            .syncByCode(widget.specialistModel!.tokenForRelate);
+                        bool result = await widget.syncByCode(
+                            widget.specialistModel!.tokenForRelate!);
                         setState(() {
                           isloading = !isloading;
                         });

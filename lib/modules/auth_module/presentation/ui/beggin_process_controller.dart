@@ -1,6 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-
 import '../../../../config/utils_functions/show_message.dart';
 import '../../../../helpers/paths.dart';
 
@@ -15,7 +13,7 @@ class BegginProcessController extends StatefulWidget {
 class _BegginProcessControllerState extends State<BegginProcessController> {
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: true);
+    BegginCubit userProvider = getIt<BegginCubit>();
 
     return BlocBuilder<BegginCubit, BegginState>(
       bloc: context.read<BegginCubit>(),
@@ -67,14 +65,14 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                 builder: (context) => RegisterProcessScreen(
                                       onPatientRegister: (PatientModel patient,
                                           PageController pageController) async {
-                                        if (validatePhone(patient.phone) ==
+                                        if (validatePhone(patient.phone!) ==
                                             false) {
                                           showMessage(context,
                                               'Por favor, ingrese un número de teléfono válido');
                                           return;
                                         }
 
-                                        if (validateEmail(patient.email) ==
+                                        if (validateEmail(patient.email!) ==
                                             false) {
                                           showMessage(context,
                                               'Por favor, ingrese un correo válido');
@@ -88,16 +86,17 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                         //   return;
                                         // }
 
-                                        if (patient.password.length < 6) {
+                                        if (patient.password!.length < 6) {
                                           showMessage(context,
                                               'La contraseña debe tener al menos 6 caracteres');
                                           return;
                                         }
 
                                         final result = await userProvider
-                                            .registerPattient(patient);
+                                            .registerPatient(patient);
 
-                                        if (result != 'success') {
+                                        if (result != 'success' &&
+                                            context.mounted) {
                                           showMessage(context, result);
                                           return;
                                         }
@@ -110,14 +109,14 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                       onSpecialistrRegister: (SpecialistModel
                                               specialist,
                                           PageController pageController) async {
-                                        if (validatePhone(specialist.phone) ==
+                                        if (validatePhone(specialist.phone!) ==
                                             false) {
                                           showMessage(context,
                                               'Por favor, ingrese un número de teléfono válido');
                                           return;
                                         }
 
-                                        if (validateEmail(specialist.email) ==
+                                        if (validateEmail(specialist.email!) ==
                                             false) {
                                           showMessage(context,
                                               'Por favor, ingrese un correo válido');
@@ -125,7 +124,7 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                           return;
                                         }
 
-                                        if (specialist.password.length < 6) {
+                                        if (specialist.password!.length < 6) {
                                           showMessage(context,
                                               'La contraseña debe tener al menos 6 caracteres');
                                           return;
@@ -134,7 +133,8 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                         final result = await userProvider
                                             .registerSpecialist(specialist);
 
-                                        if (result != 'success') {
+                                        if (result != 'success' &&
+                                            context.mounted) {
                                           showMessage(context, result);
                                           return;
                                         }

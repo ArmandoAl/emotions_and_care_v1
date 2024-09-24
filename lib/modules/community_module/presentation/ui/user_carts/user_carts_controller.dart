@@ -28,7 +28,9 @@ class _UserCartsControllerState extends State<UserCartsController> {
   @override
   void initState() {
     context.read<CommunityCubit>().getCartFromUser(
-        widget.isPatient ? widget.patientModel!.id : widget.specialistModel!.id,
+        widget.isPatient
+            ? widget.patientModel!.id!
+            : widget.specialistModel!.id!,
         widget.isPatient);
     super.initState();
   }
@@ -73,7 +75,7 @@ class _UserCartsControllerState extends State<UserCartsController> {
             carts: index == 1 ? sentCarts : recievedCarts,
             index: index,
             updateIndex: updateIndex,
-            userId: userId,
+            userId: userId!,
           ),
         );
       },

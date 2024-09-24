@@ -55,8 +55,7 @@ class _DrawerWidgetState extends State<DrawerWidget>
 
   @override
   Widget build(BuildContext context) {
-    final registerFlow =
-        Provider.of<UserProvider>(context, listen: true).registerPatientFlow;
+    final registerFlow = context.watch<BegginCubit>().state.registerPatientFlow;
 
     dinamicIndex = drawerDynaicIndexNumbers[registerFlow]!;
 

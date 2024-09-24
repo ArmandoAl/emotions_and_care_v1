@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../../../../config/assets/assets.dart';
 import '../../../../helpers/paths.dart';
 
@@ -76,7 +73,7 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: true);
+    BegginCubit userProvider = getIt<BegginCubit>();
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -163,7 +160,7 @@ Widget welcomeMessage(
   bool? isPatient,
   String email,
   String password,
-  UserProvider userProvider,
+  BegginCubit userProvider,
 ) {
   return Container(
     width: double.infinity,

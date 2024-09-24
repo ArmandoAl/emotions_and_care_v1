@@ -1,9 +1,7 @@
-import 'package:provider/provider.dart';
-
 import '../../../helpers/paths.dart';
 
 class SettingsController extends StatefulWidget {
-  final UserProvider userProvider;
+  final BegginCubit userProvider;
   final Function(int)? changeIndex;
   final bool isPattient;
   const SettingsController(
@@ -19,7 +17,7 @@ class SettingsController extends StatefulWidget {
 class _SettingsControllerState extends State<SettingsController> {
   @override
   Widget build(BuildContext context) {
-    final uiProvider = Provider.of<UIProvider>(context, listen: true);
+    final uiProvider = getIt<UICubit>();
 
     return Scaffold(
       appBar: widget.isPattient

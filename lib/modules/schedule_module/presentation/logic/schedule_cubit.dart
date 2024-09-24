@@ -153,7 +153,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     emit(state.copyWith(status: ScheduleStatus.loading));
     try {
       final int resId =
-          await repository.addDateBySpecialist(idSpecialist, date, patient.id);
+          await repository.addDateBySpecialist(idSpecialist, date, patient.id!);
       date = date.copyWith(id: resId, patient: patient);
       emit(state.copyWith(
         dates: [...state.dates, date],
@@ -185,7 +185,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     final List<SpecialistModel> specialists = state.auxiliar;
     final List<SpecialistModel> result = [];
     for (final SpecialistModel specialist in specialists) {
-      if (specialist.name.toLowerCase().contains(value.toLowerCase())) {
+      if (specialist.name!.toLowerCase().contains(value.toLowerCase())) {
         result.add(specialist);
       }
     }

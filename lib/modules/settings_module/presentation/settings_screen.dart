@@ -1,9 +1,9 @@
 import '../../../helpers/paths.dart';
 
 class SettingsScreen extends StatefulWidget {
-  final UserProvider userProvider;
+  final BegginCubit userProvider;
   final bool isPattient;
-  final UIProvider uiProvider;
+  final UICubit uiProvider;
   const SettingsScreen(
       {super.key,
       required this.userProvider,
@@ -25,8 +25,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           headerItem(
             context,
-            widget.isPattient ? widget.userProvider.patientModel! : null,
-            widget.isPattient ? null : widget.userProvider.specialistModel!,
+            widget.isPattient ? widget.userProvider.state.patientModel! : null,
+            widget.isPattient
+                ? null
+                : widget.userProvider.state.specialistModel!,
             widget.isPattient,
             widget.userProvider,
           ),
@@ -71,8 +73,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       MaterialPageRoute(
                         builder: (context) => PrivacyScreen(
                           settings: widget.isPattient
-                              ? widget.userProvider.patientModel!.settings
-                              : widget.userProvider.patientModel!.settings,
+                              ? widget.userProvider.state.patientModel!.settings
+                              : widget
+                                  .userProvider.state.patientModel!.settings,
                         ),
                       ),
                     );
@@ -96,8 +99,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 MaterialPageRoute(
                   builder: (context) => TermsScreen(
                     terms: widget.isPattient
-                        ? widget.userProvider.patientModel!.termsClass.terms
-                        : widget.userProvider.specialistModel!.termsClass.terms,
+                        ? widget
+                            .userProvider.state.patientModel!.termsClass!.terms
+                        : widget.userProvider.state.specialistModel!.termsClass!
+                            .terms,
                   ),
                 ),
               );
@@ -131,8 +136,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               size: MediaQuery.of(context).size.width * 0.1,
             ),
             () {
-              widget.uiProvider.logout(context);
-              widget.userProvider.logout(context);
+              widget.uiProvider.clean();
+              widget.userProvider.logout();
             },
           ),
         ],
@@ -180,7 +185,7 @@ Widget headerItem(
   PatientModel? patientModel,
   SpecialistModel? specialistModel,
   bool isPattient,
-  UserProvider userProvider,
+  BegginCubit userProvider,
 ) {
   return InkWell(
     onTap: () {
@@ -210,13 +215,14 @@ Widget headerItem(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  textToUpperCateFirstLetter(
-                      isPattient ? patientModel!.name : specialistModel!.name),
+                  textToUpperCateFirstLetter(isPattient
+                      ? patientModel!.name!
+                      : specialistModel!.name!),
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.05),
                 ),
                 Text(
-                  isPattient ? patientModel!.email : specialistModel!.email,
+                  isPattient ? patientModel!.email! : specialistModel!.email!,
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.03),
                 ),

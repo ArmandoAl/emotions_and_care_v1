@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../config/assets/assets.dart';
 import '../helpers/paths.dart';
 
-Future<void> showItemsDialog(BuildContext context, String title, int position,
-    UIProvider uiProvider) async {
+Future<void> showItemsDialog(
+    BuildContext context, String title, int position, UICubit uiCubit) async {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -21,30 +21,30 @@ Future<void> showItemsDialog(BuildContext context, String title, int position,
               mainAxisSpacing: 10,
             ),
             itemCount: title == "Tus stickers"
-                ? uiProvider.stickers.length
-                : uiProvider.flowers.length,
+                ? uiCubit.state.stickers.length
+                : uiCubit.state.flowers.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
                   if (title == "Tus stickers") {
-                    uiProvider.setStickerInUse(
-                        uiProvider.stickers[index], position);
+                    uiCubit.setStickerInUse(
+                        uiCubit.state.stickers[index], position);
                   } else {
-                    uiProvider.setCurrentFlower(uiProvider.flowers[index]);
+                    uiCubit.setCurrentFlower(uiCubit.state.flowers[index]);
                   }
 
                   Navigator.of(context).pop();
                 },
                 child: title == "Tus stickers"
                     ? CachedNetworkImage(
-                        imageUrl: uiProvider.stickers[index].url!,
+                        imageUrl: uiCubit.state.stickers[index].url!,
                         placeholder: (context, url) =>
                             const CircularProgressIndicator(),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
                       )
                     : Image.asset(
-                        uiProvider.flowers[index].urls![0],
+                        uiCubit.state.flowers[index].urls![0],
                         width: MediaQuery.of(context).size.width * 0.2,
                         height: MediaQuery.of(context).size.width * 0.2,
                       ),

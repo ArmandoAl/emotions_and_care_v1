@@ -61,8 +61,8 @@ List<Widget> itemsList(
         color: const Color(0xFF71D5FF),
         size: MediaQuery.of(context).size.width * 0.1,
       ),
-      pattient.name,
-      pattient.sex,
+      pattient.name!,
+      pattient.sex!,
       () {
         onTap(pattient);
       },

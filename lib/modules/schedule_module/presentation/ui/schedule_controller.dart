@@ -26,9 +26,9 @@ class _ScheduleControllerState extends State<ScheduleController> {
     if (widget.isPattient == false) {
       context
           .read<ScheduleCubit>()
-          .getDatesForSpecialist(widget.especialistaModel!.id);
+          .getDatesForSpecialist(widget.especialistaModel!.id!);
     } else {
-      context.read<ScheduleCubit>().getSchedule(widget.patientModel!.id);
+      context.read<ScheduleCubit>().getSchedule(widget.patientModel!.id!);
     }
   }
 
@@ -110,11 +110,11 @@ class _ScheduleControllerState extends State<ScheduleController> {
                     if (widget.isPattient == false) {
                       context
                           .read<ScheduleCubit>()
-                          .getDatesForSpecialist(widget.especialistaModel!.id);
+                          .getDatesForSpecialist(widget.especialistaModel!.id!);
                     } else {
                       context
                           .read<ScheduleCubit>()
-                          .getSchedule(widget.patientModel!.id);
+                          .getSchedule(widget.patientModel!.id!);
                     }
                   },
                 ),

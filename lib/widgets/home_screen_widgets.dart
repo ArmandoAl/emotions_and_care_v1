@@ -4,7 +4,7 @@ import '../helpers/paths.dart';
 Widget macetaConPlanta(
     BuildContext context,
     bool customEnable,
-    UIProvider uiProvider,
+    UICubit uiProvider,
     AnimationController? animationController,
     Animation? animation) {
   return GestureDetector(
@@ -21,10 +21,10 @@ Widget macetaConPlanta(
           Positioned(
             bottom: 55,
             left: MediaQuery.of(context).size.width * 0.42,
-            child: uiProvider.currentFlower != null
+            child: uiProvider.state.currentFlower != null
                 ? Image.asset(
-                    uiProvider.currentFlower!
-                        .urls![uiProvider.currentFlower!.state!.index],
+                    uiProvider.state.currentFlower!
+                        .urls![uiProvider.state.currentFlower!.state!.index],
                   )
                 : const SizedBox(),
           ),

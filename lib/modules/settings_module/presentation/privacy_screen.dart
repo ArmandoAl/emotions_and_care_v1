@@ -1,5 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../helpers/paths.dart';
 
 class PrivacyScreen extends StatefulWidget {
@@ -34,9 +32,9 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
             Icons.arrow_back_ios,
           ),
           onPressed: () async {
-            final UserProvider userProvider = context.read<UserProvider>();
+            final BegginCubit userProvider = getIt<BegginCubit>();
             await userProvider.changePrivacy(
-              userProvider.patientModel!.id,
+              userProvider.state.patientModel!.id!,
               notificationsSwitch,
               daitySwitch,
               testSwitch,

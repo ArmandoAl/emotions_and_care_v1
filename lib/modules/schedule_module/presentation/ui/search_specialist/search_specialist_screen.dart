@@ -99,7 +99,7 @@ class _SearchSpecialistScreenState extends State<SearchSpecialistScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.specislist[index].name,
+                              Text(widget.specislist[index].name!,
                                   style: TextStyle(
                                       fontSize:
                                           MediaQuery.of(context).size.width *

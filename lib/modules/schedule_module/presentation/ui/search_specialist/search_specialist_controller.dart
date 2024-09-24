@@ -56,8 +56,8 @@ class _SearchSpecialistControllerState
                     specialistModel: specialist,
                     syncByCode: (code) async {
                       final res = await context
-                          .read<UserProvider>()
-                          .syncByCode(widget.patientModel!.id, code);
+                          .read<BegginCubit>()
+                          .syncByCode(widget.patientModel!.id!, code);
 
                       return res;
                     },
@@ -70,8 +70,8 @@ class _SearchSpecialistControllerState
             },
             syncByCode: (code) async {
               final res = await context
-                  .read<UserProvider>()
-                  .syncByCode(widget.patientModel!.id, code);
+                  .read<BegginCubit>()
+                  .syncByCode(widget.patientModel!.id!, code);
 
               return res;
             },

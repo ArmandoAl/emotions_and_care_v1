@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../helpers/paths.dart';
-import '../../../helpers/user_provider.dart';
 
 class StorageRepository {
   final Future<SharedPreferences> _sharedPreferences;

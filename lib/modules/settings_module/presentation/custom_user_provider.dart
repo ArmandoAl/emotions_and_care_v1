@@ -4,8 +4,8 @@ import '../../../helpers/paths.dart';
 enum ItemUiType { colores, fondo, jardin, flores }
 
 class CustomMenuScreen extends StatefulWidget {
-  final UserProvider userProvider;
-  final UIProvider uiProvider;
+  final BegginCubit userProvider;
+  final UICubit uiProvider;
   const CustomMenuScreen(
       {super.key, required this.userProvider, required this.uiProvider});
 
@@ -41,10 +41,10 @@ class _CustomMenuScreenState extends State<CustomMenuScreen> {
                       uiProvider: widget.uiProvider,
                       itemType: ItemUiType.colores,
                       items: [
-                        widget.uiProvider.themes[0],
-                        widget.uiProvider.themes[1],
-                        widget.uiProvider.themes[2],
-                        widget.uiProvider.themes[3],
+                        widget.uiProvider.state.themes![0],
+                        widget.uiProvider.state.themes![1],
+                        widget.uiProvider.state.themes![2],
+                        widget.uiProvider.state.themes![3],
                       ],
                       blocks: const [false, false, true, false],
                     ),

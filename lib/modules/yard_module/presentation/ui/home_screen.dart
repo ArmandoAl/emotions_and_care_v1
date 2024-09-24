@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final uiProvider = Provider.of<UIProvider>(context, listen: true);
+    final uiProvider = getIt<UICubit>();
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -153,9 +153,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
       child: Stack(
         children: [
-          uiProvider.selectedBackground != "null"
+          uiProvider.state.selectedBackground != "null"
               ? SvgPicture.asset(
-                  uiProvider.selectedBackground!,
+                  uiProvider.state.selectedBackground,
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
@@ -173,15 +173,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ),
                           size: MediaQuery.of(context).size.width * 0.1),
                       onPressed: () async {
-                        if (uiProvider.currentFlower == null) {
+                        if (uiProvider.state.currentFlower == null) {
                           await widget.tap();
                           return;
                         }
 
                         if (widget.registerFlow !=
                             RegisterPatientFlow.homeUiChanged) {
-                          final userProvider =
-                              Provider.of<UserProvider>(context, listen: false);
+                          final userProvider = context.read<BegginCubit>();
                           userProvider.setRegisterFlow(
                               RegisterPatientFlow.homeUiChanged);
 
@@ -293,8 +292,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             left: MediaQuery.of(context).size.width * 0.08,
             child: stickerWidget(
                 context,
-                uiProvider.stickersInUse[0].url != null
-                    ? uiProvider.stickersInUse[0]
+                uiProvider.state.stickersInUse![0].url != null
+                    ? uiProvider.state.stickersInUse![0]
                     : null,
                 _stickersController,
                 _stickersAnimation,
@@ -307,8 +306,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             left: MediaQuery.of(context).size.width * 0.4,
             child: stickerWidget(
                 context,
-                uiProvider.stickersInUse[1].url != null
-                    ? uiProvider.stickersInUse[1]
+                uiProvider.state.stickersInUse![1].url != null
+                    ? uiProvider.state.stickersInUse![1]
                     : null,
                 _stickersController,
                 _stickersAnimation,
@@ -321,8 +320,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             right: MediaQuery.of(context).size.width * 0.09,
             child: stickerWidget(
                 context,
-                uiProvider.stickersInUse[2].url != null
-                    ? uiProvider.stickersInUse[2]
+                uiProvider.state.stickersInUse![2].url != null
+                    ? uiProvider.state.stickersInUse![2]
                     : null,
                 _stickersController,
                 _stickersAnimation,
@@ -335,9 +334,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             right: MediaQuery.of(context).size.width * 0.008,
             child: stickerWidget(
                 context,
-                uiProvider.stickersInUse.length > 3
-                    ? uiProvider.stickersInUse[3].url != null
-                        ? uiProvider.stickersInUse[3]
+                uiProvider.state.stickersInUse!.length > 3
+                    ? uiProvider.state.stickersInUse![3].url != null
+                        ? uiProvider.state.stickersInUse![3]
                         : null
                     : null,
                 _stickersController,

@@ -2,8 +2,8 @@ import 'package:flutter_svg/svg.dart';
 import '../../../helpers/paths.dart';
 
 class ChangeUiItemScreen extends StatefulWidget {
-  final UserProvider userProvider;
-  final UIProvider uiProvider;
+  final BegginCubit userProvider;
+  final UICubit uiProvider;
   final ItemUiType itemType;
   final List<dynamic> items;
   final List<bool> blocks;

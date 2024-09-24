@@ -1,6 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-
 import '../../../../helpers/paths.dart';
 
 class HomeController extends StatefulWidget {
@@ -23,29 +21,31 @@ class _HomeControllerState extends State<HomeController> {
   @override
   Widget build(BuildContext context) {
     final RegisterPatientFlow? registerFlow =
-        Provider.of<UserProvider>(context, listen: true).registerPatientFlow;
+        context.watch<BegginCubit>().state.registerPatientFlow;
 
     if (registerFlow == RegisterPatientFlow.firstTestCompleted) {
       Future.delayed(Duration.zero, () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Scaffold(
-                    body: HomeScreen(
-                      plane: null,
-                      tap: () {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text(
-                              'Debes eligir una flor, haz click en la maceta para elegir una de las flores disponibles'),
-                          duration: Duration(seconds: 1),
-                        ));
-                      },
-                      registerFlow: RegisterPatientFlow.firstTestCompleted,
-                      customEnable: true,
-                    ),
-                  )),
-        );
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Scaffold(
+                      body: HomeScreen(
+                        plane: null,
+                        tap: () {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                                'Debes eligir una flor, haz click en la maceta para elegir una de las flores disponibles'),
+                            duration: Duration(seconds: 1),
+                          ));
+                        },
+                        registerFlow: RegisterPatientFlow.firstTestCompleted,
+                        customEnable: true,
+                      ),
+                    )),
+          );
+        }
       });
     }
 

@@ -1,5 +1,4 @@
 import 'package:emotions_and_care_v1/helpers/paths.dart';
-import 'package:provider/provider.dart';
 
 class PatientStack extends StatefulWidget {
   const PatientStack({super.key});
@@ -19,7 +18,7 @@ class _PatientStackState extends State<PatientStack> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: true);
+    BegginCubit userProvider = getIt<BegginCubit>();
 
     return Scaffold(
       body: AnimatedSwitcher(
@@ -28,25 +27,25 @@ class _PatientStackState extends State<PatientStack> {
           index: _currentIndex,
           children: [
             HomeController(
-              idUser: userProvider.patientModel!.id,
+              idUser: userProvider.state.patientModel!.id!,
               changeIndex: changeIndex,
             ),
             TestController(
-              patientModel: userProvider.patientModel!,
+              patientModel: userProvider.state.patientModel!,
               changeIndex: changeIndex,
             ),
             DailyController(
-              patientModel: userProvider.patientModel!,
+              patientModel: userProvider.state.patientModel!,
               changeIndex: changeIndex,
               isPattient: true,
             ),
             GlobalCommunityController(
               changeIndex: changeIndex,
-              patientModel: userProvider.patientModel!,
+              patientModel: userProvider.state.patientModel!,
               isPatient: true,
             ),
             ScheduleController(
-              patientModel: userProvider.patientModel!,
+              patientModel: userProvider.state.patientModel!,
               changeIndex: changeIndex,
               isPattient: true,
               especialistaModel: null,

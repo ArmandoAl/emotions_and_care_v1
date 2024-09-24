@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:emotions_and_care_v1/helpers/paths.dart';
-import 'package:provider/provider.dart';
 
 class SpecialistStack extends StatefulWidget {
   const SpecialistStack({super.key});
@@ -55,13 +54,13 @@ class _SpecialistStackState extends State<SpecialistStack> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: true);
+    BegginCubit userProvider = getIt<BegginCubit>();
     return Scaffold(
       body: IndexedStack(
         index: index,
         children: [
           SpecialistPattientsController(
-            idUser: userProvider.specialistModel!.id,
+            idUser: userProvider.state.specialistModel!.id!,
             changeIndex: (int newIndex) {
               changeIndex(0);
             },
@@ -70,9 +69,9 @@ class _SpecialistStackState extends State<SpecialistStack> {
               patientModel: null,
               changeIndex: changeIndex,
               isPattient: false,
-              especialistaModel: userProvider.specialistModel!),
+              especialistaModel: userProvider.state.specialistModel!),
           PattientsDatesController(
-            idUser: userProvider.specialistModel!.id,
+            idUser: userProvider.state.specialistModel!.id!,
             changeIndex: (int newIndex) {
               changeIndex(0);
             },
@@ -96,7 +95,7 @@ class _SpecialistStackState extends State<SpecialistStack> {
             MaterialPageRoute(
               builder: (context) => GlobalCommunityController(
                 changeIndex: changeIndex,
-                specialistModel: userProvider.specialistModel!,
+                specialistModel: userProvider.state.specialistModel!,
                 isPatient: false,
               ),
             ),

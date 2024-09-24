@@ -3,31 +3,31 @@ import '../../../helpers/paths.dart';
 enum UserType { patient, specialist }
 
 class UserModel {
-  int id;
-  String name;
-  String email;
-  String password;
-  String phone;
-  int age;
-  String sex;
-  String token;
-  String tokenForRelate;
-  TermAndConditions termsClass;
-  UserType type;
-  DateTime bornDate;
+  int? id;
+  String? name;
+  String? email;
+  String? password;
+  String? phone;
+  int? age;
+  String? sex;
+  String? token;
+  String? tokenForRelate;
+  TermAndConditions? termsClass;
+  UserType? type;
+  DateTime? bornDate;
 
   UserModel({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.password,
-    required this.phone,
-    required this.age,
-    required this.sex,
-    required this.token,
-    required this.tokenForRelate,
-    required this.termsClass,
-    required this.bornDate,
+    this.id,
+    this.name,
+    this.email,
+    this.password,
+    this.phone,
+    this.age,
+    this.sex,
+    this.token,
+    this.tokenForRelate,
+    this.termsClass,
+    this.bornDate,
     this.type = UserType.patient,
   });
 
@@ -89,7 +89,7 @@ class UserModel {
       'Token': token,
       'fechaNacimiento': token,
       'TokenRelacional': tokenForRelate,
-      'Terminosycondiciones': termsClass.toJson(),
+      'Terminosycondiciones': termsClass!.toJson(),
     };
   }
 }

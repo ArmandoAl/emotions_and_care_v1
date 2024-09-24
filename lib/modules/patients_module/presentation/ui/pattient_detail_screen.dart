@@ -202,7 +202,7 @@ class _PatientDetailState extends State<PatientDetail> {
             ),
             ElevatedButton(
               onPressed: () {
-                context.read<TestCubit>().getTest(widget.patient.id);
+                context.read<TestCubit>().getTest(widget.patient.id!);
 
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return BlocBuilder<TestCubit, TestState>(

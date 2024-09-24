@@ -1,8 +1,8 @@
 import '../../../helpers/paths.dart';
 
 class SpecialistModel extends UserModel {
-  String professionalLicense;
-  String focus;
+  String? professionalLicense;
+  String? focus;
   String? institution;
   String? ubication;
   String? presentation;
@@ -10,21 +10,21 @@ class SpecialistModel extends UserModel {
   List<PatientModel>? patients;
 
   SpecialistModel({
-    required this.professionalLicense,
-    required this.patients,
-    required super.id,
-    required super.name,
-    required super.email,
-    required super.password,
-    required super.phone,
+    this.professionalLicense,
+    this.patients,
+    super.id,
+    super.name,
+    super.email,
+    super.password,
+    super.phone,
     super.age = 0,
-    required super.bornDate,
-    required super.sex,
-    required super.token,
-    required super.tokenForRelate,
-    required super.termsClass,
-    required super.type,
-    required this.focus,
+    super.bornDate,
+    super.sex,
+    super.token,
+    super.tokenForRelate,
+    super.termsClass,
+    super.type,
+    this.focus,
     this.institution,
     this.ubication,
     this.presentation,
@@ -104,12 +104,12 @@ class SpecialistModel extends UserModel {
       'contraseña': password,
       'telefono': phone,
       'edad': age,
-      'fechaNacimiento': bornDate.toIso8601String(),
+      'fechaNacimiento': bornDate!.toIso8601String(),
       'sexo': sex,
       'token': token,
       'tokenRelacional': tokenForRelate,
       'cedulaProfesional': professionalLicense,
-      'terminosycondiciones': termsClass.toJson(),
+      'terminosycondiciones': termsClass!.toJson(),
       'enfoque': focus,
       'institucion': institution,
       'ubicaion': ubication,
@@ -126,7 +126,7 @@ class SpecialistModel extends UserModel {
       'telefono': phone,
       'edad': age,
       'sexo': sex,
-      'token': phone + token,
+      'token': phone! + token!,
       'TerminosycondicionesId': 2,
       'cedulaProfesional': professionalLicense,
       'especialidad': institution ?? '',

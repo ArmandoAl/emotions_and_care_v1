@@ -1,9 +1,7 @@
-import 'package:provider/provider.dart';
-
 import '../config/assets/assets.dart';
 import '../helpers/paths.dart';
 
-Future<void> showStikerDialog(BuildContext context, UserProvider userProvider) {
+Future<void> showStikerDialog(BuildContext context, BegginCubit userCubit) {
   return showDialog(
     context: context,
     barrierDismissible: false,
@@ -48,14 +46,13 @@ Future<void> showStikerDialog(BuildContext context, UserProvider userProvider) {
                   backgroundColor: const Color(0xff1C8AAD),
                 ),
                 onPressed: () async {
-                  if (userProvider.registerPatientFlow ==
+                  if (userCubit.state.registerPatientFlow ==
                       RegisterPatientFlow.registerSucess) {
-                    userProvider.setRegisterFlow(
+                    userCubit.setRegisterFlow(
                         RegisterPatientFlow.firstTestCompleted);
                   }
 
-                  final uiProvider =
-                      Provider.of<UIProvider>(context, listen: false);
+                  final uiProvider = getIt<UICubit>();
                   uiProvider.addSticker(StickerModel(
                     id: 2,
                     url: Assets.cat,

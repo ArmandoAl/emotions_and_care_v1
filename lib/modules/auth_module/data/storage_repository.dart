@@ -3,55 +3,55 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../helpers/paths.dart';
 
 class StorageRepository {
-  final Future<SharedPreferences> _sharedPreferences;
+  final SharedPreferences sharedPreferences;
 
-  StorageRepository(this._sharedPreferences);
+  StorageRepository({required this.sharedPreferences});
 
   Future<void> savePatient(PatientModel patient) async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setString('user', jsonEncode(patient.toStore()));
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setString('user', jsonEncode(patient.toStore()));
   }
 
   Future<void> saveSpecialist(SpecialistModel specialist) async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setString('user', jsonEncode(specialist.toStore()));
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setString('user', jsonEncode(specialist.toStore()));
   }
 
   Future<String?> getUser() async {
-    final sharedPreferences = await _sharedPreferences;
-    return sharedPreferences.getString('user');
+    final sharedPreferencesF = sharedPreferences;
+    return sharedPreferencesF.getString('user');
   }
 
   Future<void> removeUser() async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.remove('user');
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.remove('user');
   }
 
   Future<void> clean() async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.clear();
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.clear();
   }
 
   Future<void> saveRegisterPatientFlow(
       RegisterPatientFlow registerPatientFlow) async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setString(
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setString(
         'registerPatientFlow', registerPatientFlow.toString());
   }
 
   Future<String?> getRegisterPatientFlow() async {
-    final sharedPreferences = await _sharedPreferences;
-    return sharedPreferences.getString('registerPatientFlow');
+    final sharedPreferencesF = sharedPreferences;
+    return sharedPreferencesF.getString('registerPatientFlow');
   }
 
   Future<void> saveStickersInUse(List<StickerModel> stickersInUse) async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setString('stickersInUse', jsonEncode(stickersInUse));
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setString('stickersInUse', jsonEncode(stickersInUse));
   }
 
   Future<List<StickerModel>> getStickersInUse() async {
-    final sharedPreferences = await _sharedPreferences;
-    final stickersInUse = sharedPreferences.getString('stickersInUse');
+    final sharedPreferencesF = sharedPreferences;
+    final stickersInUse = sharedPreferencesF.getString('stickersInUse');
     if (stickersInUse == null) {
       return [];
     }
@@ -61,15 +61,13 @@ class StorageRepository {
   }
 
   Future<void> saveStickers(List<StickerModel> stickers) async {
-    print(stickers);
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setString('stickers', jsonEncode(stickers));
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setString('stickers', jsonEncode(stickers));
   }
 
   Future<List<StickerModel>> getStickers() async {
-    print('getStickers');
-    final sharedPreferences = await _sharedPreferences;
-    final stickers = sharedPreferences.getString('stickers');
+    final sharedPreferencesF = sharedPreferences;
+    final stickers = sharedPreferencesF.getString('stickers');
     if (stickers == null) {
       return [];
     }
@@ -79,8 +77,8 @@ class StorageRepository {
   }
 
   Future<FlowerModel?> getCurrentFlower() async {
-    final sharedPreferences = await _sharedPreferences;
-    final currentFlower = sharedPreferences.getString('currentFlower');
+    final sharedPreferencesF = sharedPreferences;
+    final currentFlower = sharedPreferencesF.getString('currentFlower');
     if (currentFlower == null) {
       return null;
     }
@@ -88,13 +86,13 @@ class StorageRepository {
   }
 
   Future<void> saveCurrentFlower(FlowerModel flower) async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setString('currentFlower', jsonEncode(flower));
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setString('currentFlower', jsonEncode(flower));
   }
 
   Future<List<FlowerModel>> getFlowers() async {
-    final sharedPreferences = await _sharedPreferences;
-    final flowers = sharedPreferences.getString('flowers');
+    final sharedPreferencesF = sharedPreferences;
+    final flowers = sharedPreferencesF.getString('flowers');
     if (flowers == null) {
       return [];
     }
@@ -104,27 +102,27 @@ class StorageRepository {
   }
 
   Future<void> saveFlowers(List<FlowerModel> flowers) async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setString('flowers', jsonEncode(flowers));
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setString('flowers', jsonEncode(flowers));
   }
 
   Future<String?> getSelectedBackground() async {
-    final sharedPreferences = await _sharedPreferences;
-    return sharedPreferences.getString('selectedBackground');
+    final sharedPreferencesF = sharedPreferences;
+    return sharedPreferencesF.getString('selectedBackground');
   }
 
   Future<void> saveSelectedBackground(String background) async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setString('selectedBackground', background);
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setString('selectedBackground', background);
   }
 
   Future<int?> getSelectedTheme() async {
-    final sharedPreferences = await _sharedPreferences;
-    return sharedPreferences.getInt('selectedTheme');
+    final sharedPreferencesF = sharedPreferences;
+    return sharedPreferencesF.getInt('selectedTheme');
   }
 
   Future<void> saveSelectedTheme(int index) async {
-    final sharedPreferences = await _sharedPreferences;
-    sharedPreferences.setInt('selectedTheme', index);
+    final sharedPreferencesF = sharedPreferences;
+    sharedPreferencesF.setInt('selectedTheme', index);
   }
 }

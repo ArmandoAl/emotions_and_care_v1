@@ -91,6 +91,8 @@ class _AppState extends State<App> {
             );
           }
 
+          print(state.status);
+
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),
             child: state.status == BegginStatus.initial
@@ -112,7 +114,7 @@ class _AppState extends State<App> {
                     ),
                   )
                 : state.status == BegginStatus.success
-                    ? Container()
+                    ? Container(child: const Text("Ya se logro esto"))
                     : const BegginProcessController(),
           );
         },

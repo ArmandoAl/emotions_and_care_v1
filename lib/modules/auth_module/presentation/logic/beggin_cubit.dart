@@ -16,7 +16,7 @@ class BegginCubit extends Cubit<BegginState> {
   }) : super(const BegginState());
 
   Future<String> multiLogin(String email, String password) async {
-    emit(state.copyWith(status: BegginStatus.loading));
+    // emit(state.copyWith(status: BegginStatus.loading));
 
     final response = await userRepoitory.multiLogin(email, password);
 
@@ -50,7 +50,7 @@ class BegginCubit extends Cubit<BegginState> {
       }
 
       emit(state.copyWith(
-        status: BegginStatus.login,
+        status: BegginStatus.success,
         patientModel: response,
         isPatient: true,
         registerPatientFlow: flow,

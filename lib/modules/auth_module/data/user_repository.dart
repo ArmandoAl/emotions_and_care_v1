@@ -14,6 +14,8 @@ class UserRepository implements IUserRepository {
       },
     );
 
+    print(response.body);
+
     final data = jsonDecode(response.body);
 
     //if bad request

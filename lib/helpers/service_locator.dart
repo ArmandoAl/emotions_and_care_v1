@@ -6,20 +6,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 GetIt getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  getIt.registerSingleton<NavigationBloc>(NavigationBloc(NavigationItem.home));
-
-  // Storage
+  // Registro asincrónico de SharedPreferences
   getIt.registerSingletonAsync<SharedPreferences>(() async {
     return await SharedPreferences.getInstance();
   });
 
-  getIt.registerSingleton<UserRepository>(UserRepository());
+  // Registro asincrónico de StorageRepository
+  getIt.registerSingleton<StorageRepository>(StorageRepository(
+    sharedPreferences: await getIt.getAsync<SharedPreferences>(),
+  ));
 
+  // Otros registros de objetos sincrónicos
+  getIt.registerSingleton<NavigationBloc>(NavigationBloc(NavigationItem.home));
+
+  getIt.registerSingleton<UserRepository>(UserRepository());
   getIt.registerSingleton<UIRepositoryImpl>(UIRepositoryImpl());
 
+  // Usa `getIt<StorageRepository>()` sólo después de que se asegure su disponibilidad
   getIt.registerSingleton<UICubit>(UICubit(
-      storageRepository: getIt<StorageRepository>(),
-      uiRepoitory: getIt<UIRepositoryImpl>()));
+    storageRepository: getIt<StorageRepository>(),
+    uiRepoitory: getIt<UIRepositoryImpl>(),
+  ));
 
   getIt.registerSingleton<BegginCubit>(BegginCubit(
     storageRepository: getIt<StorageRepository>(),
@@ -27,38 +34,33 @@ Future<void> setupServiceLocator() async {
   ));
 
   getIt.registerSingleton<CartRepository>(CartRepository());
-
   getIt.registerSingleton<CommunityCubit>(
       CommunityCubit(repository: getIt<CartRepository>()));
 
   getIt.registerSingleton<EmotionRepository>(EmotionRepository());
-
   getIt.registerSingleton<EmotionCubit>(EmotionCubit());
 
   getIt.registerSingleton<NotificationRepository>(NotificationRepository());
-
   getIt.registerSingleton<HomeCubit>(
       HomeCubit(repository: getIt<NotificationRepository>()));
 
   getIt.registerSingleton<SpecialistRepository>(SpecialistRepository());
-
   getIt.registerSingleton<PattientsCubit>(
       PattientsCubit(repository: getIt<SpecialistRepository>()));
 
   getIt.registerSingleton<NoteRepository>(NoteRepository());
-
   getIt.registerSingleton<DailyCubit>(
       DailyCubit(repository: getIt<NoteRepository>()));
 
   getIt.registerSingleton<ScheduleRepository>(ScheduleRepository());
-
-  getIt.registerSingleton<ScheduleCubit>(ScheduleCubit(
-    repository: getIt<ScheduleRepository>(),
-  ));
+  getIt.registerSingleton<ScheduleCubit>(
+      ScheduleCubit(repository: getIt<ScheduleRepository>()));
 
   getIt.registerSingleton<TestRepository>(TestRepository());
-
   getIt.registerSingleton<TestCubit>(TestCubit(
     repository: getIt<TestRepository>(),
   ));
+
+  // Espera a que las instancias asincrónicas estén listas antes de continuar
+  await getIt.allReady();
 }

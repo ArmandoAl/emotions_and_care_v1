@@ -26,18 +26,6 @@ class _GlobalCommunityControllerState extends State<GlobalCommunityController> {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return Scaffold(
-          appBar: widget.isPatient
-              ? const HeaderWidget(title: "Comunidad", isForReturn: false)
-              : AppBar(
-                  title: const Text("Comunidad"),
-                  centerTitle: true,
-                ),
-          drawer: widget.isPatient
-              ? DrawerWidget(
-                  currentIndex: 3,
-                  changeIndex: widget.changeIndex,
-                )
-              : null,
           body: CommunityMenuScreen(
             onCartsTap: () {
               Navigator.push(

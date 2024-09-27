@@ -61,60 +61,70 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<UICubit>().setUpUI();
+      context.read<BegginCubit>().getUser();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final uiCubit = context.watch<UICubit>();
+
+    if (uiCubit.state.themes.isEmpty) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Scaffold(
+          body: Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Assets.logo),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepOrange,
-          surface: Colors.grey[200],
-          onSurface: Colors.grey[800],
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        useMaterial3: true,
-      ),
+      theme: uiCubit.state.themes[uiCubit.state.selectedTheme],
       home: BlocBuilder<BegginCubit, BegginState>(
-        bloc: getIt<BegginCubit>()..getUser(),
+        bloc: getIt<BegginCubit>(), // No llamamos a getUser aquí
         builder: (context, state) {
-          if (state.status == BegginStatus.loading) {
-            return Scaffold(
-              body: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(Assets.logo),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            );
-          }
-
-          print(state.status);
-
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),
-            child: state.status == BegginStatus.initial
+            child: state.status == BegginStatus.start ||
+                    state.status == BegginStatus.loading
                 ? const Scaffold(
                     backgroundColor: Colors.white,
                     body: SizedBox(
                       width: double.infinity,
                       height: double.infinity,
                       child: Center(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Cagando..."),
-                          SizedBox(width: 10),
-                          CircularProgressIndicator(),
-                        ],
-                      )),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("hola"),
+                            SizedBox(width: 10),
+                            CircularProgressIndicator(),
+                          ],
+                        ),
+                      ),
                     ),
                   )
-                : state.status == BegginStatus.success
-                    ? Container(child: const Text("Ya se logro esto"))
+                : state.status == BegginStatus.loged
+                    ? const LoginStack() // Aquí muestra la pantalla de login cuando está logeado
                     : const BegginProcessController(),
           );
         },

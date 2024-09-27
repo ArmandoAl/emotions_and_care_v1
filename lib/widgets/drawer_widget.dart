@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:provider/provider.dart';
-
+import 'package:emotions_and_care_v1/helpers/navigation_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../helpers/paths.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -25,12 +25,30 @@ const drawerDynaicIndexNumbers = {
   RegisterPatientFlow.homeUiChanged: -1,
 };
 
+class _NavigationItem {
+  final NavigationItem item;
+  final String title;
+  final IconData icon;
+
+  _NavigationItem(this.item, this.title, this.icon);
+}
+
 class _DrawerWidgetState extends State<DrawerWidget>
     with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late AnimationController _animationController;
   late Animation _animation;
   int? dinamicIndex;
+
+  final List<_NavigationItem> _itemList = [
+    _NavigationItem(NavigationItem.home, 'Jardín', Icons.home),
+    _NavigationItem(
+        NavigationItem.test, 'Cuestionarios', Icons.question_answer),
+    _NavigationItem(NavigationItem.dairy, 'Diario', Icons.mode_outlined),
+    _NavigationItem(NavigationItem.community, 'Comunidad', Icons.people),
+    _NavigationItem(NavigationItem.schedule, 'Agenda', Icons.book_sharp),
+    _NavigationItem(NavigationItem.settings, 'Configuración', Icons.settings),
+  ];
 
   @override
   void initState() {
@@ -79,84 +97,37 @@ class _DrawerWidgetState extends State<DrawerWidget>
                 controller: _scrollController,
                 child: ListView(
                   children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    _menuItem(
-                        context: context,
-                        title: 'Inicio',
-                        icon: Icons.home,
-                        index: 0,
-                        currentIndex: widget.currentIndex,
-                        changeIndex: widget.changeIndex,
-                        dynamicIndex: dinamicIndex,
-                        animationController: _animationController,
-                        animation: _animation),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    _menuItem(
-                        context: context,
-                        title: 'Cuestionarios',
-                        icon: Icons.question_answer,
-                        index: 1,
-                        currentIndex: widget.currentIndex,
-                        changeIndex: widget.changeIndex,
-                        dynamicIndex: dinamicIndex,
-                        animationController: _animationController,
-                        animation: _animation),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    _menuItem(
-                        context: context,
-                        title: 'Diario',
-                        icon: Icons.mode_outlined,
-                        index: 2,
-                        currentIndex: widget.currentIndex,
-                        changeIndex: widget.changeIndex,
-                        dynamicIndex: dinamicIndex,
-                        animationController: _animationController,
-                        animation: _animation),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    _menuItem(
-                        context: context,
-                        title: 'Comunidad',
-                        icon: Icons.people,
-                        index: 3,
-                        currentIndex: widget.currentIndex,
-                        changeIndex: widget.changeIndex,
-                        dynamicIndex: dinamicIndex,
-                        animationController: _animationController,
-                        animation: _animation),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    _menuItem(
-                        context: context,
-                        title: 'Agenda',
-                        icon: Icons.book_sharp,
-                        index: 4,
-                        currentIndex: widget.currentIndex,
-                        changeIndex: widget.changeIndex,
-                        dynamicIndex: dinamicIndex,
-                        animationController: _animationController,
-                        animation: _animation),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
-                    _menuItem(
-                        context: context,
-                        title: 'Configuración',
-                        icon: Icons.settings,
-                        index: 5,
-                        currentIndex: widget.currentIndex,
-                        changeIndex: widget.changeIndex,
-                        dynamicIndex: dinamicIndex,
-                        animationController: _animationController,
-                        animation: _animation),
+                    ..._itemList.map((item) {
+                      return BlocBuilder<NavigationBloc, NavigationState>(
+                        builder: (context, state) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 15),
+                            child: _menuItem(
+                              context: context,
+                              title: item.title,
+                              icon: item.icon,
+                              index: item.item.index,
+                              currentIndex: widget.currentIndex,
+                              changeIndex: widget.changeIndex,
+                              dynamicIndex: dinamicIndex,
+                              animationController: _animationController,
+                              animation: _animation,
+                              onTap: () {
+                                if (item.item.index != widget.currentIndex) {
+                                  BlocProvider.of<NavigationBloc>(context).add(
+                                    NavigateTo(item.item),
+                                  );
+
+                                  Navigator.of(context).pop();
+                                } else {
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    })
                   ],
                 ),
               ),
@@ -192,6 +163,7 @@ Widget _menuItem({
   required int? dynamicIndex,
   required AnimationController animationController,
   required Animation animation,
+  required Function onTap,
 }) {
   bool isSelected = index == currentIndex;
 
@@ -216,15 +188,7 @@ Widget _menuItem({
               color: animation.value ?? Colors.white, // Aplica el color animado
             ),
             onTap: () {
-              if (index != currentIndex) {
-                Navigator.of(context).pop();
-
-                Timer(const Duration(milliseconds: 250), () {
-                  changeIndex(index);
-                });
-              } else {
-                Navigator.of(context).pop();
-              }
+              onTap();
             },
             selected: isSelected,
           );
@@ -244,15 +208,7 @@ Widget _menuItem({
         icon,
       ),
       onTap: () {
-        if (index != currentIndex) {
-          Navigator.of(context).pop();
-
-          Timer(const Duration(milliseconds: 250), () {
-            changeIndex(index);
-          });
-        } else {
-          Navigator.of(context).pop();
-        }
+        onTap();
       },
       selected: isSelected,
     );

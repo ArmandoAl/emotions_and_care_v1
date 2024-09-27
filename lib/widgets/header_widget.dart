@@ -5,23 +5,30 @@ class HeaderWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool isForReturn;
   final Widget? action;
   const HeaderWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.isForReturn,
     this.action,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       //elevation: 1,
       shadowColor: Colors.black,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(25),
-          bottomRight: Radius.circular(25),
-        ),
-      ),
+      shape: isForReturn
+          ? const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            )
+          : const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(0),
+                bottomRight: Radius.circular(0),
+              ),
+            ),
       title: Text(title),
       centerTitle: true,
       leading: Container(

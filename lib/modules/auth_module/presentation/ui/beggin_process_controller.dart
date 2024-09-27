@@ -40,24 +40,19 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                         final result =
                             await userProvider.multiLogin(email, password);
 
-                        if (result == 'error') {
+                        if (result == 'error' && context.mounted) {
                           showMessage(context, 'Error al iniciar sesión');
 
                           return;
                         }
 
-                        if (result != 'success') {
+                        if (result != 'success' && context.mounted) {
                           showMessage(context, result);
 
                           return;
                         }
 
-                        // Navigator.of(context).pushAndRemoveUntil(
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const GuideFlowController(),
-                        //   ),
-                        //   (route) => false,
-                        // );
+                        if (context.mounted) Navigator.pop(context);
                       }, onRegister: () {
                         Navigator.push(
                             context,

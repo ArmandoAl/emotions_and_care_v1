@@ -51,40 +51,33 @@ class _ScheduleControllerState extends State<ScheduleController> {
           );
         }
         return Scaffold(
-          appBar: widget.isPattient
-              ? HeaderWidget(
-                  title: 'Agenda',
-                  isForReturn: !widget.isPattient,
-                  action: null)
-              : AppBar(
-                  title: const Text('Agenda'),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.help),
-                      color: Colors.black,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              title: Text('Ayuda'),
-                              content: Text(
-                                  'En esta pantalla podrá ver las citas que tiene programadas, si desea ver más detalles de una cita, solo debe dar clic en la cita que desea ver.'),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
-          drawer: widget.isPattient
-              ? DrawerWidget(
-                  currentIndex: 4,
-                  changeIndex: (index) {
-                    widget.changeIndex!(index);
-                  },
-                )
-              : null,
+          // appBar: widget.isPattient
+          //     ? HeaderWidget(
+          //         title: 'Agenda',
+          //         isForReturn: !widget.isPattient,
+          //         action: null)
+          //     : AppBar(
+          //         title: const Text('Agenda'),
+          //         actions: [
+          //           IconButton(
+          //             icon: const Icon(Icons.help),
+          //             color: Colors.black,
+          //             onPressed: () {
+          //               showDialog(
+          //                 context: context,
+          //                 builder: (context) {
+          //                   return const AlertDialog(
+          //                     title: Text('Ayuda'),
+          //                     content: Text(
+          //                         'En esta pantalla podrá ver las citas que tiene programadas, si desea ver más detalles de una cita, solo debe dar clic en la cita que desea ver.'),
+          //                   );
+          //                 },
+          //               );
+          //             },
+          //           ),
+          //         ],
+          //       ),
+
           body: state.status == ScheduleStatus.loading
               ? Center(
                   child: Lottie.asset(Assets.brainLoading),

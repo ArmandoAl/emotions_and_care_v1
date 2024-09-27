@@ -27,7 +27,7 @@ class StorageRepository {
     sharedPreferencesF.remove('user');
   }
 
-  Future<void> clean() async {
+  void clean() {
     final sharedPreferencesF = sharedPreferences;
     sharedPreferencesF.clear();
   }

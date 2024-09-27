@@ -16,11 +16,74 @@ class UICubit extends Cubit<UIState> {
     int? selectedTheme = await storageRepository.getSelectedTheme();
     selectedTheme ??= 0;
 
+    List<ThemeData> themes = [
+      ThemeData(
+        useMaterial3: true,
+        primaryColor: Colors.blue,
+        colorScheme: const ColorScheme.light(
+            primary: Colors.blue,
+            secondary: Colors.blueAccent,
+            surface: Colors.blueGrey),
+        scaffoldBackgroundColor: const Color(0xFFE3EDF3),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFE3EDF3),
+        ),
+      ),
+      ThemeData(
+        useMaterial3: true,
+        primaryColor: const Color(0xff005954),
+        colorScheme: const ColorScheme.light(
+            primary: Color(0xff005954),
+            secondary: Color(0xff9ce0db),
+            surface: Color(0xff338b85)),
+        scaffoldBackgroundColor: const Color(0xffd5ffff),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xffd5ffff),
+        ),
+      ),
+      ThemeData(
+        useMaterial3: true,
+        primaryColor: Colors.purple,
+        colorScheme: const ColorScheme.light(
+            primary: Colors.purple,
+            secondary: Colors.purpleAccent,
+            surface: Colors.purpleAccent),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 242, 211, 247),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 242, 211, 247),
+        ),
+      ),
+      //dark theme
+      ThemeData(
+        primaryColor: Colors.blue,
+        colorScheme: const ColorScheme.dark().copyWith(
+          primary: Colors.blue,
+          secondary: Colors.green,
+          surface: Colors.grey[900],
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: Colors.white,
+        ),
+        scaffoldBackgroundColor: Colors.grey[800],
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey[800],
+          foregroundColor: Colors.white,
+        ),
+      ),
+    ];
+
     FlowerModel? currentFlower = await storageRepository.getCurrentFlower();
 
     List<FlowerModel> flowers = await storageRepository.getFlowers();
 
     List<StickerModel> stickers = await storageRepository.getStickers();
+
+    List<StickerModel> stickersInUse =
+        await storageRepository.getStickersInUse();
+
+    if (stickersInUse.isEmpty) {
+      stickersInUse = List.generate(4, (index) => StickerModel.empty());
+    }
 
     String? selectedBackground =
         await storageRepository.getSelectedBackground();
@@ -39,9 +102,11 @@ class UICubit extends Cubit<UIState> {
 
     emit(state.copyWith(
       isDarkMode: false,
+      themes: themes,
       currentFlower: currentFlower,
       flowers: flowers,
       stickers: stickers,
+      stickersInUse: stickersInUse,
       selectedBackground: selectedBackground,
       selectedTheme: selectedTheme,
     ));
@@ -78,9 +143,8 @@ class UICubit extends Cubit<UIState> {
   }
 
   void setStickerInUse(StickerModel sticker, int index) {
-    List<StickerModel>? stickersInUse = state.stickersInUse;
-
-    stickersInUse ??= List.generate(4, (index) => StickerModel.empty());
+    print("StickerModel: $sticker");
+    List<StickerModel> stickersInUse = state.stickersInUse;
 
     stickersInUse[index] = sticker;
     storageRepository.saveStickersInUse(stickersInUse);
@@ -113,8 +177,9 @@ class UICubit extends Cubit<UIState> {
   }
 
   Future<void> clean() async {
-    await storageRepository.clean();
     emit(const UIState());
+
+    setUpUI();
   }
 }
 
@@ -128,19 +193,20 @@ class UIState extends Equatable {
   final List<StickerModel> stickers;
   final String selectedBackground;
   final int selectedTheme;
-  final List<ThemeData>? themes;
-  final List<StickerModel>? stickersInUse;
+  final List<ThemeData> themes;
+  final List<StickerModel> stickersInUse; // Cambia para que no sea nullable
 
-  const UIState(
-      {this.status = UIStatus.start,
-      this.isDarkMode = false,
-      this.currentFlower,
-      this.flowers = const [],
-      this.stickers = const [],
-      this.selectedBackground = "null",
-      this.selectedTheme = 0,
-      this.themes,
-      this.stickersInUse});
+  const UIState({
+    this.status = UIStatus.start,
+    this.isDarkMode = false,
+    this.currentFlower,
+    this.flowers = const [],
+    this.stickers = const [],
+    this.selectedBackground = "null",
+    this.selectedTheme = 0,
+    this.themes = const [],
+    this.stickersInUse = const [], // Inicialización por defecto
+  });
 
   UIState copyWith({
     UIStatus? status,
@@ -162,7 +228,8 @@ class UIState extends Equatable {
       selectedBackground: selectedBackground ?? this.selectedBackground,
       selectedTheme: selectedTheme ?? this.selectedTheme,
       themes: themes ?? this.themes,
-      stickersInUse: stickersInUse ?? this.stickersInUse,
+      stickersInUse:
+          stickersInUse ?? this.stickersInUse, // Siempre inicializado
     );
   }
 
@@ -175,51 +242,7 @@ class UIState extends Equatable {
         stickers,
         selectedBackground,
         selectedTheme,
-        themes ??
-            [
-              ThemeData(
-                useMaterial3: true,
-                primaryColor: Colors.blue,
-                colorScheme: const ColorScheme.light(
-                    primary: Colors.blue,
-                    secondary: Colors.blueAccent,
-                    surface: Colors.blueGrey),
-                scaffoldBackgroundColor: const Color(0xFFE3EDF3),
-                appBarTheme: const AppBarTheme(
-                  backgroundColor: Color(0xFFE3EDF3),
-                ),
-              ),
-              ThemeData(
-                useMaterial3: true,
-                primaryColor: const Color(0xff005954),
-                colorScheme: const ColorScheme.light(
-                    primary: Color(0xff005954),
-                    secondary: Color(0xff9ce0db),
-                    surface: Color(0xff338b85)),
-                scaffoldBackgroundColor: const Color(0xffd5ffff),
-                appBarTheme: const AppBarTheme(
-                  backgroundColor: Color(0xffd5ffff),
-                ),
-              ),
-              ThemeData(
-                useMaterial3: true,
-                primaryColor: Colors.purple,
-                colorScheme: const ColorScheme.light(
-                    primary: Colors.purple,
-                    secondary: Colors.purpleAccent,
-                    surface: Colors.purpleAccent),
-                scaffoldBackgroundColor: const Color(0xFFE3EDF3),
-                appBarTheme: const AppBarTheme(
-                  backgroundColor: Color(0xFFE3EDF3),
-                ),
-              ),
-            ],
-        stickersInUse ??
-            [
-              StickerModel(),
-              StickerModel(),
-              StickerModel(),
-              StickerModel(),
-            ],
+        themes,
+        stickersInUse, // No es nullable
       ];
 }

@@ -36,6 +36,11 @@ enum NavigationItem {
   community,
   schedule,
   settings,
+
+  //specialist
+  patients,
+  scheduleSpecialist,
+  patientDates,
 }
 
 class NavigationState extends Equatable {

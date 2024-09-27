@@ -20,20 +20,6 @@ class _SettingsControllerState extends State<SettingsController> {
     final uiProvider = getIt<UICubit>();
 
     return Scaffold(
-      appBar: widget.isPattient
-          ? const HeaderWidget(
-              title: 'Configuración',
-              isForReturn: false,
-            )
-          : AppBar(
-              title: const Text('Configuración'),
-            ),
-      drawer: widget.isPattient
-          ? DrawerWidget(
-              currentIndex: 5,
-              changeIndex: widget.changeIndex!,
-            )
-          : null,
       body: SettingsScreen(
         userProvider: widget.userProvider,
         isPattient: widget.isPattient,

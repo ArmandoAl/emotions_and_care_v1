@@ -2,7 +2,18 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../helpers/paths.dart';
 
-enum BegginStatus { start, login, register, loading, error, success, initial }
+enum BegginStatus {
+  start,
+  login,
+  register,
+  loading,
+  error,
+  success,
+  initial,
+  loged,
+  logind,
+  notLoged,
+}
 
 class BegginState extends Equatable {
   final BegginStatus status;

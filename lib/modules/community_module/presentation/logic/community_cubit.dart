@@ -91,6 +91,7 @@ class CommunityCubit extends Cubit<CommunityState> {
 
       return result;
     } catch (e) {
+      print(e);
       emit(state.copyWith(status: CommunityStatus.error));
       throw Exception('Failed to add note');
     }

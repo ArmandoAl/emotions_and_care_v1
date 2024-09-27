@@ -16,7 +16,7 @@ class BegginCubit extends Cubit<BegginState> {
   }) : super(const BegginState());
 
   Future<String> multiLogin(String email, String password) async {
-    // emit(state.copyWith(status: BegginStatus.loading));
+    emit(state.copyWith(status: BegginStatus.login));
 
     final response = await userRepoitory.multiLogin(email, password);
 
@@ -50,7 +50,7 @@ class BegginCubit extends Cubit<BegginState> {
       }
 
       emit(state.copyWith(
-        status: BegginStatus.success,
+        status: BegginStatus.loged,
         patientModel: response,
         isPatient: true,
         registerPatientFlow: flow,
@@ -62,7 +62,7 @@ class BegginCubit extends Cubit<BegginState> {
       storageRepository.saveSpecialist(response!);
 
       emit(state.copyWith(
-        status: BegginStatus.success,
+        status: BegginStatus.loged,
         specialistModel: response,
         isPatient: false,
         user: true,
@@ -73,9 +73,11 @@ class BegginCubit extends Cubit<BegginState> {
   }
 
   Future<void> getUser() async {
+    emit(state.copyWith(status: BegginStatus.loading));
+
     final userData = await storageRepository.getUser();
     if (userData == null) {
-      emit(state.copyWith(status: BegginStatus.error));
+      emit(state.copyWith(status: BegginStatus.notLoged));
       return;
     }
 
@@ -83,7 +85,7 @@ class BegginCubit extends Cubit<BegginState> {
 
     if (user['cedulaProfesional'] != null) {
       emit(state.copyWith(
-        status: BegginStatus.success,
+        status: BegginStatus.loged,
         specialistModel: SpecialistModel.fromJson(user),
         isPatient: false,
         user: true,
@@ -107,7 +109,7 @@ class BegginCubit extends Cubit<BegginState> {
       }
 
       emit(state.copyWith(
-        status: BegginStatus.success,
+        status: BegginStatus.loged,
         patientModel: PatientModel.fromJson(user, true),
         isPatient: true,
         registerPatientFlow: flow,
@@ -188,9 +190,12 @@ class BegginCubit extends Cubit<BegginState> {
     return 'success';
   }
 
-  Future<void> logout() async {
-    await storageRepository.clean();
-    emit(const BegginState());
+  void logout() async {
+    storageRepository.clean();
+
+    emit(const BegginState(
+      status: BegginStatus.notLoged,
+    ));
   }
 
   Future<void> setRegisterFlow(RegisterPatientFlow flow) async {
@@ -223,7 +228,7 @@ class BegginCubit extends Cubit<BegginState> {
 
   Future<void> deletePatient(int patientId) async {
     await userRepoitory.deletePatient(patientId);
-    await storageRepository.clean();
+    storageRepository.clean();
     emit(const BegginState());
   }
 

@@ -13,6 +13,8 @@ export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/sea
 export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/new_date_screen.dart';
 
 export 'package:emotions_and_care_v1/modules/yard_module/data/notification_repository.dart';
+export 'package:emotions_and_care_v1/modules/yard_module/presentation/ui/home_controller.dart';
+
 export 'package:emotions_and_care_v1/modules/yard_module/data/notifications_repository_interface.dart';
 export 'package:emotions_and_care_v1/modules/yard_module/domain/home_model.dart';
 export 'package:emotions_and_care_v1/modules/yard_module/domain/notification_model.dart';
@@ -115,6 +117,7 @@ export 'package:emotions_and_care_v1/modules/diary_module/presentation/ui/note_d
 export 'package:emotions_and_care_v1/modules/diary_module/presentation/ui/notes_progress_screen.dart';
 
 export 'package:emotions_and_care_v1/modules/auth_module/data/ui_repository.dart';
+export 'package:emotions_and_care_v1/modules/auth_module/login_stack.dart';
 
 export 'package:emotions_and_care_v1/modules/auth_module/presentation/ui/login_screen.dart';
 export 'package:emotions_and_care_v1/modules/auth_module/presentation/ui/register_screen.dart';
@@ -185,5 +188,4 @@ export 'package:emotions_and_care_v1/widgets/show_result_sticker_dialog.dart';
 export 'package:emotions_and_care_v1/widgets/sticker_widget.dart';
 export 'package:emotions_and_care_v1/widgets/specialist_screen_widgets.dart';
 export 'package:emotions_and_care_v1/widgets/test_history_item_widget.dart';
-export 'package:emotions_and_care_v1/widgets/widget_for_example.dart';
 export 'package:emotions_and_care_v1/widgets/container_item_widget.dart';

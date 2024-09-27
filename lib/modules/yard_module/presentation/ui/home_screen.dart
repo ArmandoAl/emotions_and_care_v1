@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -43,9 +44,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   AnimationController? _animationController;
   Animation? _animation;
 
+  late UICubit uiProvider;
+
   @override
   void initState() {
     super.initState();
+    uiProvider = getIt<UICubit>();
+
     if (mounted) {
       if (widget.registerFlow != null &&
           widget.registerFlow == RegisterPatientFlow.registerSucess) {
@@ -130,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _timer!.cancel();
+    _timer?.cancel();
     _controller?.stop();
     _controller?.dispose();
     _buttonController?.stop();
@@ -144,7 +149,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final uiProvider = getIt<UICubit>();
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -292,8 +296,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             left: MediaQuery.of(context).size.width * 0.08,
             child: stickerWidget(
                 context,
-                uiProvider.state.stickersInUse![0].url != null
-                    ? uiProvider.state.stickersInUse![0]
+                uiProvider.state.stickersInUse[0].url != null
+                    ? uiProvider.state.stickersInUse[0]
                     : null,
                 _stickersController,
                 _stickersAnimation,
@@ -306,8 +310,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             left: MediaQuery.of(context).size.width * 0.4,
             child: stickerWidget(
                 context,
-                uiProvider.state.stickersInUse![1].url != null
-                    ? uiProvider.state.stickersInUse![1]
+                uiProvider.state.stickersInUse[1].url != null
+                    ? uiProvider.state.stickersInUse[1]
                     : null,
                 _stickersController,
                 _stickersAnimation,
@@ -320,8 +324,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             right: MediaQuery.of(context).size.width * 0.09,
             child: stickerWidget(
                 context,
-                uiProvider.state.stickersInUse![2].url != null
-                    ? uiProvider.state.stickersInUse![2]
+                uiProvider.state.stickersInUse[2].url != null
+                    ? uiProvider.state.stickersInUse[2]
                     : null,
                 _stickersController,
                 _stickersAnimation,
@@ -334,9 +338,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             right: MediaQuery.of(context).size.width * 0.008,
             child: stickerWidget(
                 context,
-                uiProvider.state.stickersInUse!.length > 3
-                    ? uiProvider.state.stickersInUse![3].url != null
-                        ? uiProvider.state.stickersInUse![3]
+                uiProvider.state.stickersInUse.length > 3
+                    ? uiProvider.state.stickersInUse[3].url != null
+                        ? uiProvider.state.stickersInUse[3]
                         : null
                     : null,
                 _stickersController,

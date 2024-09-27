@@ -136,8 +136,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               size: MediaQuery.of(context).size.width * 0.1,
             ),
             () {
+              // print("cerrar sesion");
               widget.uiProvider.clean();
               widget.userProvider.logout();
+
+              // Navigator.pop(context);
             },
           ),
         ],

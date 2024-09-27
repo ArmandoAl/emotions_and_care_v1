@@ -47,32 +47,6 @@ class _DailyControllerState extends State<DailyController> {
                   .toList();
 
           return Scaffold(
-            appBar: HeaderWidget(
-              title: 'Diario',
-              isForReturn: !widget.isPattient,
-              action: ElevatedButton(
-                  onPressed:
-                      state.result == DailyResult.loading || notes.isEmpty
-                          ? null
-                          : () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => NotesProgressScreen(
-                                      notes: notes,
-                                      patientModel: widget.patientModel)));
-                            },
-                  child: Text('Progreso',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: MediaQuery.of(context).size.width * 0.03,
-                        fontWeight: FontWeight.bold,
-                      ))),
-            ),
-            drawer: widget.isPattient
-                ? DrawerWidget(
-                    currentIndex: 2,
-                    changeIndex: widget.changeIndex!,
-                  )
-                : null,
             body: state.result == DailyResult.loading
                 ? Center(
                     child: Lottie.asset(Assets.brainLoading),

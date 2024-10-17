@@ -32,11 +32,9 @@ class StorageRepository {
     sharedPreferencesF.clear();
   }
 
-  Future<void> saveRegisterPatientFlow(
-      RegisterPatientFlow registerPatientFlow) async {
+  Future<void> saveRegisterPatientFlow(String status) async {
     final sharedPreferencesF = sharedPreferences;
-    sharedPreferencesF.setString(
-        'registerPatientFlow', registerPatientFlow.toString());
+    sharedPreferencesF.setString('registerPatientFlow', status);
   }
 
   Future<String?> getRegisterPatientFlow() async {

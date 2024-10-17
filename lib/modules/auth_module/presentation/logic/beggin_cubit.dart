@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../helpers/paths.dart';
 
-enum RegisterPatientFlow { registerSucess, firstTestCompleted, homeUiChanged }
-
-enum RegisterSpecialistFlow { registerSucess, licenseValidated }
+enum RegisterSpecialistFlow { registerSuccess, licenseValidated }
 
 class BegginCubit extends Cubit<BegginState> {
   final StorageRepository storageRepository;
@@ -32,28 +30,27 @@ class BegginCubit extends Cubit<BegginState> {
 
     if (response is PatientModel) {
       PatientModel patientModel = response;
-      RegisterPatientFlow flow;
+      String status;
 
       storageRepository.savePatient(response);
 
-      if (patientModel.registerSet == false) {
+      if (patientModel.registerStatus != "registerSuccess") {
         final registerPatientFlow =
             await storageRepository.getRegisterPatientFlow();
         if (registerPatientFlow != null) {
-          flow = RegisterPatientFlow.values
-              .firstWhere((e) => e.toString() == registerPatientFlow);
+          status = registerPatientFlow;
         } else {
-          flow = RegisterPatientFlow.registerSucess;
+          status = "register";
         }
       } else {
-        flow = RegisterPatientFlow.homeUiChanged;
+        status = "registerSuccess";
       }
 
       emit(state.copyWith(
         status: BegginStatus.loged,
         patientModel: response,
         isPatient: true,
-        registerPatientFlow: flow,
+        registerPatientFlow: status,
         user: true,
       ));
 
@@ -73,6 +70,9 @@ class BegginCubit extends Cubit<BegginState> {
   }
 
   Future<void> getUser() async {
+    // emit(state.copyWith(status: BegginStatus.notLoged));
+    // return;
+
     emit(state.copyWith(status: BegginStatus.loading));
 
     final userData = await storageRepository.getUser();
@@ -93,19 +93,18 @@ class BegginCubit extends Cubit<BegginState> {
     } else {
       final patientModel = PatientModel.fromJson(user, true);
 
-      RegisterPatientFlow flow;
+      String flow;
 
-      if (patientModel.registerSet == false) {
+      if (patientModel.registerStatus == "register") {
         final registerPatientFlow =
             await storageRepository.getRegisterPatientFlow();
         if (registerPatientFlow != null) {
-          flow = RegisterPatientFlow.values
-              .firstWhere((e) => e.toString() == registerPatientFlow);
+          flow = registerPatientFlow;
         } else {
-          flow = RegisterPatientFlow.registerSucess;
+          flow = "register";
         }
       } else {
-        flow = RegisterPatientFlow.homeUiChanged;
+        flow = "registerSuccess";
       }
 
       emit(state.copyWith(
@@ -118,9 +117,12 @@ class BegginCubit extends Cubit<BegginState> {
     }
   }
 
-  Future<void> setRegisterSet() async {
+  Future<void> setRegisterSet(
+    String registerStatus,
+  ) async {
     if (state.isPatient!) {
-      final patientModel = state.patientModel!.copyWith(registerSet: true);
+      final patientModel =
+          state.patientModel!.copyWith(registerStatus: registerStatus);
       storageRepository.savePatient(patientModel);
       emit(state.copyWith(patientModel: patientModel));
     }
@@ -198,7 +200,7 @@ class BegginCubit extends Cubit<BegginState> {
     ));
   }
 
-  Future<void> setRegisterFlow(RegisterPatientFlow flow) async {
+  Future<void> setRegisterFlow(String flow) async {
     await storageRepository.saveRegisterPatientFlow(flow);
     emit(state.copyWith(registerPatientFlow: flow));
   }
@@ -223,7 +225,7 @@ class BegginCubit extends Cubit<BegginState> {
 
     await storageRepository.savePatient(patient);
 
-    emit(state.copyWith(patientModel: patient, status: BegginStatus.success));
+    emit(state.copyWith(patientModel: patient));
   }
 
   Future<void> deletePatient(int patientId) async {
@@ -252,3 +254,9 @@ class BegginCubit extends Cubit<BegginState> {
     }
   }
 }
+
+
+
+//register
+//firstTestCompleted
+//registerSuccess

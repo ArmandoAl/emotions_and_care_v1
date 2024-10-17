@@ -134,7 +134,7 @@ class _DailyControllerState extends State<DailyController> {
 
 Future<void> showStickerDialog(BuildContext context, GoalModel goal) async {
   final uiProvider = getIt<UICubit>();
-  final sticker = uiProvider.state.stickers.last;
+  final sticker = uiProvider.state.stickers!.last;
   return showDialog(
     context: context,
     barrierDismissible: false,

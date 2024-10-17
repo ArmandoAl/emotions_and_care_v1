@@ -46,17 +46,15 @@ Future<void> showStikerDialog(BuildContext context, BegginCubit userCubit) {
                   backgroundColor: const Color(0xff1C8AAD),
                 ),
                 onPressed: () async {
-                  if (userCubit.state.registerPatientFlow ==
-                      RegisterPatientFlow.registerSucess) {
-                    userCubit.setRegisterFlow(
-                        RegisterPatientFlow.firstTestCompleted);
+                  if (userCubit.state.registerPatientFlow == "register") {
+                    userCubit.setRegisterFlow("firstTestCompleted");
                   }
 
-                  final uiProvider = getIt<UICubit>();
-                  uiProvider.addSticker(StickerModel(
-                    id: 2,
-                    url: Assets.cat,
-                  ));
+                  // final uiProvider = getIt<UICubit>();
+                  // uiProvider.addSticker(StickerModel(
+                  //   id: 2,
+                  //   url: Assets.cat,
+                  // ));
 
                   if (context.mounted) Navigator.of(context).pop();
                 },

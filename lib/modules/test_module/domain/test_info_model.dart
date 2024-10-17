@@ -30,7 +30,7 @@ class TestInfoModel {
 
   factory TestInfoModel.fromJson(Map<String, dynamic> json) {
     return TestInfoModel(
-      id: json['id'],
+      id: json['testInfoModelId'],
       resultado: json['result'],
       date: DateTime.parse(json['date']),
       testQuestionWithAnswerList: List<TestQuestionWithAnswer>.from(

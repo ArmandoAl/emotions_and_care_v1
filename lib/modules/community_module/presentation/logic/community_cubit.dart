@@ -53,9 +53,10 @@ class CommunityCubit extends Cubit<CommunityState> {
           cart,
           idUser,
           isPatient,
-          state.cartFromUser
-              .where((element) => element.idEmisor == idUser)
-              .isEmpty);
+          // state.cartFromUser
+          //     .where((element) => element.idEmisor == idUser)
+          //     .isEmpty);
+          true);
 
       //encuentra la carta en la lista de cartas de la del usuario
       if (result.id != 0) {
@@ -71,6 +72,7 @@ class CommunityCubit extends Cubit<CommunityState> {
       emit(state.copyWith(status: CommunityStatus.error));
       throw Exception('Failed to add note');
     } catch (e) {
+      print(e);
       emit(state.copyWith(status: CommunityStatus.error));
       throw Exception('Failed to add note');
     }
@@ -91,7 +93,6 @@ class CommunityCubit extends Cubit<CommunityState> {
 
       return result;
     } catch (e) {
-      print(e);
       emit(state.copyWith(status: CommunityStatus.error));
       throw Exception('Failed to add note');
     }

@@ -46,25 +46,7 @@ class HomeCubit extends Cubit<HomeState> {
         status: HomeStatus.loaded,
       ));
     } catch (e) {
-      print(e);
       emit(state.copyWith(status: HomeStatus.error));
     }
   }
-
-  // Future<void> onGetSticker() async {
-  //   emit(state.copyWith(status: HomeStatus.loading));
-  //   try {
-  //     final goal = GoalModel(
-  //         id: 1,
-  //         title: "Gatito",
-  //         type: GoalType.test,
-  //         description: "Gatito",
-  //         giftUrl: Assets.cat);
-
-  //     emit(state
-  //         .copyWith(goals: [...state.goals, goal], status: HomeStatus.loaded));
-  //   } catch (e) {
-  //     emit(state.copyWith(status: HomeStatus.error));
-  //   }
-  // }
 }

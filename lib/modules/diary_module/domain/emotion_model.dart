@@ -30,17 +30,17 @@ class EmotionModel {
 
   factory EmotionModel.fromJson(Map<String, dynamic> json) {
     return EmotionModel(
-      id: json['idEmocion'],
-      name: json['nombre'],
-      icon: emotionIcons[json['nombre']],
-      color: emotionColors[json['nombre']],
+      id: json['emotionId'],
+      name: json['name'],
+      icon: emotionIcons[json['name']],
+      color: emotionColors[json['name']],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'IdEmocion': id,
-      'Nombre': name,
+      'emotionId': id,
+      'name': name,
     };
   }
 }

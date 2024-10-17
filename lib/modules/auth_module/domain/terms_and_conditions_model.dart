@@ -19,15 +19,15 @@ class TermAndConditions {
 
   factory TermAndConditions.fromJson(Map<String, dynamic> json) {
     return TermAndConditions(
-      id: json['idTerminosYCondiciones'],
-      terms: json['terminosYCondiciones'],
+      id: json['termsAndConditionsId'],
+      terms: json['termsAndConditions'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'idTerminosYCondiciones': id,
-      'terminosYCondiciones': terms,
+      'termsAndConditionsId': id,
+      'termsAndConditions': terms,
     };
   }
 }

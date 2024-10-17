@@ -20,10 +20,9 @@ class _HomeControllerState extends State<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final RegisterPatientFlow? registerFlow =
-        context.watch<BegginCubit>().state.registerPatientFlow;
+    final String? registerFlow = getIt<BegginCubit>().state.registerPatientFlow;
 
-    if (registerFlow == RegisterPatientFlow.firstTestCompleted) {
+    if (registerFlow == "firstTestCompleted") {
       Future.delayed(Duration.zero, () {
         if (context.mounted) {
           Navigator.push(
@@ -40,7 +39,7 @@ class _HomeControllerState extends State<HomeController> {
                             duration: Duration(seconds: 1),
                           ));
                         },
-                        registerFlow: RegisterPatientFlow.firstTestCompleted,
+                        registerFlow: "firstTestCompleted",
                         customEnable: true,
                       ),
                     )),

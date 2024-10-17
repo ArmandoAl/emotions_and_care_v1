@@ -27,19 +27,19 @@ class PattientSettings {
 
   factory PattientSettings.fromJson(Map<String, dynamic> json) {
     return PattientSettings(
-      id: json['id'],
-      notifications: json['notificacionesActivas'],
-      diaryActivated: json['dirioActivado'],
-      testActivated: json['progresoActivado'],
+      id: json['settingsId'],
+      notifications: json['notificationsActive'],
+      diaryActivated: json['diaryActive'],
+      testActivated: json['questionnaireActive'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'notificacionesActivas': notifications,
-      'dirioActivado': diaryActivated,
-      'progresoActivado': testActivated,
+      'settingsId': id,
+      'notificationsActive': notifications,
+      'diaryActive': diaryActivated,
+      'questionnaireActive': testActivated,
     };
   }
 }

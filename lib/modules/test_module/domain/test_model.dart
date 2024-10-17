@@ -37,13 +37,13 @@ class TestModel {
 
   factory TestModel.fromJson(Map<String, dynamic> json) {
     return TestModel(
-      id: json['idCuestionario'],
-      name: json['nombreCuestionario'],
-      description: json['descripcion'],
-      objetive: json['objetivo'],
-      instructions: json['instrucciones'],
+      id: json['questionnaireId'],
+      name: json['questionnaireName'],
+      description: json['description'],
+      objetive: json['objective'],
+      instructions: json['instructions'],
       questions: List<QuestionModel>.from(
-          json['preguntas'].map((x) => QuestionModel.fromJson(x))),
+          json['questions'].map((x) => QuestionModel.fromJson(x))),
     );
   }
 }

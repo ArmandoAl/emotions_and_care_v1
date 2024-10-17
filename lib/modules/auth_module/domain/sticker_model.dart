@@ -5,15 +5,15 @@ class StickerModel {
   StickerModel({this.id, this.url});
 
   StickerModel.fromJson(Map<String, dynamic> json) {
-    id = json['idSticker'];
-    url = json['imagen'];
+    id = json['stickerId'];
+    url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['idSticker'] = id;
-    data['imagen'] = url;
-    return data;
+    return {
+      'stickerId': id,
+      'url': url,
+    };
   }
 
   //emtpy

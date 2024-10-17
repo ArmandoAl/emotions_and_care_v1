@@ -6,7 +6,6 @@ class CartRepository extends ICartRepository {
   @override
   Future<GoalWithCart> addCart(
       CartModel cart, int idUser, bool isPatient, bool isFirstTime) async {
-    print(isFirstTime);
     try {
       final response = await http.post(
         Uri.parse(

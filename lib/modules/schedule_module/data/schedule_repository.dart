@@ -128,8 +128,6 @@ class ScheduleRepository implements IScheduleRepository {
         },
       );
 
-      print(response.statusCode);
-
       if (response.statusCode != 200) {
         throw Exception('Failed to delete schedule');
       }

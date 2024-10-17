@@ -12,5 +12,5 @@ class Api {
 
   // URL base de la API
   static const String baseUrl =
-      'https://emotionsandcarebylab.azurewebsites.net/Api/';
+      'https://emotionsandcare-erffhse3f7aecnb0.eastus-01.azurewebsites.net/Api/';
 }

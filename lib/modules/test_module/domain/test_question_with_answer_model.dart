@@ -23,7 +23,7 @@ class TestQuestionWithAnswer {
 
   factory TestQuestionWithAnswer.fromJson(Map<String, dynamic> json) {
     return TestQuestionWithAnswer(
-      id: json['id'],
+      id: json['testQuestionWithAnswerId'],
       question: json['question'],
       answer: json['answer'],
     );

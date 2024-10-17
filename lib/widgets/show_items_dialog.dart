@@ -21,14 +21,14 @@ Future<void> showItemsDialog(
               mainAxisSpacing: 10,
             ),
             itemCount: title == "Tus stickers"
-                ? uiCubit.state.stickers.length
+                ? uiCubit.state.stickers!.length
                 : uiCubit.state.flowers.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
                   if (title == "Tus stickers") {
                     uiCubit.setStickerInUse(
-                        uiCubit.state.stickers[index], position);
+                        uiCubit.state.stickers![index], position);
                   } else {
                     uiCubit.setCurrentFlower(uiCubit.state.flowers[index]);
                   }
@@ -37,7 +37,7 @@ Future<void> showItemsDialog(
                 },
                 child: title == "Tus stickers"
                     ? CachedNetworkImage(
-                        imageUrl: uiCubit.state.stickers[index].url!,
+                        imageUrl: uiCubit.state.stickers![index].url ?? "",
                         placeholder: (context, url) =>
                             const CircularProgressIndicator(),
                         errorWidget: (context, url, error) =>

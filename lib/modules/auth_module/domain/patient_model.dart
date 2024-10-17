@@ -3,25 +3,26 @@ import '../../../helpers/paths.dart';
 class PatientModel extends UserModel {
   SpecialistModel? specialist;
   PattientSettings? settings;
-  bool registerSet = false;
+  String registerStatus = "";
+  UserInterface? userInterface;
 
-  PatientModel({
-    this.specialist,
-    super.id,
-    super.name,
-    super.email,
-    super.password,
-    super.phone,
-    super.age = 0,
-    super.bornDate,
-    super.sex,
-    super.token,
-    super.tokenForRelate,
-    super.termsClass,
-    this.settings,
-    super.type,
-    this.registerSet = false,
-  });
+  PatientModel(
+      {this.specialist,
+      super.id,
+      super.name,
+      super.email,
+      super.password,
+      super.phone,
+      super.age = 0,
+      super.bornDate,
+      super.sex,
+      super.token,
+      super.tokenForRelate,
+      super.termsClass,
+      this.settings,
+      super.type,
+      this.registerStatus = "",
+      this.userInterface});
 
   @override
   PatientModel copyWith({
@@ -38,8 +39,9 @@ class PatientModel extends UserModel {
     TermAndConditions? termsClass,
     PattientSettings? settings,
     UserType? type,
-    bool? registerSet,
+    String? registerStatus,
     DateTime? bornDate,
+    UserInterface? userInterface,
   }) {
     return PatientModel(
       specialist: specialist ?? this.specialist,
@@ -56,66 +58,220 @@ class PatientModel extends UserModel {
       termsClass: termsClass ?? this.termsClass,
       settings: settings ?? this.settings,
       type: type ?? this.type,
-      registerSet: registerSet ?? this.registerSet,
+      registerStatus: registerStatus ?? this.registerStatus,
+      userInterface: userInterface ?? this.userInterface,
     );
   }
 
   factory PatientModel.fromJson(Map<String, dynamic> json, bool isPatient) {
     return PatientModel(
       specialist: isPatient
-          ? json['especialista'] != null
-              ? SpecialistModel.fromJson(json['especialista'])
+          ? json['specialist'] != null
+              ? SpecialistModel.fromJson(json['specialist'])
               : null
           : null,
-      id: json['idUsuario'],
-      name: json['nombre'],
-      email: json['correo'],
-      password: isPatient ? json['contraseña'] : '',
-      phone: json['telefono'],
-      age: json['edad'],
-      bornDate: DateTime.parse(json['fechaNacimiento']),
-      sex: json['sexo'],
+      id: json['userId'],
+      name: json['name'],
+      email: json['mail'],
+      password: isPatient ? json['password'] : '',
+      phone: json['phone'],
+      age: json['age'],
+      bornDate: DateTime.tryParse(json['bornDate'] ?? ""),
+      sex: json['sex'],
       token: json['token'],
-      tokenForRelate: json['tokenRelacional'],
-      termsClass: TermAndConditions.fromJson(
-        json['terminosycondiciones'],
-      ),
-      settings: PattientSettings.fromJson(json['configuracion']),
+      tokenForRelate: json['relationalToken'],
+      termsClass: json['termsAndConditions'] == null
+          ? null
+          : TermAndConditions.fromJson(
+              json['termsAndConditions'],
+            ),
+      settings: json['settings'] == null
+          ? null
+          : PattientSettings.fromJson(json['settings']),
       type: UserType.patient,
-      registerSet: json["registerSet"],
+      registerStatus: json["registerState"] ?? "",
+      userInterface: json['userInterface'] == null
+          ? null
+          : UserInterface.fromJson(json['userInterface']),
     );
   }
 
   Map<String, dynamic> toStore() {
     return {
-      'idUsuario': id,
-      'nombre': name,
-      'correo': email,
-      'contraseña': password,
-      'telefono': phone,
-      'edad': age,
-      'fechaNacimiento': bornDate!.toIso8601String(),
-      'sexo': sex,
+      'userId': id,
+      'name': name,
+      'mail': email,
+      'password': password,
+      'phone': phone,
+      'age': age,
+      'bornDate': bornDate!.toIso8601String(),
+      'sex': sex,
       'token': token,
-      "tokenRelacional": tokenForRelate,
-      "configuracion": settings!.toJson(),
-      "terminosycondiciones": termsClass!.toJson(),
-      "especialista": specialist?.toStore(),
-      "registerSet": registerSet,
+      "relationalToken": tokenForRelate,
+      "settings": settings!.toJson(),
+      "termsAndConditions": termsClass!.toJson(),
+      "specialist": specialist?.toStore(),
+      "registerStatus": registerStatus,
+      "userInterface": userInterface?.toJson(),
     };
   }
 
   @override
   Map<String, dynamic> toJson() {
     return {
-      'nombre': name,
-      'correo': email,
-      'contraseña': password,
-      'telefono': phone,
-      'fechaNacimiento': bornDate!.toIso8601String(),
+      'name': name,
+      'mail': email,
+      'password': password,
+      'phone': phone,
+      'bornDate': bornDate!.toIso8601String(),
       'sexo': sex,
       'token': token,
-      "TerminosycondicionesId": 1,
+      "termsiD": 1,
     };
+  }
+}
+
+class UserInterface {
+  final int? userInterfaceId;
+
+  final List<UserFlower>? userFlowers;
+
+  final List<UserSticker>? userStickers;
+
+  final int? backgroundUrl;
+
+  final int? themeId;
+
+  UserInterface(
+      {this.userInterfaceId,
+      this.userFlowers,
+      this.userStickers,
+      this.backgroundUrl,
+      this.themeId});
+
+  //copyWith
+  UserInterface copyWith({
+    int? userInterfaceId,
+    List<UserFlower>? userFlowers,
+    List<UserSticker>? userStickers,
+    int? backgroundUrl,
+    int? themeId,
+  }) {
+    return UserInterface(
+      userInterfaceId: userInterfaceId ?? this.userInterfaceId,
+      userFlowers: userFlowers ?? this.userFlowers,
+      userStickers: userStickers ?? this.userStickers,
+      backgroundUrl: backgroundUrl ?? this.backgroundUrl,
+      themeId: themeId ?? this.themeId,
+    );
+  }
+
+  factory UserInterface.fromJson(Map<String, dynamic> json) {
+    return UserInterface(
+      userInterfaceId: json['userInterfaceId'],
+      userFlowers: (json['userFlowers'] as List)
+          .map((e) => UserFlower.fromJson(e))
+          .toList(),
+      userStickers: (json['userStickers'] as List)
+          .map((e) => UserSticker.fromJson(e))
+          .toList(),
+      backgroundUrl: json['backgroundUrl'],
+      themeId: json['themeId'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userInterfaceId': userInterfaceId,
+      'userFlowers': userFlowers!.map((e) => e.toJson()).toList(),
+      'userStickers': userStickers!.map((e) => e.toJson()).toList(),
+      'backgroundUrl': backgroundUrl,
+      'themeId': themeId,
+    };
+  }
+}
+
+class UserFlower {
+  final int userFlowerId;
+  final FlowerModel flower;
+  final int state;
+  final int? position;
+
+  UserFlower({
+    required this.userFlowerId,
+    required this.flower,
+    required this.state,
+    this.position,
+  });
+
+  UserFlower copyWith({
+    int? userFlowerId,
+    FlowerModel? flower,
+    int? state,
+    int? position,
+  }) {
+    return UserFlower(
+      userFlowerId: userFlowerId ?? this.userFlowerId,
+      flower: flower ?? this.flower,
+      state: state ?? this.state,
+      position: position ?? this.position,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'flowerId': flower.id,
+      'state': state,
+      'position': position,
+    };
+  }
+
+  factory UserFlower.fromJson(Map<String, dynamic> json) {
+    return UserFlower(
+      userFlowerId: json['userFlowerId'],
+      flower: FlowerModel.fromJson(json['flower']),
+      state: json['state'],
+      position: json['position'],
+    );
+  }
+}
+
+class UserSticker {
+  final int userStickerId;
+  final StickerModel sticker;
+  final int? position;
+
+  UserSticker({
+    required this.userStickerId,
+    required this.sticker,
+    this.position,
+  });
+
+  UserSticker copyWith({
+    int? userStickerId,
+    StickerModel? sticker,
+    int? position,
+  }) {
+    return UserSticker(
+      userStickerId: userStickerId ?? this.userStickerId,
+      sticker: sticker ?? this.sticker,
+      position: position ?? this.position,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userStickerId': userStickerId,
+      'sticker': sticker.toJson(),
+      'position': position,
+    };
+  }
+
+  factory UserSticker.fromJson(Map<String, dynamic> json) {
+    return UserSticker(
+      userStickerId: json['userStickerId'],
+      sticker: StickerModel.fromJson(json['sticker']),
+      position: json['position'],
+    );
   }
 }

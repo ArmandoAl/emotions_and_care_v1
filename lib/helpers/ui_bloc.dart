@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:emotions_and_care_v1/config/assets/assets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +21,7 @@ class UICubit extends Cubit<UIState> {
     List<ThemeData> themes = [
       ThemeData(
         useMaterial3: true,
-        primaryColor: Colors.blue,
+        primaryColor: Colors.blue[50]!,
         colorScheme: const ColorScheme.light(
             primary: Colors.blue,
             secondary: Colors.blueAccent,
@@ -72,44 +74,47 @@ class UICubit extends Cubit<UIState> {
       ),
     ];
 
-    FlowerModel? currentFlower = await storageRepository.getCurrentFlower();
-
-    List<FlowerModel> flowers = await storageRepository.getFlowers();
-
-    List<StickerModel> stickers = await storageRepository.getStickers();
-
-    List<StickerModel> stickersInUse =
-        await storageRepository.getStickersInUse();
-
-    if (stickersInUse.isEmpty) {
-      stickersInUse = List.generate(4, (index) => StickerModel.empty());
-    }
-
     String? selectedBackground =
         await storageRepository.getSelectedBackground();
 
     selectedBackground ??= "null";
 
-    if (flowers.isEmpty) {
-      flowers = [
+    emit(state.copyWith(
+      isDarkMode: false,
+      themes: themes,
+      currentFlower: FlowerModel(
+        id: 1,
+        urls: [Assets.plant, Assets.flower],
+        state: FlowerState.initialFlowet,
+      ),
+      flowers: [
         FlowerModel(
           id: 1,
           urls: [Assets.plant, Assets.flower],
           state: FlowerState.initialFlowet,
         ),
-      ];
-    }
-
-    emit(state.copyWith(
-      isDarkMode: false,
-      themes: themes,
-      currentFlower: currentFlower,
-      flowers: flowers,
-      stickers: stickers,
-      stickersInUse: stickersInUse,
+      ],
+      stickers: List.generate(4, (index) => StickerModel.empty()),
+      stickersInUse: List.generate(4, (index) => StickerModel.empty()),
       selectedBackground: selectedBackground,
       selectedTheme: selectedTheme,
     ));
+  }
+
+  void setBackAssets(List<UserSticker>? userStickers) {
+    emit(state.copyWith(
+      status: UIStatus.loading,
+    ));
+    if (userStickers == null) return;
+    final List<StickerModel> newStickerInUse = userStickers
+        .where((element) => element.position != null)
+        .map((e) => e.sticker)
+        .toList();
+
+    emit(state.copyWith(
+        stickers: userStickers.map((e) => e.sticker).toList(),
+        stickersInUse: newStickerInUse,
+        status: UIStatus.success));
   }
 
   void changeStatus(UIStatus status) {
@@ -143,23 +148,20 @@ class UICubit extends Cubit<UIState> {
   }
 
   void setStickerInUse(StickerModel sticker, int index) {
-    print("StickerModel: $sticker");
     List<StickerModel> stickersInUse = state.stickersInUse;
 
     stickersInUse[index] = sticker;
-    storageRepository.saveStickersInUse(stickersInUse);
+
     emit(state.copyWith(stickersInUse: stickersInUse));
   }
 
   void addSticker(StickerModel sticker) {
-    final List<StickerModel> stickers = state.stickers;
+    final List<StickerModel> stickers = state.stickers!;
     stickers.add(sticker);
-    storageRepository.saveStickers(stickers);
     emit(state.copyWith(stickers: stickers));
   }
 
   void setStickers(List<StickerModel> stickers) {
-    storageRepository.saveStickers(stickers);
     emit(state.copyWith(stickers: stickers));
   }
 
@@ -170,7 +172,7 @@ class UICubit extends Cubit<UIState> {
 
   Future<void> getSticker(int id) async {
     final StickerModel sticker = await uiRepoitory.getSticker(id);
-    final List<StickerModel> stickers = state.stickers;
+    final List<StickerModel> stickers = state.stickers!;
     stickers.add(sticker);
     storageRepository.saveStickers(stickers);
     emit(state.copyWith(stickers: stickers));
@@ -183,14 +185,14 @@ class UICubit extends Cubit<UIState> {
   }
 }
 
-enum UIStatus { start, login, register, loading, error }
+enum UIStatus { start, login, register, loading, error, success }
 
 class UIState extends Equatable {
   final UIStatus status;
   final bool isDarkMode;
   final FlowerModel? currentFlower;
   final List<FlowerModel> flowers;
-  final List<StickerModel> stickers;
+  final List<StickerModel>? stickers;
   final String selectedBackground;
   final int selectedTheme;
   final List<ThemeData> themes;
@@ -239,7 +241,7 @@ class UIState extends Equatable {
         isDarkMode,
         currentFlower ?? FlowerModel(),
         flowers,
-        stickers,
+        stickers ?? [],
         selectedBackground,
         selectedTheme,
         themes,

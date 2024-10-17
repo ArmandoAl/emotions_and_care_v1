@@ -23,16 +23,16 @@ class CompletedTestModel {
 
   factory CompletedTestModel.fromJson(Map<String, dynamic> json) {
     return CompletedTestModel(
-      testId: json['cuestionarioId'],
-      date: DateTime.parse(json['fechaCompletado']),
-      userId: json['pacienteId'],
+      testId: json['questionnaireId'],
+      date: DateTime.tryParse(json['dateCompleted']) ?? DateTime.now(),
+      userId: json['patientId'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'IdTest': testId,
-      'Fecha': date.toIso8601String(),
+      'questionnaireId': testId,
+      'dateCompleted': date.toIso8601String(),
     };
   }
 }

@@ -8,13 +8,8 @@ class TestCubit extends Cubit<TestState> {
   //complete test
   Future<GoalWithTestInfoModel> onCompleteTest(
       int patientId, int testId, bool isFirtsTime) async {
-    // Get the test to complete
-    // Create a new list of completed tests with the completed test
-    //get the testHistory
-
     final test = state.testList.firstWhere((element) => element.id == testId);
 
-    //en el futuro este metodo retornara una clase que incluya el testInfoModel y el goal
     GoalWithTestInfoModel result = await repository.completeTest(patientId,
         testId, test.questions, state.completedTestList.isEmpty ? true : false);
 
@@ -102,7 +97,7 @@ class TestCubit extends Cubit<TestState> {
   }
 
   //select question response
-  void onSelectResponse(int testId, int questionId, int responseId) {
+  void onSelectResponse(int testId, int questionId, int position) {
     // Create a new list of tests with the updated test
     final updatedTestList = state.testList
         .map((e) => e.id == testId
@@ -111,14 +106,15 @@ class TestCubit extends Cubit<TestState> {
                     .map((q) => q.id == questionId
                         ? q.copyWith(
                             answers: q.answers
-                                .map((a) => a.id == responseId
-                                    ? a.copyWith(isSelected: true)
-                                    : a.copyWith(isSelected: false))
+                                .map((a) => a.copyWith(
+                                    isSelected:
+                                        q.answers.indexOf(a) == position))
                                 .toList())
                         : q)
                     .toList())
             : e)
         .toList();
+
     // Emitir un nuevo estado con la lista de pruebas actualizada
     emit(state.copyWith(testList: updatedTestList));
   }

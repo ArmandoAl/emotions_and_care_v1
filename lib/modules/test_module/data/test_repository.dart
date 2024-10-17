@@ -17,7 +17,10 @@ class TestRepository implements ITestRepository {
           'Content-Type': 'application/json'
         },
         body: jsonEncode({
-          'preguntas': questions.map((e) => e.toJsonBeck()).toList(),
+          'questions': questions
+              .map((e) =>
+                  {'questionId': e.id, 'answerId': getPosition(e.answers)})
+              .toList(),
         }),
       );
 
@@ -53,4 +56,13 @@ class TestRepository implements ITestRepository {
       throw Exception('Failed on getTest');
     }
   }
+}
+
+int getPosition(List<ResponseModel> answers) {
+  for (int i = 0; i < answers.length; i++) {
+    if (answers[i].isSelected) {
+      return i;
+    }
+  }
+  return -1;
 }

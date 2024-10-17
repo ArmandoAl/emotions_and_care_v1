@@ -87,12 +87,12 @@ Widget questionItems(
             shrinkWrap: true,
             itemCount: item.answers.length,
             itemBuilder: (context, index) {
-              final answer = item.answers[index];
+              ResponseModel answer = item.answers[index];
               return Column(
                 children: [
                   GestureDetector(
                     onTap: () {
-                      onTap(testId, item.id, answer.id);
+                      onTap(testId, item.id, index);
                     },
                     child: Container(
                       width: double.infinity,
@@ -100,11 +100,7 @@ Widget questionItems(
                       decoration: BoxDecoration(
                         color: !answer.isSelected
                             ? Colors.transparent
-                            : item.answers.length == 4
-                                ? fourQuestionsColors[index + 1]!
-                                    .withOpacity(0.75)
-                                : sixQuestionsColors[index + 1]!
-                                    .withOpacity(0.75),
+                            : Colors.amber,
 
                         borderRadius: answer.isSelected
                             ? BorderRadius.circular(10)
@@ -129,21 +125,20 @@ Widget questionItems(
                             decoration: BoxDecoration(
                               color: !answer.isSelected
                                   ? Colors.transparent
-                                  : item.answers.length == 4
-                                      ? fourQuestionsColors[index + 1]!
-                                      : sixQuestionsColors[index + 1]!,
+                                  : Colors.amberAccent,
                               borderRadius: BorderRadius.circular(50),
                               border: Border.all(
                                 color: Colors.grey,
                                 width: 1,
                               ),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: Text(
-                                item.answers.length == 4
-                                    ? (index).toString()
-                                    : numbersForMoreThanFourDigits[index + 1]!,
-                                style: const TextStyle(
+                                // item.answers.length == 4
+                                //     ? (index).toString()
+                                //     : numbersForMoreThanFourDigits[index + 1]!,
+                                "",
+                                style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -158,9 +153,9 @@ Widget questionItems(
                                         MediaQuery.of(context).size.width *
                                             0.055,
                                     color: !answer.isSelected
-                                        ? uiProvider.state.themes![uiProvider
+                                        ? uiProvider.state.themes[uiProvider
                                                     .state.selectedTheme] ==
-                                                uiProvider.state.themes![3]
+                                                uiProvider.state.themes[3]
                                             ? Colors.white
                                             : Colors.black
                                         : Colors.white,
@@ -186,7 +181,7 @@ Widget questionItems(
                   const Color.fromARGB(255, 21, 137, 19), progress)!,
             ),
             onPressed: () async {
-              final RegisterPatientFlow? registerFlow =
+              final String? registerFlow =
                   context.read<BegginCubit>().state.registerPatientFlow;
               //if the last question
               if (index == state.testList[testId - 1].questions.length) {
@@ -194,8 +189,8 @@ Widget questionItems(
 
                 GoalWithTestInfoModel result = await context
                     .read<TestCubit>()
-                    .onCompleteTest(userId, testId,
-                        registerFlow != RegisterPatientFlow.homeUiChanged);
+                    .onCompleteTest(
+                        userId, testId, registerFlow != "registerSuccess");
 
                 if (result.goalModel != null && context.mounted) {
                   final UICubit uiProvider = getIt<UICubit>();

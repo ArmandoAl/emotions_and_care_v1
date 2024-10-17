@@ -42,23 +42,23 @@ class GoalModel {
 
   factory GoalModel.fromJson(Map<String, dynamic> json) {
     return GoalModel(
-      id: json['idLogro'],
-      title: json['nombre'],
-      type: GoalType.values[json['tipo']],
-      description: json['descripcion'],
-      idSticker: json['idSticker'],
-      idFlor: json['idFlor'],
+      id: json['goalId'],
+      title: json['name'],
+      type: GoalType.values[json['type']],
+      description: json['desription'],
+      idSticker: json['stickerId'],
+      idFlor: json['stickerId'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'title': title,
+      'goalId': id,
+      'name': title,
       'type': type.index,
-      'description': description,
-      'idSticker': idSticker,
-      'idFlor': idFlor,
+      'desription': description,
+      'stickerId': idSticker,
+      'flowerId': idFlor,
     };
   }
 }

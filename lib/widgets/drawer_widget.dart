@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:emotions_and_care_v1/helpers/navigation_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../helpers/paths.dart';
@@ -20,9 +19,9 @@ class DrawerWidget extends StatefulWidget {
 }
 
 const drawerDynaicIndexNumbers = {
-  RegisterPatientFlow.registerSucess: 1,
-  RegisterPatientFlow.firstTestCompleted: 5,
-  RegisterPatientFlow.homeUiChanged: -1,
+  "register": 1,
+  "firstTestCompleted": 5,
+  "registerSuccess": -1,
 };
 
 class _NavigationItem {

@@ -37,22 +37,22 @@ class NoteModel {
 
   factory NoteModel.fromJson(Map<String, dynamic> json) {
     return NoteModel(
-      id: json['idNota'],
-      title: json['titulo'],
-      content: json['contenido'],
-      emotion: EmotionModel.fromJson(json['emocion']),
-      createdAt: DateTime.parse(json['fechaCreacion']),
+      id: json['noteId'],
+      title: json['title'],
+      content: json['content'],
+      emotion: EmotionModel.fromJson(json['emotion']),
+      createdAt: DateTime.parse(json['dateCreated']),
       visible: json['visible'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'Titulo': title,
-      'Contenido': content,
-      'Emocion': emotion.toJson(),
-      'FechaCreacion': createdAt.toIso8601String(),
-      'Visible': visible,
+      'title': title,
+      'content': content,
+      'emotion': emotion.toJson(),
+      //'FechaCreacion': createdAt.toIso8601String(),
+      'visible': visible,
     };
   }
 }
@@ -78,9 +78,8 @@ class GoalWithNote {
 
   factory GoalWithNote.fromJson(Map<String, dynamic> json) {
     return GoalWithNote(
-      id: json['idNota'],
-      goalModel:
-          json['logro'] != null ? GoalModel.fromJson(json['logro']) : null,
+      id: json['noteId'],
+      goalModel: json['goal'] != null ? GoalModel.fromJson(json['goal']) : null,
     );
   }
 }

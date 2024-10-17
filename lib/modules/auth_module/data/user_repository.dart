@@ -14,8 +14,6 @@ class UserRepository implements IUserRepository {
       },
     );
 
-    print(response.body);
-
     final data = jsonDecode(response.body);
 
     //if bad request
@@ -45,16 +43,12 @@ class UserRepository implements IUserRepository {
         body: jsonEncode(patient.toJson()),
       );
 
-      print(response.body);
-      print(response.statusCode);
-
       if (response.statusCode != 200) {
         throw Exception('Failed to create patient');
       }
 
       return int.parse(response.body);
     } catch (e) {
-      print(e);
       return -3;
     }
   }

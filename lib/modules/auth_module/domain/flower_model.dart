@@ -27,14 +27,14 @@ class FlowerModel {
   }
 
   FlowerModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['flowerId'];
     urls = json['urls'].cast<String>();
     state = FlowerState.values[json['state']];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
+    data['flowerId'] = id;
     data['urls'] = urls;
     data['state'] = state!.index;
     return data;

@@ -37,21 +37,21 @@ class CartResponse {
 
   Map<String, dynamic> toJson() {
     return {
-      'IdReceptor': idReceptor,
-      'LetraReceptor': letraReceptor,
-      'Contenido': contenido,
-      'Leida': leida,
+      'receiverId': idReceptor,
+      'receiverInitial': letraReceptor,
+      'content': contenido,
+      'read': leida,
     };
   }
 
   factory CartResponse.fromJson(Map<String, dynamic> json) {
     return CartResponse(
-      id: json['idCarta'],
-      idReceptor: json['idReceptor'],
-      letraReceptor: json['letraReceptor'],
-      contenido: json['contenido'],
-      idSticker: json['idSticker'],
-      leida: json['leida'],
+      id: json['cartId'],
+      idReceptor: json['receiverId'],
+      letraReceptor: json['receiverInitial'],
+      contenido: json['content'],
+      idSticker: json['stickerId'],
+      leida: json['read'],
     );
   }
 }

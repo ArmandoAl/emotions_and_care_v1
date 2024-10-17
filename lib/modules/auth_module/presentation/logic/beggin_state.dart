@@ -21,7 +21,7 @@ class BegginState extends Equatable {
   final SpecialistModel? specialistModel;
   final bool? isPatient;
   final bool user;
-  final RegisterPatientFlow? registerPatientFlow;
+  final String? registerPatientFlow;
   final RegisterSpecialistFlow? registerSpecialistFlow;
 
   const BegginState(
@@ -30,7 +30,7 @@ class BegginState extends Equatable {
       this.specialistModel,
       this.isPatient,
       this.user = false,
-      this.registerPatientFlow = RegisterPatientFlow.registerSucess,
+      this.registerPatientFlow = "registerSuccess",
       this.registerSpecialistFlow});
 
   BegginState copyWith({
@@ -39,7 +39,7 @@ class BegginState extends Equatable {
     SpecialistModel? specialistModel,
     bool? isPatient,
     bool? user,
-    RegisterPatientFlow? registerPatientFlow,
+    String? registerPatientFlow,
     RegisterSpecialistFlow? registerSpecialistFlow,
   }) {
     return BegginState(
@@ -61,7 +61,7 @@ class BegginState extends Equatable {
         specialistModel ?? SpecialistModel(),
         isPatient ?? false,
         user,
-        registerPatientFlow ?? RegisterPatientFlow.registerSucess,
-        registerSpecialistFlow ?? RegisterSpecialistFlow.registerSucess,
+        registerPatientFlow ?? "registerSuccess",
+        registerSpecialistFlow ?? RegisterSpecialistFlow.registerSuccess,
       ];
 }

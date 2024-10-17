@@ -115,7 +115,6 @@ class _AppState extends State<App> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("hola"),
                             SizedBox(width: 10),
                             CircularProgressIndicator(),
                           ],

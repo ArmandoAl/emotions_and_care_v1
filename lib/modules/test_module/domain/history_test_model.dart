@@ -29,8 +29,8 @@ class HistoryTestModel {
 
   factory HistoryTestModel.fromJson(Map<String, dynamic> json) {
     return HistoryTestModel(
-      id: json['id'],
-      idCuestionario: json['idCuestionario'],
+      id: json['questionnairesHistoryId'],
+      idCuestionario: json['questionnaireId'],
       name: json['name'],
       testInfoList: List<TestInfoModel>.from(
           json['testInfoModels'].map((x) => TestInfoModel.fromJson(x))),
@@ -39,7 +39,7 @@ class HistoryTestModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'questionnairesHistoryId': id,
       'name': name,
       'testInfoList': testInfoList.map((x) => x.toJson()).toList(),
     };

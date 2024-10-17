@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_types_as_parameter_names
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../helpers/navigation_bloc.dart';
@@ -59,18 +61,19 @@ class _PattientStackState extends State<PattientStack> {
 
   @override
   void initState() {
+    uiCubit = getIt<UICubit>();
+    begginCubit = getIt<BegginCubit>();
+
     navigationBloc = NavigationBloc(
       NavigationItem.home,
     );
-    begginCubit = getIt<BegginCubit>();
+
     communityCubit = getIt<CommunityCubit>();
     dailyCubit = getIt<DailyCubit>();
     emotionCubit = getIt<EmotionCubit>();
     scheduleCubit = getIt<ScheduleCubit>();
     homeCubit = getIt<HomeCubit>();
     testCubit = getIt<TestCubit>();
-    uiCubit = getIt<UICubit>();
-    super.initState();
 
     _content = _getContentForState(
       navigationBloc.state.selectedItem,
@@ -83,6 +86,11 @@ class _PattientStackState extends State<PattientStack> {
       testCubit,
       uiCubit,
     );
+
+    uiCubit.setBackAssets(
+        begginCubit.state.patientModel!.userInterface!.userStickers);
+
+    super.initState();
   }
 
   @override
@@ -184,8 +192,7 @@ PreferredSizeWidget? _getAppBarFromState(
                 return;
               }
 
-              if (begginCubit.state.registerPatientFlow !=
-                  RegisterPatientFlow.homeUiChanged) {
+              if (begginCubit.state.registerPatientFlow != "registerSuccess") {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('No se ha completado el registro'),

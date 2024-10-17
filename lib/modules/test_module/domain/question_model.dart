@@ -30,11 +30,11 @@ class QuestionModel {
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) {
     return QuestionModel(
-      id: json['idPregunta'],
-      question: json['enunciado'],
-      type: QuestionType.values[json['tipo']],
+      id: json['questionId'],
+      question: json['statement'],
+      type: QuestionType.values[json['type']],
       answers: List<ResponseModel>.from(
-          json['respuestas'].map((x) => ResponseModel.fromJson(x))),
+          json['answers'].map((x) => ResponseModel.fromJson(x))),
     );
   }
 

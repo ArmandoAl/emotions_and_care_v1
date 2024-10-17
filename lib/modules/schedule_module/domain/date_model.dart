@@ -59,10 +59,10 @@ class DateModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'Fecha': date.toIso8601String(),
-      'Hora': hour,
-      'Lugar': place,
-      'Descripcion': description,
+      'date': date.toIso8601String(),
+      'hour': hour,
+      'place': place,
+      'description': description,
     };
   }
 }
@@ -88,15 +88,15 @@ class GoalwithDate {
 
   factory GoalwithDate.fromJson(Map<String, dynamic> json) {
     return GoalwithDate(
-      id: json['idCita'],
-      goal: json['logro'] != null ? GoalModel.fromJson(json['logro']) : null,
+      id: json['dateId'],
+      goal: json['goal'] != null ? GoalModel.fromJson(json['goal']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'idCita': id,
-      'logro': goal,
+      'dateId': id,
+      'goal': goal,
     };
   }
 }

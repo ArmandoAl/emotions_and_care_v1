@@ -40,21 +40,21 @@ class CartModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'IdEmisor': idEmisor,
-      'inicialEmisor': letraEmisor,
-      'Contenido': contenido,
+      'transmitterId': idEmisor,
+      'transmitterInitial': letraEmisor,
+      'content': contenido,
     };
   }
 
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
-      id: json['idCarta'],
-      idEmisor: json['idEmisor'],
-      letraEmisor: json['inicialEmisor'],
-      contenido: json['contenido'],
-      estado: EstadoCarta.values[json['estado']],
+      id: json['cartId'],
+      idEmisor: json['transmitterId'],
+      letraEmisor: json['transmitterInitial'],
+      contenido: json['content'],
+      estado: EstadoCarta.values[json['state']],
       respuestas: List<CartResponse>.from(
-          json['respuestas']?.map((x) => CartResponse.fromJson(x))),
+          json['cartAnswers']?.map((x) => CartResponse.fromJson(x))),
     );
   }
 }
@@ -80,9 +80,8 @@ class GoalWithCart {
 
   factory GoalWithCart.fromJson(Map<String, dynamic> json) {
     return GoalWithCart(
-      id: json['idCarta'],
-      goalModel:
-          json['logro'] != null ? GoalModel.fromJson(json['logro']) : null,
+      id: json['cartId'],
+      goalModel: json['goal'] != null ? GoalModel.fromJson(json['goal']) : null,
     );
   }
 }

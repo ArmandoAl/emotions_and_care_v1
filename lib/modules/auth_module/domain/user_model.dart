@@ -63,33 +63,33 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['IdUsuario'],
-      name: json['Nombre'],
-      email: json['Correo'],
-      password: json['Contrasena'],
-      phone: json['Telefono'],
-      age: json['Edad'],
-      sex: json['Sexo'],
-      token: json['Token'],
-      tokenForRelate: json['TokenRelacional'],
-      termsClass: TermAndConditions.fromJson(json['Terminosycondiciones']),
-      bornDate: DateTime.parse(json['fechaNacimiento']),
+      id: json['userId'],
+      name: json['name'],
+      email: json['mail'],
+      password: json['password'],
+      phone: json['phone'],
+      age: json['age'],
+      sex: json['sex'],
+      token: json['token'],
+      tokenForRelate: json['relationalToken'],
+      termsClass: TermAndConditions.fromJson(json['termsAndConditions']),
+      bornDate: DateTime.parse(json['bornDate']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'IdUsuario': id,
-      'Nombre': name,
-      'Correo': email,
-      'Contrasena': password,
-      'Telefono': phone,
-      'Edad': age,
-      'Sexo': sex,
-      'Token': token,
-      'fechaNacimiento': token,
-      'TokenRelacional': tokenForRelate,
-      'Terminosycondiciones': termsClass!.toJson(),
+      'userId': id,
+      'name': name,
+      'mail': email,
+      'password': password,
+      'phone': phone,
+      'age': age,
+      'sex': sex,
+      'token': token,
+      'bornDate': bornDate!.toIso8601String(),
+      'relationalToken': tokenForRelate,
+      'termsAndConditions': termsClass!.toJson(),
     };
   }
 }

@@ -25,14 +25,13 @@ class CompleteTestHistory {
 
   factory CompleteTestHistory.fromJson(Map<String, dynamic> json) {
     return CompleteTestHistory(
-      historyTestList: List<HistoryTestModel>.from(
-          json['historialCuestionarios']
-              .map((x) => HistoryTestModel.fromJson(x))),
+      historyTestList: List<HistoryTestModel>.from(json['questionnairesHistory']
+          .map((x) => HistoryTestModel.fromJson(x))),
       completedTestList: List<CompletedTestModel>.from(
-          json['cuestionarioCompletados']
+          json['completeQuestionnaires']
               .map((x) => CompletedTestModel.fromJson(x))),
       testList: List<TestModel>.from(
-          json['cuestionarios'].map((x) => TestModel.fromJson(x))),
+          json['questionnaires'].map((x) => TestModel.fromJson(x))),
     );
   }
 }

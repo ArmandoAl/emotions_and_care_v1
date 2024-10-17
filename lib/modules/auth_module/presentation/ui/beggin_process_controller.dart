@@ -11,10 +11,18 @@ class BegginProcessController extends StatefulWidget {
 }
 
 class _BegginProcessControllerState extends State<BegginProcessController> {
+  late BegginCubit userProvider;
+  late UICubit uiProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    userProvider = getIt<BegginCubit>();
+    uiProvider = getIt<UICubit>();
+  }
+
   @override
   Widget build(BuildContext context) {
-    BegginCubit userProvider = getIt<BegginCubit>();
-
     return BlocBuilder<BegginCubit, BegginState>(
       bloc: context.read<BegginCubit>(),
       builder: (context, state) {

@@ -82,12 +82,12 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                           return;
                                         }
 
-                                        // if (patient.bornDate.year >
-                                        //     DateTime.now().year - 17) {
-                                        //   showMessage(context,
-                                        //       'Debes tener al menos 17 años para registrarte');
-                                        //   return;
-                                        // }
+                                        if (patient.bornDate!.year >
+                                            DateTime.now().year - 18) {
+                                          showMessage(context,
+                                              'Debes tener al menos 18 años para registrarte');
+                                          return;
+                                        }
 
                                         if (patient.password!.length < 6) {
                                           showMessage(context,

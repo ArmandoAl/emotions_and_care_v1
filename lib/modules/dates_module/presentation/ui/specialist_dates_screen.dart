@@ -22,7 +22,9 @@ class _SpecialistDatesScreenState extends State<SpecialistDatesScreen> {
   List<DateModel> get dates {
     final List<DateModel> dates = [];
     for (final DateRequestModel dateRequest in widget.datesRequest) {
-      dates.add(dateRequest.date);
+      if (dateRequest.date != null) {
+        dates.add(dateRequest.date!);
+      }
     }
     return dates;
   }
@@ -71,7 +73,9 @@ List<Widget> itemsList(
         color: const Color(0xFF71D5FF),
         size: MediaQuery.of(context).size.width * 0.1,
       ),
-      "${date.patient!.name}: ${date.date.day}/${date.date.month}/${date.date.year} ${date.hour}",
+      date != null
+          ? "${date.patient!.name}: ${date.date!.day}/${date.date!.month}/${date.date!.year} ${date.hour}"
+          : "",
       "",
       () {
         onTap(date);

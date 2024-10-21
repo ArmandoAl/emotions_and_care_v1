@@ -40,7 +40,6 @@ class CartResponse {
       'receiverId': idReceptor,
       'receiverInitial': letraReceptor,
       'content': contenido,
-      'read': leida,
     };
   }
 
@@ -77,8 +76,8 @@ class GoalWithResponseCart {
 
   factory GoalWithResponseCart.fromJson(Map<String, dynamic> json) {
     return GoalWithResponseCart(
-      id: json['idRespuestaCarta'],
-      goalModel: json['logro'],
+      id: json['cartAnswerId'] ?? 0,
+      goalModel: json['goal'] != null ? GoalModel.fromJson(json['goal']) : null,
     );
   }
 }

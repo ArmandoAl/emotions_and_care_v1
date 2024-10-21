@@ -43,14 +43,14 @@ class TestCubit extends Cubit<TestState> {
           id: 1,
           name: test.name,
           idCuestionario: testId,
-          testInfoList: [result.testInfoModel],
+          testInfoList: [result.testInfoModel!],
         ),
       ];
     } else {
       updatedHistoryList = state.historyTestList
           .map((e) => e.idCuestionario == testId
               ? e.copyWith(
-                  testInfoList: [result.testInfoModel, ...e.testInfoList],
+                  testInfoList: [result.testInfoModel!, ...e.testInfoList],
                 )
               : e)
           .toList();
@@ -117,5 +117,9 @@ class TestCubit extends Cubit<TestState> {
 
     // Emitir un nuevo estado con la lista de pruebas actualizada
     emit(state.copyWith(testList: updatedTestList));
+  }
+
+  void clean() {
+    emit(const TestState());
   }
 }

@@ -191,4 +191,8 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     }
     emit(state.copyWith(specialists: result));
   }
+
+  void clean() {
+    emit(const ScheduleState());
+  }
 }

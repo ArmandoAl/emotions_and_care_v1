@@ -54,47 +54,48 @@ class _NewRequestCartScreenState extends State<NewRequestCartScreen> {
               children: [
                 const Spacer(),
                 !isloading
-                    ? Hero(
-                        tag: 'request',
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            //validaciones
-                            if (controller.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                      'El contenido de la carta no puede estar vacío'),
-                                ),
-                              );
-                              return;
-                            }
+                    ? ElevatedButton(
+                        onPressed: () async {
+                          //validaciones
+                          if (controller.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'El contenido de la carta no puede estar vacío'),
+                              ),
+                            );
+                            return;
+                          }
 
-                            setState(() {
-                              isloading = true;
-                            });
+                          setState(() {
+                            isloading = true;
+                          });
 
-                            final cart = CartModel(
-                                idEmisor: widget.userId,
-                                letraEmisor: widget.userLetter.toUpperCase(),
-                                contenido: controller.text);
+                          final cart = CartModel(
+                              idEmisor: widget.userId,
+                              letraEmisor: widget.userLetter.toUpperCase(),
+                              contenido: controller.text);
 
-                            await widget.onSend(cart);
+                          await widget.onSend(cart);
 
-                            if (context.mounted) Navigator.of(context).pop();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            minimumSize: Size(
-                              MediaQuery.of(context).size.width * 0.2,
-                              MediaQuery.of(context).size.height * 0.04,
-                            ),
-                            elevation: 5,
+                          setState(() {
+                            isloading = false;
+                          });
+
+                          if (context.mounted) Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          child: const Text('Enviar'),
+                          minimumSize: Size(
+                            MediaQuery.of(context).size.width * 0.2,
+                            MediaQuery.of(context).size.height * 0.04,
+                          ),
+                          elevation: 5,
                         ),
+                        child: const Text('Enviar'),
                       )
                     : const CircularProgressIndicator(),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.06),

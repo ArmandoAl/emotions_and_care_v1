@@ -47,6 +47,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<UICubit>(
           create: (context) => getIt<UICubit>(),
         ),
+        BlocProvider<PattientsDatesCubit>(
+          create: (context) => getIt<PattientsDatesCubit>(),
+        ),
       ],
       child: const App(),
     );
@@ -102,30 +105,31 @@ class _AppState extends State<App> {
         bloc: getIt<BegginCubit>(), // No llamamos a getUser aquí
         builder: (context, state) {
           return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            child: state.status == BegginStatus.start ||
-                    state.status == BegginStatus.loading
-                ? const Scaffold(
-                    backgroundColor: Colors.white,
-                    body: SizedBox(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(width: 10),
-                            CircularProgressIndicator(),
-                          ],
+              duration: const Duration(milliseconds: 500),
+              child: state.status == BegginStatus.start ||
+                      state.status == BegginStatus.loading
+                  ? const Scaffold(
+                      backgroundColor: Colors.white,
+                      body: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 10),
+                              CircularProgressIndicator(),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                : state.status == BegginStatus.loged
-                    ? const LoginStack() // Aquí muestra la pantalla de login cuando está logeado
-                    : const BegginProcessController(),
-          );
+                    )
+                  : state.status == BegginStatus.notLoged
+                      ? const BegginProcessController()
+                      : const LoginStack() // Aquí muestra la pantalla de login cuando está logeado
+
+              );
         },
       ),
     );

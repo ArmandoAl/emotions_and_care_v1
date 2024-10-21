@@ -18,7 +18,7 @@ class UserRepository implements IUserRepository {
 
     //if bad request
     if (response.statusCode == 200) {
-      if (data['cedulaProfesional'] != null) {
+      if (data['license'] != null) {
         return SpecialistModel.fromJson(data);
       } else {
         return PatientModel.fromJson(data, true);
@@ -75,10 +75,10 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<void> setRegisterSet(int id) async {
+  Future<void> setRegisterSet(int idPatient, String state) async {
     try {
       final response = await http.put(
-        Uri.parse('${Api.baseUrl}Paciente/$id/registerSet'),
+        Uri.parse('${Api.baseUrl}Paciente/$idPatient/registerSet/$state'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

@@ -2,12 +2,12 @@ import '../../../helpers/paths.dart';
 
 class DateModel {
   final int? id;
-  final DateTime date;
-  final String hour;
-  final String place;
-  final String description;
-  bool confirmByPatient;
-  bool confirmByEspetialist;
+  final DateTime? date;
+  final String? hour;
+  final String? place;
+  final String? description;
+  bool? confirmByPatient;
+  bool? confirmByEspetialist;
   PatientModel? patient;
 
   DateModel({
@@ -45,21 +45,21 @@ class DateModel {
 
   factory DateModel.fromJson(Map<String, dynamic> json, bool isPatient) {
     return DateModel(
-      id: json['idCita'],
-      date: DateTime.parse(json['fecha']),
-      hour: json['hora'],
-      place: json['lugar'],
-      description: json['descripcion'],
-      confirmByPatient: json['confirmadaPorPaciente'],
-      confirmByEspetialist: json['confirmadaPorEspecialista'],
+      id: json['dateId'],
+      date: DateTime.tryParse(json['date']) ?? DateTime.now(),
+      hour: json['hour'],
+      place: json['place'],
+      description: json['description'],
+      confirmByPatient: json['patientConfirm'],
+      confirmByEspetialist: json['specialistConfirm'],
       patient:
-          isPatient ? null : PatientModel.fromJson(json['paciente'], false),
+          isPatient ? null : PatientModel.fromJson(json['patient'], isPatient),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'date': date.toIso8601String(),
+      'date': date!.toIso8601String(),
       'hour': hour,
       'place': place,
       'description': description,

@@ -61,6 +61,11 @@ Future<void> setupServiceLocator() async {
     repository: getIt<TestRepository>(),
   ));
 
+  //PattientsDatesCubit
+  getIt.registerSingleton<PattientsDatesCubit>(PattientsDatesCubit(
+    repository: getIt<ScheduleRepository>(),
+  ));
+
   // Espera a que las instancias asincrónicas estén listas antes de continuar
   await getIt.allReady();
 }

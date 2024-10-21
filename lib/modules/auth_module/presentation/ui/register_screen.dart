@@ -171,7 +171,7 @@ Widget welcomeMessage(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-            "Te damos la bienvenida a Emotions&Care. Disfruta y crece con nosotros!",
+            "Te damos la bienvenida a Emotions&Care. ¡Disfruta y crece con nosotros!",
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width * 0.1,
@@ -182,11 +182,8 @@ Widget welcomeMessage(
         ElevatedButton(
           onPressed: () async {
             await userProvider.multiLogin(email, password);
-            // Navigator.pushAndRemoveUntil(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => const GuideFlowController()),
-            //     (route) => false);
+            if (context.mounted) Navigator.pop(context);
+            if (context.mounted) Navigator.pop(context);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xff2CB5E0),
@@ -812,6 +809,7 @@ Widget _customDataOfBornWiget(
   return GestureDetector(
     onTap: () async {
       final DateTime? picked = await showDatePicker(
+        initialEntryMode: DatePickerEntryMode.input,
         helpText: "Selecciona tu fecha de nacimiento",
         cancelText: "Cancelar",
         context: context,

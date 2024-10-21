@@ -20,7 +20,7 @@ class TermsRepository implements ITermsRepository {
       }
 
       final data = jsonDecode(response.body);
-      return data['terminosYCondiciones'];
+      return data['termsAndConditions'];
     } catch (e) {
       throw Exception('Failed to load terms');
     }

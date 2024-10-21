@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:emotions_and_care_v1/config/assets/assets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,11 +80,7 @@ class UICubit extends Cubit<UIState> {
     emit(state.copyWith(
       isDarkMode: false,
       themes: themes,
-      currentFlower: FlowerModel(
-        id: 1,
-        urls: [Assets.plant, Assets.flower],
-        state: FlowerState.initialFlowet,
-      ),
+      currentFlower: null,
       flowers: [
         FlowerModel(
           id: 1,
@@ -106,10 +100,16 @@ class UICubit extends Cubit<UIState> {
       status: UIStatus.loading,
     ));
     if (userStickers == null) return;
-    final List<StickerModel> newStickerInUse = userStickers
+    List<StickerModel> newStickerInUse = userStickers
         .where((element) => element.position != null)
         .map((e) => e.sticker)
         .toList();
+
+    //si los nuevos estickers son menos de 4 , se rellenan con stickers vacios
+    if (newStickerInUse.length < 4) {
+      newStickerInUse.addAll(List.generate(
+          4 - newStickerInUse.length, (index) => StickerModel.empty()));
+    }
 
     emit(state.copyWith(
         stickers: userStickers.map((e) => e.sticker).toList(),
@@ -147,10 +147,16 @@ class UICubit extends Cubit<UIState> {
     emit(state.copyWith(flowers: flowers));
   }
 
-  void setStickerInUse(StickerModel sticker, int index) {
+  void setStickerInUse(int idpatient, StickerModel sticker, int index) {
     List<StickerModel> stickersInUse = state.stickersInUse;
 
-    stickersInUse[index] = sticker;
+    if (stickersInUse.length <= index) {
+      stickersInUse.add(sticker);
+    } else {
+      stickersInUse[index] = sticker;
+    }
+
+    uiRepoitory.setStickerInInterface(idpatient, sticker, index + 1);
 
     emit(state.copyWith(stickersInUse: stickersInUse));
   }
@@ -180,7 +186,6 @@ class UICubit extends Cubit<UIState> {
 
   Future<void> clean() async {
     emit(const UIState());
-
     setUpUI();
   }
 }

@@ -47,7 +47,8 @@ Future<void> showStikerDialog(BuildContext context, BegginCubit userCubit) {
                 ),
                 onPressed: () async {
                   if (userCubit.state.registerPatientFlow == "register") {
-                    userCubit.setRegisterFlow("firstTestCompleted");
+                    userCubit.setRegisterFlow(userCubit.state.patientModel!.id!,
+                        "firstTestCompleted");
                   }
 
                   // final uiProvider = getIt<UICubit>();

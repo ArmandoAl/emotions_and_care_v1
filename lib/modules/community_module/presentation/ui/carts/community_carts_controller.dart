@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import '../../../../../config/assets/assets.dart';
 import '../../../../../helpers/paths.dart';
 
@@ -23,7 +22,7 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
           widget.isPatient ? widget.patient!.id! : widget.specialist!.id!,
         );
 
-    //todo: remove after expo
+    // //todo: remove after expo
     context.read<CommunityCubit>().getCartFromUser(
           widget.isPatient ? widget.patient!.id! : widget.specialist!.id!,
           widget.isPatient,

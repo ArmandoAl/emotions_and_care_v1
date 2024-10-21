@@ -145,7 +145,9 @@ Widget testResultWidget(
                     }
 
                     if (userProvider.state.registerPatientFlow == "register") {
-                      userProvider.setRegisterFlow("firstTestCompleted");
+                      userProvider.setRegisterFlow(
+                          userProvider.state.patientModel!.id!,
+                          "firstTestCompleted");
                     }
 
                     if (context.mounted) Navigator.of(context).pop();

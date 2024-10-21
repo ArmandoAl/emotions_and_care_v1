@@ -60,62 +60,59 @@ class _AnswerCartScreenState extends State<AnswerCartScreen> {
             Row(
               children: [
                 const Spacer(),
-                Hero(
-                  tag: 'send',
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      //validaciones
-                      if (controller.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'El contenido de la carta no puede estar vacío'),
-                          ),
-                        );
-                        return;
-                      }
-
-                      setState(() {
-                        isloading = true;
-                      });
-
-                      final cartResponse = CartResponse(
-                        id: null,
-                        contenido: controller.text,
-                        idReceptor: widget.userId,
-                        letraReceptor: widget.letraEmisor[0],
-                        leida: false,
+                ElevatedButton(
+                  onPressed: () async {
+                    //validaciones
+                    if (controller.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'El contenido de la carta no puede estar vacío'),
+                        ),
                       );
+                      return;
+                    }
 
-                      await widget.onSend(cartResponse);
+                    setState(() {
+                      isloading = true;
+                    });
 
-                      setState(() {
-                        isloading = false;
-                      });
+                    final cartResponse = CartResponse(
+                      id: null,
+                      contenido: controller.text,
+                      idReceptor: widget.userId,
+                      letraReceptor: widget.letraEmisor[0],
+                      leida: false,
+                    );
 
-                      if (context.mounted) Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      minimumSize: Size(
-                        MediaQuery.of(context).size.width * 0.2,
-                        MediaQuery.of(context).size.height * 0.04,
-                      ),
-                      elevation: 5,
+                    await widget.onSend(cartResponse);
+
+                    setState(() {
+                      isloading = false;
+                    });
+
+                    if (context.mounted) Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    child: isloading
-                        ? const CircularProgressIndicator()
-                        : const Text(
-                            'Enviar',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                    minimumSize: Size(
+                      MediaQuery.of(context).size.width * 0.2,
+                      MediaQuery.of(context).size.height * 0.04,
+                    ),
+                    elevation: 5,
                   ),
+                  child: isloading
+                      ? const CircularProgressIndicator()
+                      : const Text(
+                          'Enviar',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.06),
               ],

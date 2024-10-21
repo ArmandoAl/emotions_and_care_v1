@@ -69,16 +69,16 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 eventLoader: (day) {
                   return widget.dates
                       .where((element) =>
-                          element.date.day == day.day &&
-                          element.date.month == day.month &&
-                          element.date.year == day.year)
+                          element.date!.day == day.day &&
+                          element.date!.month == day.month &&
+                          element.date!.year == day.year)
                       .toList();
                 },
                 onDaySelected: (selectedDay, focusedDay) {
                   for (var date in widget.dates) {
-                    if (date.date.day == selectedDay.day &&
-                        date.date.month == selectedDay.month &&
-                        date.date.year == selectedDay.year) {
+                    if (date.date!.day == selectedDay.day &&
+                        date.date!.month == selectedDay.month &&
+                        date.date!.year == selectedDay.year) {
                       setState(() {
                         _selectedDate = date;
                       });
@@ -91,9 +91,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 },
                 selectedDayPredicate: (day) {
                   return _selectedDate != null &&
-                      day.day == _selectedDate!.date.day &&
-                      day.month == _selectedDate!.date.month &&
-                      day.year == _selectedDate!.date.year;
+                      day.day == _selectedDate!.date!.day &&
+                      day.month == _selectedDate!.date!.month &&
+                      day.year == _selectedDate!.date!.year;
                 },
               ),
             ),

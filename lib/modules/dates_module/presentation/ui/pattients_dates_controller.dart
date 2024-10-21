@@ -4,9 +4,7 @@ import '../../../../helpers/paths.dart';
 
 class PattientsDatesController extends StatefulWidget {
   final int idUser;
-  final Function changeIndex;
-  const PattientsDatesController(
-      {super.key, required this.idUser, required this.changeIndex});
+  const PattientsDatesController({super.key, required this.idUser});
 
   @override
   State<PattientsDatesController> createState() =>
@@ -27,23 +25,27 @@ class _PattientsDatesControllerState extends State<PattientsDatesController> {
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           if (state.status == PattientsDatesStatus.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           final dates = state.dates;
 
           if (dates.isEmpty) {
             return const Scaffold(
+                appBar: HeaderWidget(
+                    title: "Solicitudes de citas", isForReturn: true),
                 body: Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  'No tienes solicitudes de citas pendientes, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ));
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text(
+                      'No tienes solicitudes de citas pendientes, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ));
           }
 
           return SpecialistDatesScreen(

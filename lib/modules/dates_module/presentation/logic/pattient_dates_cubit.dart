@@ -12,7 +12,8 @@ class PattientsDatesCubit extends Cubit<PattientsDatesState> {
   Future<void> getPattientsDates(int idUser) async {
     emit(state.copyWith(status: PattientsDatesStatus.loading));
     try {
-      final dates = await _repository.getDatesRequest(idUser);
+      List<DateRequestModel> dates = await _repository.getDatesRequest(idUser);
+
       emit(state.copyWith(status: PattientsDatesStatus.loaded, dates: dates));
     } catch (e) {
       emit(state.copyWith(status: PattientsDatesStatus.error));

@@ -91,7 +91,7 @@ class _StartScreenState extends State<StartScreen> {
                           ],
                         ),
                         child: Text(
-                          'Te damos la bienvenida a Emotions&Care',
+                          '¡Te damos la bienvenida a Emotions&Care!',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.width * 0.04,

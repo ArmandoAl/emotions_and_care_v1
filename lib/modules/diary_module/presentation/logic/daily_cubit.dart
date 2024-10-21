@@ -56,4 +56,8 @@ class DailyCubit extends Cubit<DailyState> {
   void changeVisibility(bool visible) {
     emit(state.copyWith(visible: visible));
   }
+
+  void clean() {
+    emit(const DailyState());
+  }
 }

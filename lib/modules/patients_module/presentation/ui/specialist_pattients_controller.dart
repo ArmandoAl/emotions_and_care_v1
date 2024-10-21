@@ -4,9 +4,10 @@ import '../../../../helpers/paths.dart';
 
 class SpecialistPattientsController extends StatefulWidget {
   final int idUser;
-  final Function changeIndex;
-  const SpecialistPattientsController(
-      {super.key, required this.idUser, required this.changeIndex});
+  const SpecialistPattientsController({
+    super.key,
+    required this.idUser,
+  });
 
   @override
   State<SpecialistPattientsController> createState() =>
@@ -28,8 +29,11 @@ class _SpecialistPattientsControllerState
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
           if (state.status == PattientsStatus.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
 
@@ -37,15 +41,16 @@ class _SpecialistPattientsControllerState
 
           if (patients.isEmpty) {
             return const Scaffold(
+                backgroundColor: Colors.white,
                 body: Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                  'Aun no tienes pacientes asignados, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes.',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ));
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text(
+                      'Aun no tienes pacientes asignados, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes.',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ));
           }
 
           return SpecialisPattientsScreen(

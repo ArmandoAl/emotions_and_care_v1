@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showMessageDialog(context, '¡Bienvenido!',
-              "Bienvenido a Emotions&Care. Abre el menú lateral y dirígete a la sección de Cuestionarios para completar tu registro.");
+              "Bienvenido(a) a Emotions&Care. dirígete al menú lateral y dirígete a la sección de Cuestionarios para completar tu registro.");
         });
       }
 
@@ -206,7 +206,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               if (widget.registerFlow != "registerSuccess") {
                                 final userProvider =
                                     context.read<BegginCubit>();
-                                userProvider.setRegisterFlow("registerSuccess");
+                                userProvider.setRegisterFlow(
+                                    userProvider.state.patientModel!.id!,
+                                    "registerSuccess");
 
                                 await userProvider
                                     .setRegisterSet("registerSuccess");

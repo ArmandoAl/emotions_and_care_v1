@@ -15,8 +15,8 @@ Future<void> showTableCaledarBottomSheet(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           //si el tema es oscuro el color de fondo sera gris oscuro
-          color: uiCubit.state.themes![uiCubit.state.selectedTheme] ==
-                  uiCubit.state.themes![3]
+          color: uiCubit.state.themes[uiCubit.state.selectedTheme] ==
+                  uiCubit.state.themes[3]
               ? Colors.black
               : Theme.of(context).scaffoldBackgroundColor,
 
@@ -66,6 +66,7 @@ Widget specialistWidget(
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
+          color: Colors.blue[100],
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -98,6 +99,7 @@ Widget specialistWidget(
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
+        color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),

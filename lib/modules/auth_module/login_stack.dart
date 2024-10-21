@@ -25,6 +25,7 @@ class _LoginStackState extends State<LoginStack> {
   Widget build(BuildContext context) {
     if (userProvider.state.status == BegginStatus.loading) {
       return const Scaffold(
+        backgroundColor: Colors.white,
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -34,8 +35,7 @@ class _LoginStackState extends State<LoginStack> {
     if (userProvider.state.isPatient == true) {
       return const PattientStack();
     } else {
-      // return const SpecialistStack();
-      return Container();
+      return const SpecialistStack();
     }
   }
 }
@@ -135,17 +135,6 @@ class _PattientStackState extends State<PattientStack> {
             drawer: DrawerWidget(
               currentIndex: state.selectedItem.index,
               changeIndex: (int) {},
-
-              // begginCubit: begginCubit,
-              // logout: () async {
-              //   // settingsCubit.clearCubit();
-              //   // opportunitiesCubit.clearCubit();
-              //   // dashboardCubit.clearCubit();
-              //   // avalCubit.clearCubit();
-              //   // priceGuideCubit.clearCubit();
-              //   // addVehicleCubit.clearCubit();
-              //   // inventoryCubit.clearCubit();
-              // },
             ),
             body: AnimatedSwitcher(
               switchInCurve: Curves.linear,
@@ -320,25 +309,323 @@ Widget _getContentForState(
           isPattient: begginCubit.state.isPatient!);
     case NavigationItem.community:
       return GlobalCommunityController(
-          changeIndex: (int) {},
           isPatient: begginCubit.state.isPatient!,
           patientModel: begginCubit.state.patientModel);
     case NavigationItem.schedule:
       return ScheduleController(
           patientModel: begginCubit.state.patientModel!,
-          changeIndex: (int) {},
           isPattient: begginCubit.state.isPatient!,
           especialistaModel: begginCubit.state.specialistModel);
     case NavigationItem.settings:
       return SettingsController(
-          userProvider: begginCubit,
-          changeIndex: (int) {},
-          isPattient: begginCubit.state.isPatient!);
+        userProvider: begginCubit,
+        isPattient: begginCubit.state.isPatient!,
+        logout: () {
+          scheduleCubit.clean();
+          homeCubit.clean();
+          // emotionCubit.clean();
+          communityCubit.clean();
+          dailyCubit.clean();
+          testCubit.clean();
+          uiCubit.clean();
+          begginCubit.logout();
+        },
+      );
     case NavigationItem.patients:
       return Container();
     case NavigationItem.scheduleSpecialist:
       return Container();
     case NavigationItem.patientDates:
       return Container();
+  }
+}
+
+class SpecialistStack extends StatefulWidget {
+  const SpecialistStack({super.key});
+
+  @override
+  State<SpecialistStack> createState() => _SpecialistStackState();
+}
+
+class _SpecialistStackState extends State<SpecialistStack> {
+  late NavigationBloc navigationBloc;
+  late BegginCubit begginCubit;
+  late CommunityCubit communityCubit;
+  late DailyCubit dailyCubit;
+  late EmotionCubit emotionCubit;
+  late ScheduleCubit scheduleCubit;
+  late HomeCubit homeCubit;
+  late TestCubit testCubit;
+  late UICubit uiCubit;
+
+  @override
+  void initState() {
+    uiCubit = getIt<UICubit>();
+    begginCubit = getIt<BegginCubit>();
+
+    navigationBloc = NavigationBloc(
+      NavigationItem.home,
+    );
+
+    communityCubit = getIt<CommunityCubit>();
+    dailyCubit = getIt<DailyCubit>();
+    emotionCubit = getIt<EmotionCubit>();
+    scheduleCubit = getIt<ScheduleCubit>();
+    homeCubit = getIt<HomeCubit>();
+    testCubit = getIt<TestCubit>();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Emotions&Care',
+            style: TextStyle(color: Colors.black, fontSize: 25)),
+        centerTitle: false,
+        elevation: 5,
+      ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          //put a gradient here
+          color: Color(0xFFE3EDF3),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFE3EDF3), Color.fromARGB(255, 19, 110, 163)],
+          ),
+        ),
+        padding: const EdgeInsets.all(30),
+        child: ListView(children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.03,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SpecialistPattientsController(
+                  idUser: begginCubit.state.specialistModel!.id!,
+                );
+              }));
+            },
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.white.withOpacity(0.5),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text("Pacientes",
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.075,
+                            decoration: TextDecoration.none,
+                            color: Colors.black)),
+                  ),
+                  const SizedBox(width: 10),
+                  Icon(Icons.people,
+                      size: MediaQuery.of(context).size.width * 0.1),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ScheduleController(
+                    patientModel: null,
+                    isPattient: false,
+                    especialistaModel: begginCubit.state.specialistModel!);
+              }));
+            },
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.white.withOpacity(0.5),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text("Agenda",
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.075,
+                            decoration: TextDecoration.none,
+                            color: Colors.black)),
+                  ),
+                  const SizedBox(width: 10),
+                  Icon(Icons.date_range,
+                      size: MediaQuery.of(context).size.width * 0.1),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return PattientsDatesController(
+                  idUser: begginCubit.state.specialistModel!.id!,
+                );
+              }));
+            },
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.white.withOpacity(0.5),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text("Soliciudes de citas",
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.075,
+                            decoration: TextDecoration.none,
+                            color: Colors.black)),
+                  ),
+                  const SizedBox(width: 10),
+                  Icon(Icons.note_alt_rounded,
+                      size: MediaQuery.of(context).size.width * 0.1),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+          ),
+          GestureDetector(
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.white.withOpacity(0.5),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text("Solictudes de pacientes",
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.075,
+                            decoration: TextDecoration.none,
+                            color: Colors.black)),
+                  ),
+                  const SizedBox(width: 10),
+                  Icon(Icons.person,
+                      size: MediaQuery.of(context).size.width * 0.1),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GlobalCommunityController(
+                    specialistModel: begginCubit.state.specialistModel!,
+                    isPatient: false,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.white.withOpacity(0.5),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text("Comunidad",
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.075,
+                            decoration: TextDecoration.none,
+                            color: Colors.black)),
+                  ),
+                  const SizedBox(width: 10),
+                  Icon(Icons.people,
+                      size: MediaQuery.of(context).size.width * 0.1),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SettingsController(
+                  userProvider: begginCubit,
+                  isPattient: false,
+                  logout: () {},
+                );
+              }));
+            },
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.white.withOpacity(0.5),
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text("Configuración",
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.075,
+                            decoration: TextDecoration.none,
+                            color: Colors.black)),
+                  ),
+                  const SizedBox(width: 10),
+                  Icon(Icons.settings,
+                      size: MediaQuery.of(context).size.width * 0.1),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.05,
+          ),
+        ]),
+      ),
+    );
   }
 }

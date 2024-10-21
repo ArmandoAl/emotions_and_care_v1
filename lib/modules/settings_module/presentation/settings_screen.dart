@@ -4,11 +4,13 @@ class SettingsScreen extends StatefulWidget {
   final BegginCubit userProvider;
   final bool isPattient;
   final UICubit uiProvider;
+  final Function logout;
   const SettingsScreen(
       {super.key,
       required this.userProvider,
       required this.isPattient,
-      required this.uiProvider});
+      required this.uiProvider,
+      required this.logout});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -137,8 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             () {
               // print("cerrar sesion");
-              widget.uiProvider.clean();
-              widget.userProvider.logout();
+              widget.logout();
 
               // Navigator.pop(context);
             },

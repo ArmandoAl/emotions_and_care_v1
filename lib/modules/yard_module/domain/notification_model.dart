@@ -9,11 +9,11 @@ enum RecomendationType { recomendacion, recordatorio }
 class NotificationModel {
   final int id;
   final String title;
-  final int type;
+  final NotificationType type;
   final String description;
   final DateTime? dateEmition;
   final int? idRecomendation;
-  final String? recomendationType;
+  final RecomendationType? recomendationType;
   final String? reference;
   final String? url;
 
@@ -32,11 +32,11 @@ class NotificationModel {
   NotificationModel copyWith({
     int? id,
     String? title,
-    int? type,
+    NotificationType? type,
     String? description,
     DateTime? dateEmition,
     int? idRecomendation,
-    String? recomendationType,
+    RecomendationType? recomendationType,
     String? reference,
     String? url,
   }) {
@@ -57,12 +57,12 @@ class NotificationModel {
     return NotificationModel(
       id: json['notificationId'],
       title: json['titulo'],
-      type: json['notificationType'],
+      type: NotificationType.values[json['notificationType']],
       description: json['descripcion'],
-      // idRecomendation: json['idRecomandacion'],
-      // recomendationType: RecomendationType.values[json['tipoRecomendacion']],
-      // reference: json['referencia'],
-      // url: json['url'],
+      idRecomendation: json['recomendationId'],
+      recomendationType: RecomendationType.values[json['recomendationType']],
+      reference: json['reference'],
+      url: json['url'],
     );
   }
 }

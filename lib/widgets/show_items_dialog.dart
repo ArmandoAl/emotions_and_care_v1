@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../config/assets/assets.dart';
 import '../helpers/paths.dart';
 
@@ -26,8 +27,10 @@ Future<void> showItemsDialog(
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
+                  final authCubit = context.read<BegginCubit>();
+
                   if (title == "Tus stickers") {
-                    uiCubit.setStickerInUse(
+                    uiCubit.setStickerInUse(authCubit.state.patientModel!.id!,
                         uiCubit.state.stickers![index], position);
                   } else {
                     uiCubit.setCurrentFlower(uiCubit.state.flowers[index]);
@@ -119,7 +122,10 @@ Future<void> showCustomDialog(
                               value: false,
                               onChanged: (value) {
                                 //  onCompletedChanged(value!);
-                              })
+                              }),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.075,
+                          ),
                         ],
                       )
                     : const SizedBox(),

@@ -47,11 +47,11 @@ class HistoryTestModel {
 }
 
 class GoalWithTestInfoModel {
-  final TestInfoModel testInfoModel;
+  final TestInfoModel? testInfoModel;
   final GoalModel? goalModel;
 
   GoalWithTestInfoModel({
-    required this.testInfoModel,
+    this.testInfoModel,
     this.goalModel,
   });
 
@@ -67,7 +67,9 @@ class GoalWithTestInfoModel {
 
   factory GoalWithTestInfoModel.fromJson(Map<String, dynamic> json) {
     return GoalWithTestInfoModel(
-      testInfoModel: TestInfoModel.fromJson(json['testInfoModel']),
+      testInfoModel: json['testInfoModel'] != null
+          ? TestInfoModel.fromJson(json['testInfoModel'])
+          : null,
       goalModel:
           json['logro'] != null ? GoalModel.fromJson(json['logro']) : null,
     );

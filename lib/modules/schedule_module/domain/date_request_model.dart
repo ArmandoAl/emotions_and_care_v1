@@ -2,13 +2,13 @@ import '../../../helpers/paths.dart';
 
 class DateRequestModel {
   int id;
-  DateModel date;
+  DateModel? date;
 
   DateRequestModel({required this.id, required this.date});
 
   factory DateRequestModel.fromJson(Map<String, dynamic> json) {
     return DateRequestModel(
-      id: json['idSolicitudCita'],
+      id: json['dateRequestId'],
       date: DateModel.fromJson(json['cita'], false),
     );
   }
@@ -16,7 +16,7 @@ class DateRequestModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'date': date.toJson(),
+      'date': date!.toJson(),
     };
   }
 

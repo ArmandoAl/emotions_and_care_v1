@@ -17,8 +17,6 @@ class CartRepository extends ICartRepository {
         body: jsonEncode(cart.toJson()),
       );
 
-      print(response.body);
-
       if (response.statusCode != 200) {
         throw Exception('Failed to add note');
       }

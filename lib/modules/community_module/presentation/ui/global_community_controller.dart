@@ -2,14 +2,12 @@ import 'package:emotions_and_care_v1/helpers/paths.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GlobalCommunityController extends StatefulWidget {
-  final Function(int) changeIndex;
   final PatientModel? patientModel;
   final SpecialistModel? specialistModel;
   final bool isPatient;
 
   const GlobalCommunityController(
       {super.key,
-      required this.changeIndex,
       this.patientModel,
       this.specialistModel,
       required this.isPatient});
@@ -26,6 +24,9 @@ class _GlobalCommunityControllerState extends State<GlobalCommunityController> {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return Scaffold(
+          appBar: widget.isPatient
+              ? null
+              : const HeaderWidget(title: "Comunidad", isForReturn: true),
           body: CommunityMenuScreen(
             onCartsTap: () {
               Navigator.push(

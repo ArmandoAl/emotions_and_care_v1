@@ -55,107 +55,57 @@ class _NewDateScreenState extends State<NewDateScreen> {
         height: double.infinity,
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.05),
-        child: ListView(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-            widget.isPatient
-                ? specialistWidget(
-                    context: context,
-                    specialist: widget.specialistModel,
-                    patientModel: widget.patientModel,
-                    isPatient: widget.isPatient,
-                  )
-                : pattientPicker(
-                    context: context,
-                    patient: pattient,
-                    setPattientId: (PatientModel patient) {
-                      setState(() {
-                        pattient = patient;
-                      });
-                    }),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            Row(
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () async {
-                    await showTableCaledarBottomSheet(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              widget.isPatient
+                  ? specialistWidget(
                       context: context,
-                      initialDate: _selectedDate,
-                      onDaySelected: (DateTime selectedDay) {
+                      specialist: widget.specialistModel,
+                      patientModel: widget.patientModel,
+                      isPatient: widget.isPatient,
+                    )
+                  : pattientPicker(
+                      context: context,
+                      patient: pattient,
+                      setPattientId: (PatientModel patient) {
                         setState(() {
-                          _selectedDate = selectedDay;
+                          pattient = patient;
                         });
-                      },
-                    );
-                  },
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.calendar_today,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '${_selectedDate.day} de ${Utils.getMonthName(_selectedDate.month)} de ${_selectedDate.year}',
-                        style: TextStyle(
-                          color: uiProvider.state.themes![
-                                      uiProvider.state.selectedTheme] ==
-                                  uiProvider.state.themes![3]
-                              ? Colors.white
-                              : Colors.black,
-                          fontSize: MediaQuery.of(context).size.width * 0.03,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                ElevatedButton(
+                      }),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              Row(
+                children: [
+                  ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     onPressed: () async {
-                      await showTimePicker(
-                        barrierColor: Colors.black.withOpacity(0.5),
-                        helpText: 'Selecciona la hora',
+                      await showTableCaledarBottomSheet(
                         context: context,
-                        initialTime: TimeOfDay.fromDateTime(_time),
-                      ).then((value) {
-                        if (value != null) {
+                        initialDate: _selectedDate,
+                        onDaySelected: (DateTime selectedDay) {
                           setState(() {
-                            _time = DateTime(
-                              _time.year,
-                              _time.month,
-                              _time.day,
-                              value.hour,
-                              value.minute,
-                            );
-                            //formato de 12 horas y agrega el AM o PM
+                            _selectedDate = selectedDay;
                           });
-                        }
-                      });
+                        },
+                      );
                     },
                     child: Row(
                       children: [
                         const Icon(
-                          Icons.access_time,
+                          Icons.calendar_today,
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          _time.hour > 12
-                              ? '${_time.hour - 12}:${_time.minute.toString().padLeft(2, '0')} PM'
-                              : '${_time.hour}:${_time.minute.toString().padLeft(2, '0')} AM',
+                          '${_selectedDate.day} de ${Utils.getMonthName(_selectedDate.month)} de ${_selectedDate.year}',
                           style: TextStyle(
-                            color: uiProvider.state.themes![
+                            color: uiProvider.state.themes[
                                         uiProvider.state.selectedTheme] ==
-                                    uiProvider.state.themes![3]
+                                    uiProvider.state.themes[3]
                                 ? Colors.white
                                 : Colors.black,
                             fontSize: MediaQuery.of(context).size.width * 0.03,
@@ -163,160 +113,218 @@ class _NewDateScreenState extends State<NewDateScreen> {
                           ),
                         ),
                       ],
-                    ))
-              ],
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.1,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: TextField(
-                //cuando el texto llega al final del campo de texto, el texto se desplaza hacia arriba
-                maxLines: null,
-                controller: _placeController,
-                decoration: InputDecoration(
-                  //sin bordes
-                  hintText: 'Lugar',
-                  prefixIcon: const Icon(Icons.place),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
-                ),
+                  const Spacer(),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () async {
+                        await showTimePicker(
+                          barrierColor: Colors.black.withOpacity(0.5),
+                          helpText: 'Selecciona la hora',
+                          context: context,
+                          initialTime: TimeOfDay.fromDateTime(_time),
+                        ).then((value) {
+                          if (value != null) {
+                            setState(() {
+                              _time = DateTime(
+                                _time.year,
+                                _time.month,
+                                _time.day,
+                                value.hour,
+                                value.minute,
+                              );
+                              //formato de 12 horas y agrega el AM o PM
+                            });
+                          }
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.access_time,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            _time.hour > 12
+                                ? '${_time.hour - 12}:${_time.minute.toString().padLeft(2, '0')} PM'
+                                : '${_time.hour}:${_time.minute.toString().padLeft(2, '0')} AM',
+                            style: TextStyle(
+                              color: uiProvider.state.themes[
+                                          uiProvider.state.selectedTheme] ==
+                                      uiProvider.state.themes[3]
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.03,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ))
+                ],
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-            Container(
-                height: MediaQuery.of(context).size.height * 0.3,
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextField(
                   //cuando el texto llega al final del campo de texto, el texto se desplaza hacia arriba
                   maxLines: null,
-                  expands: true,
-                  textAlign: TextAlign.start,
-                  textAlignVertical: TextAlignVertical.top,
-                  controller: _descriptionController,
+                  controller: _placeController,
                   decoration: InputDecoration(
                     //sin bordes
-                    hintText: 'Descripción (Opcional)',
-
+                    hintText: 'Lugar',
+                    prefixIcon: const Icon(Icons.place),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                )),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            ElevatedButton(
-                onPressed: () async {
-                  if (widget.isPatient == true &&
-                      widget.patientModel!.specialist == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          'No tienes un especialista asignado, por favor selecciona uno en la opcioo "Buscar especialista" en el menu de Agenda'),
-                    ));
-                    return;
-                  }
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              Container(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: TextField(
+                    //cuando el texto llega al final del campo de texto, el texto se desplaza hacia arriba
+                    maxLines: null,
+                    expands: true,
+                    textAlign: TextAlign.start,
+                    textAlignVertical: TextAlignVertical.top,
+                    controller: _descriptionController,
+                    decoration: InputDecoration(
+                      //sin bordes
+                      hintText: 'Descripción (Opcional)',
 
-                  if (widget.isPatient == false && pattient == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Por favor, seleccione un paciente'),
-                    ));
-                    return;
-                  }
-
-                  if (_placeController.text.isEmpty ||
-                      _descriptionController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          'Por favor, llene todos los campos y seleccione una fecha'),
-                    ));
-                    return;
-                  }
-
-                  if (_selectedDate.day == DateTime.now().day) {
-                    if (_time.isBefore(
-                        DateTime.now().add(const Duration(minutes: 30)))) {
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  )),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              ElevatedButton(
+                  onPressed: () async {
+                    if (widget.isPatient == true &&
+                        widget.patientModel!.specialist == null) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
-                            'Por favor, seleccione una hora valida, almenos media hora despues de la actual'),
+                            'No tienes un especialista asignado, por favor selecciona uno en la opcioo "Buscar especialista" en el menu de Agenda'),
                       ));
                       return;
                     }
-                  }
 
-                  if (_selectedDate.isBefore(DateTime.now())) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          'No puede seleccionar una fecha anterior a la actual'),
-                    ));
-                    return;
-                  }
-
-                  //si la fecha seleccionada ya esta en la lista de fechas
-                  for (var date in widget.dates!) {
-                    if (date.date.day == _selectedDate.day &&
-                        date.date.month == _selectedDate.month &&
-                        date.date.year == _selectedDate.year) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Ya tiene una cita para esta fecha'),
-                      ));
-                      return;
-                    }
-                  }
-
-                  setState(() {
-                    isLoading = true;
-                  });
-
-                  final date = DateModel(
-                    date: _selectedDate,
-                    hour: "${_time.hour}:${_time.minute}",
-                    place: _placeController.text,
-                    description: _descriptionController.text,
-                    confirmByPatient: widget.isPatient,
-                    confirmByEspetialist: !widget.isPatient,
-                  );
-
-                  if (widget.isPatient) {
-                    await widget.onSave!(date, widget.patientModel!.id!);
-                  } else {
-                    if (pattient == null) {
+                    if (widget.isPatient == false && pattient == null) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('Por favor, seleccione un paciente'),
                       ));
-                    } else {
-                      await widget.onSave!(date, pattient!.id!);
+                      return;
                     }
-                  }
 
-                  setState(() {
-                    isLoading = false;
-                  });
+                    if (_placeController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            'Por favor, llene todos los campos y seleccione una fecha'),
+                      ));
+                      return;
+                    }
 
-                  if (context.mounted) Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    //la cita no debe ser antes del dia actual, si es el dia actual la hora no debe ser antes de la hora actual
+                    if (_selectedDate.day < DateTime.now().day ||
+                        _selectedDate.month < DateTime.now().month ||
+                        _selectedDate.year < DateTime.now().year) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            'No puede seleccionar una fecha anterior a la actual'),
+                      ));
+                      return;
+                    }
+
+                    //la cita debe ser al menos con 1 hora de anticipacion a la hora actual
+                    if (_selectedDate.isAtSameMomentAs(DateTime.now())) {
+                      if (_time.isBefore(DateTime.now())) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              'No puede seleccionar una hora anterior a la actual'),
+                        ));
+                        return;
+                      }
+                    }
+
+                    //si la fecha seleccionada ya esta en la lista de fechas
+                    for (var date in widget.dates!) {
+                      if (date.date!.day == _selectedDate.day &&
+                          date.date!.month == _selectedDate.month &&
+                          date.date!.year == _selectedDate.year) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text('Ya tiene una cita para esta fecha'),
+                        ));
+                        return;
+                      }
+                    }
+
+                    setState(() {
+                      isLoading = true;
+                    });
+
+                    final date = DateModel(
+                      date: _selectedDate,
+                      hour: "${_time.hour}:${_time.minute}",
+                      place: _placeController.text,
+                      description: _descriptionController.text,
+                      confirmByPatient: widget.isPatient,
+                      confirmByEspetialist: !widget.isPatient,
+                    );
+
+                    if (widget.isPatient) {
+                      await widget.onSave!(date, widget.patientModel!.id!);
+                    } else {
+                      if (pattient == null) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text('Por favor, seleccione un paciente'),
+                        ));
+                      } else {
+                        await widget.onSave!(date, pattient!.id!);
+                      }
+                    }
+
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    if (context.mounted) Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
-                ),
-                child: isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text(
-                        'Guardar',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      )),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-          ],
+                  child: isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Guardar',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        )),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+            ],
+          ),
         ),
       ),
     );

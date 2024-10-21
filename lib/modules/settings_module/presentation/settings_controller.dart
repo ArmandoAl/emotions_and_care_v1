@@ -2,13 +2,13 @@ import '../../../helpers/paths.dart';
 
 class SettingsController extends StatefulWidget {
   final BegginCubit userProvider;
-  final Function(int)? changeIndex;
   final bool isPattient;
+  final Function logout;
   const SettingsController(
       {super.key,
       required this.userProvider,
-      required this.changeIndex,
-      required this.isPattient});
+      required this.isPattient,
+      required this.logout});
 
   @override
   State<SettingsController> createState() => _SettingsControllerState();
@@ -20,10 +20,14 @@ class _SettingsControllerState extends State<SettingsController> {
     final uiProvider = getIt<UICubit>();
 
     return Scaffold(
+      appBar: widget.isPattient
+          ? null
+          : const HeaderWidget(title: "Configuracion", isForReturn: true),
       body: SettingsScreen(
         userProvider: widget.userProvider,
         isPattient: widget.isPattient,
         uiProvider: uiProvider,
+        logout: widget.logout,
       ),
     );
   }

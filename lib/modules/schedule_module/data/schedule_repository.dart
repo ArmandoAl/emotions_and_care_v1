@@ -194,12 +194,12 @@ class ScheduleRepository implements IScheduleRepository {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode != 200) {
+        return [];
+      } else {
         return (jsonDecode(response.body) as List)
             .map((e) => DateRequestModel.fromJson(e))
             .toList();
-      } else {
-        return [];
       }
     } catch (e) {
       throw Exception('Failed to load schedules');

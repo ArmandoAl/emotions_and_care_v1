@@ -100,18 +100,21 @@ class _DateDetailState extends State<DateDetail> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.01,
                         ),
-                        Expanded(
-                          child: Text(
-                            "Fecha: ${widget.date.date.day}/${widget.date.date.month}/${widget.date.date.year} ${widget.date.hour}",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.05,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.none,
-                            ),
-                          ),
-                        ),
+                        widget.date.date != null
+                            ? Expanded(
+                                child: Text(
+                                  "Fecha: ${widget.date.date!.day}/${widget.date.date!.month}/${widget.date.date!.year} ${widget.date.hour ?? ''}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.05,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.none,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
                       ],
                     ),
                     SizedBox(
@@ -128,7 +131,7 @@ class _DateDetailState extends State<DateDetail> {
                         ),
                         Expanded(
                           child: Text(
-                            "Descripcion: ${widget.date.description}",
+                            "Descripcion: ${widget.date.description ?? ''}",
                             textAlign: TextAlign.justify,
                             style: TextStyle(
                               color: Colors.black,

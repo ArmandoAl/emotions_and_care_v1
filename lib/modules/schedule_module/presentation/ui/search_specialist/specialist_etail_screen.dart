@@ -230,8 +230,11 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                         });
 
                         if (context.mounted) {
-                          await showConfirmTextDialog(context,
-                              result ? "Especialista vinculado" : "Error");
+                          await showConfirmTextDialog(
+                              context,
+                              result
+                                  ? "Solicitud enviada, te notificaremos cuando el especialista responda a tu solicitud"
+                                  : "Error");
                         }
                         if (context.mounted) Navigator.pop(context);
                       },
@@ -239,7 +242,7 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                           ? const CircularProgressIndicator(
                               color: Colors.white,
                             )
-                          : Text("Vincular especialista",
+                          : Text("Solictar vinculación",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: MediaQuery.of(context).size.height *

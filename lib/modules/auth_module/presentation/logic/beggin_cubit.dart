@@ -14,7 +14,7 @@ class BegginCubit extends Cubit<BegginState> {
   }) : super(const BegginState());
 
   Future<String> multiLogin(String email, String password) async {
-    emit(state.copyWith(status: BegginStatus.login));
+    emit(state.copyWith(status: BegginStatus.loading));
 
     final response = await userRepoitory.multiLogin(email, password);
 
@@ -47,7 +47,7 @@ class BegginCubit extends Cubit<BegginState> {
       }
 
       emit(state.copyWith(
-        status: BegginStatus.loged,
+        status: BegginStatus.success,
         patientModel: response,
         isPatient: true,
         registerPatientFlow: status,
@@ -84,36 +84,13 @@ class BegginCubit extends Cubit<BegginState> {
     final user = jsonDecode(userData);
 
     if (user['cedulaProfesional'] != null) {
-      emit(state.copyWith(
-        status: BegginStatus.loged,
-        specialistModel: SpecialistModel.fromJson(user),
-        isPatient: false,
-        user: true,
-      ));
+      final specialist = SpecialistModel.fromJson(user);
+
+      await multiLogin(specialist.email!, specialist.password!);
     } else {
       final patientModel = PatientModel.fromJson(user, true);
 
-      String flow;
-
-      if (patientModel.registerStatus == "register") {
-        final registerPatientFlow =
-            await storageRepository.getRegisterPatientFlow();
-        if (registerPatientFlow != null) {
-          flow = registerPatientFlow;
-        } else {
-          flow = "register";
-        }
-      } else {
-        flow = "registerSuccess";
-      }
-
-      emit(state.copyWith(
-        status: BegginStatus.loged,
-        patientModel: PatientModel.fromJson(user, true),
-        isPatient: true,
-        registerPatientFlow: flow,
-        user: true,
-      ));
+      await multiLogin(patientModel.email!, patientModel.password!);
     }
   }
 
@@ -151,10 +128,9 @@ class BegginCubit extends Cubit<BegginState> {
       return 'Error al registrar paciente, el correo o teléfono ya están registrados';
     }
 
-    await storageRepository.saveRegisterPatientFlow(state.registerPatientFlow!);
+    await storageRepository.saveRegisterPatientFlow("register");
 
     emit(state.copyWith(
-      status: BegginStatus.success,
       isPatient: true,
     ));
     return 'success';
@@ -200,8 +176,9 @@ class BegginCubit extends Cubit<BegginState> {
     ));
   }
 
-  Future<void> setRegisterFlow(String flow) async {
+  Future<void> setRegisterFlow(int idPatient, String flow) async {
     await storageRepository.saveRegisterPatientFlow(flow);
+    await userRepoitory.setRegisterSet(idPatient, flow);
     emit(state.copyWith(registerPatientFlow: flow));
   }
 
@@ -249,7 +226,7 @@ class BegginCubit extends Cubit<BegginState> {
 
       return true;
     } else {
-      emit(state.copyWith(status: BegginStatus.error));
+      emit(state.copyWith(status: BegginStatus.errorSingingWithSpecialist));
       return false;
     }
   }

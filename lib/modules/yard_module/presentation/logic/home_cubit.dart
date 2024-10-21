@@ -38,6 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getNotifications(int id) async {
     emit(state.copyWith(status: HomeStatus.loading));
+
     try {
       List<NotificationModel> notifications = await repository.init(id);
 
@@ -48,5 +49,9 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (e) {
       emit(state.copyWith(status: HomeStatus.error));
     }
+  }
+
+  void clean() {
+    emit(const HomeState());
   }
 }

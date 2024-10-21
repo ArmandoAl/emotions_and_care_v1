@@ -14,10 +14,17 @@ class TestController extends StatefulWidget {
 }
 
 class _TestControllerState extends State<TestController> {
+  late final TestCubit _testCubit;
+
   @override
   void initState() {
+    _testCubit = getIt<TestCubit>();
+
+    if (_testCubit.state.testList.isEmpty) {
+      _testCubit.getTest(widget.patientModel.id!);
+    }
+
     super.initState();
-    context.read<TestCubit>().getTest(widget.patientModel.id!);
   }
 
   @override

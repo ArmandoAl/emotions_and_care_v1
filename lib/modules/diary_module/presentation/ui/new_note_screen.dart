@@ -53,19 +53,51 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
       builder: (context, state) {
         return Scaffold(
             appBar: AppBar(
-              title: Row(
-                children: [
-                  const Text('Escribe una nueva nota'),
-                  const Spacer(),
-                  Switch(
-                    activeColor: const Color(0xff2CB5E0),
-                    value: state.visible,
-                    onChanged: (visible) {
-                      widget.onVisible(visible);
-                    },
+              title: const Text('Nueva nota'),
+              actions: [
+                Switch(
+                  activeColor: const Color(0xff2CB5E0),
+                  value: state.visible,
+                  thumbIcon: WidgetStateProperty.all(
+                    Icon(
+                      state.visible ? Icons.lock : Icons.lock_open,
+                      color: state.visible ? Colors.black : Colors.white,
+                    ),
                   ),
-                ],
-              ),
+
+                  onChanged: (visible) {
+                    widget.onVisible(visible);
+                  },
+                  //put an icon here
+                ),
+                IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Proteger nota'),
+                          content: const Text(
+                              'Cuando te vincules con una especialista, el/ella puede acceder a tu diario para ayudarte en tu progreso, sin embargo, con el seguro de nota activado, no podrá ver esta nota. Asi que si deseas que tu especialista no vea esta nota, activa el seguro de nota. La idea es que cuando tu especialista quiera que escribas algo sobre un tema, este pueda ver esa nota, pero no las demás.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Cancelar'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Salir'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.info)),
+              ],
             ),
             body: Container(
               width: double.infinity,
@@ -193,9 +225,13 @@ void showEmotionsDialog({
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text('Selecciona una emoción'),
+        title: const Text('Selecciona una emoción',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            )),
         content: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.45,
+            height: MediaQuery.of(context).size.height * 0.5,
             width: MediaQuery.of(context).size.width * 0.8,
             child: BlocBuilder<EmotionCubit, EmotionState>(
               bloc: context.read<EmotionCubit>(),
@@ -226,9 +262,10 @@ void showEmotionsDialog({
                                     fontSize: 30,
                                     foreground: Paint()
                                       ..style = PaintingStyle.fill
-                                      ..color = emotion.color!)),
+                                      ..color = Colors.black)),
                             Text(emotion.name,
-                                style: const TextStyle(fontSize: 20)),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w500)),
                           ],
                         ),
                       );

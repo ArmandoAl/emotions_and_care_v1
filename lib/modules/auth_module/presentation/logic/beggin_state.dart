@@ -13,6 +13,7 @@ enum BegginStatus {
   loged,
   logind,
   notLoged,
+  errorSingingWithSpecialist
 }
 
 class BegginState extends Equatable {
@@ -30,7 +31,7 @@ class BegginState extends Equatable {
       this.specialistModel,
       this.isPatient,
       this.user = false,
-      this.registerPatientFlow = "registerSuccess",
+      this.registerPatientFlow = "register",
       this.registerSpecialistFlow});
 
   BegginState copyWith({
@@ -61,7 +62,7 @@ class BegginState extends Equatable {
         specialistModel ?? SpecialistModel(),
         isPatient ?? false,
         user,
-        registerPatientFlow ?? "registerSuccess",
+        registerPatientFlow ?? "register",
         registerSpecialistFlow ?? RegisterSpecialistFlow.registerSuccess,
       ];
 }

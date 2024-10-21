@@ -15,6 +15,7 @@ class _HomeControllerState extends State<HomeController> {
   @override
   void initState() {
     super.initState();
+
     context.read<HomeCubit>().getNotifications(widget.idUser);
   }
 

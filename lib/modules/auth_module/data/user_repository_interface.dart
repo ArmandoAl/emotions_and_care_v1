@@ -7,7 +7,7 @@ abstract class IUserRepository {
 
   Future<int> createSpecialist(SpecialistModel specialist);
 
-  Future<void> setRegisterSet(int id);
+  Future<void> setRegisterSet(int idPatient, String state);
 
   Future<void> changePrivacy(int patientId, bool notiActivated,
       bool dairyActivated, bool progressActivated);

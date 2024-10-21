@@ -5,13 +5,11 @@ import '../../../../helpers/paths.dart';
 
 class ScheduleController extends StatefulWidget {
   final PatientModel? patientModel;
-  final Function? changeIndex;
   final bool isPattient;
   final SpecialistModel? especialistaModel;
   const ScheduleController(
       {super.key,
       required this.patientModel,
-      required this.changeIndex,
       required this.isPattient,
       required this.especialistaModel});
 
@@ -51,33 +49,29 @@ class _ScheduleControllerState extends State<ScheduleController> {
           );
         }
         return Scaffold(
-          // appBar: widget.isPattient
-          //     ? HeaderWidget(
-          //         title: 'Agenda',
-          //         isForReturn: !widget.isPattient,
-          //         action: null)
-          //     : AppBar(
-          //         title: const Text('Agenda'),
-          //         actions: [
-          //           IconButton(
-          //             icon: const Icon(Icons.help),
-          //             color: Colors.black,
-          //             onPressed: () {
-          //               showDialog(
-          //                 context: context,
-          //                 builder: (context) {
-          //                   return const AlertDialog(
-          //                     title: Text('Ayuda'),
-          //                     content: Text(
-          //                         'En esta pantalla podrá ver las citas que tiene programadas, si desea ver más detalles de una cita, solo debe dar clic en la cita que desea ver.'),
-          //                   );
-          //                 },
-          //               );
-          //             },
-          //           ),
-          //         ],
-          //       ),
-
+          appBar: widget.isPattient
+              ? null
+              : AppBar(
+                  title: const Text('Agenda'),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.help),
+                      color: Colors.black,
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AlertDialog(
+                              title: Text('Ayuda'),
+                              content: Text(
+                                  'En esta pantalla podrá ver las citas que tiene programadas, si desea ver más detalles de una cita, solo debe dar clic en la cita que desea ver.'),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
           body: state.status == ScheduleStatus.loading
               ? Center(
                   child: Lottie.asset(Assets.brainLoading),

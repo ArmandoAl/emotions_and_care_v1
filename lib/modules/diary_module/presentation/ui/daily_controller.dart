@@ -20,11 +20,23 @@ class DailyController extends StatefulWidget {
 }
 
 class _DailyControllerState extends State<DailyController> {
+  late final DailyCubit dailyCubit;
+  late final EmotionCubit emotionCubit;
+
   @override
   void initState() {
+    dailyCubit = getIt<DailyCubit>();
+    emotionCubit = getIt<EmotionCubit>();
+
+    if (emotionCubit.state.emotions.isEmpty) {
+      emotionCubit.getEmotions();
+    }
+
+    if (dailyCubit.state.notes.isEmpty) {
+      dailyCubit.getNotes(widget.patientModel.id!);
+    }
+
     super.initState();
-    context.read<DailyCubit>().getNotes(widget.patientModel.id!);
-    context.read<EmotionCubit>().getEmotions();
   }
 
   @override
@@ -47,6 +59,11 @@ class _DailyControllerState extends State<DailyController> {
                   .toList();
 
           return Scaffold(
+            appBar: widget.isPattient
+                ? null
+                : HeaderWidget(
+                    title: "Diario de ${widget.patientModel.name}",
+                    isForReturn: true),
             body: state.result == DailyResult.loading
                 ? Center(
                     child: Lottie.asset(Assets.brainLoading),

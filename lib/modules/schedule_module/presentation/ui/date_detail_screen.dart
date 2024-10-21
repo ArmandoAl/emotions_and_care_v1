@@ -25,7 +25,7 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
   @override
   void initState() {
     super.initState();
-    descriptionController.text = widget.dateModel!.description;
+    descriptionController.text = widget.dateModel!.description ?? '';
   }
 
   @override
@@ -154,7 +154,7 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Fecha: ${widget.dateModel!.date.day}/${widget.dateModel!.date.month}/${widget.dateModel!.date.year} ",
+                      "Fecha: ${widget.dateModel!.date!.day}/${widget.dateModel!.date!.month}/${widget.dateModel!.date!.year} ",
                       style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width * 0.05,
                         fontWeight: FontWeight.bold,

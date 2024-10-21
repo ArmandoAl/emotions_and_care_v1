@@ -198,7 +198,7 @@ Widget questionItems(
                   await uiProvider.getSticker(result.goalModel!.idSticker!);
                 }
 
-                setResultState(result.testInfoModel.resultado);
+                setResultState(result.testInfoModel!.resultado);
                 setGoal(result.goalModel);
               }
 

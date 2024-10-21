@@ -21,34 +21,32 @@ class _CommunityMenuScreenState extends State<CommunityMenuScreen> {
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
-      child: ListView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-          Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.07),
-              child: GestureDetector(
-                onTap: widget.onCartsTap,
-                child: Stack(children: [
-                  Image.asset(
-                    Assets.menuCarta,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                  ),
-                ]),
-              )),
+          GestureDetector(
+            onTap: widget.onCartsTap,
+            child: Stack(children: [
+              Image.asset(
+                Assets.menuCarta,
+                width: MediaQuery.of(context).size.width * 0.8,
+              ),
+            ]),
+          ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.065),
-          Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.07),
-              child: GestureDetector(
-                onTap: () async {
-                  await showCommingSoonDialog(context);
-                },
-                child: Image.asset(
-                  Assets.menuPost,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                ),
-              )),
+          // Padding(
+          //     padding: EdgeInsets.symmetric(
+          //         horizontal: MediaQuery.of(context).size.width * 0.07),
+          //     child: GestureDetector(
+          //       onTap: () async {
+          //         await showCommingSoonDialog(context);
+          //       },
+          //       child: Image.asset(
+          //         Assets.menuPost,
+          //         width: MediaQuery.of(context).size.width * 0.8,
+          //       ),
+          //     )),
         ],
       ),
     );

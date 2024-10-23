@@ -31,7 +31,7 @@ class BegginState extends Equatable {
       this.specialistModel,
       this.isPatient,
       this.user = false,
-      this.registerPatientFlow = "register",
+      this.registerPatientFlow = "registerSuccess",
       this.registerSpecialistFlow});
 
   BegginState copyWith({
@@ -62,7 +62,7 @@ class BegginState extends Equatable {
         specialistModel ?? SpecialistModel(),
         isPatient ?? false,
         user,
-        registerPatientFlow ?? "register",
+        registerPatientFlow ?? "registerSuccess",
         registerSpecialistFlow ?? RegisterSpecialistFlow.registerSuccess,
       ];
 }

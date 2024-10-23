@@ -156,7 +156,7 @@ class UICubit extends Cubit<UIState> {
       stickersInUse[index] = sticker;
     }
 
-    uiRepoitory.setStickerInInterface(idpatient, sticker, index + 1);
+    //uiRepoitory.setStickerInInterface(idpatient, sticker, index + 1);
 
     emit(state.copyWith(stickersInUse: stickersInUse));
   }

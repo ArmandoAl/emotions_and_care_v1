@@ -40,9 +40,11 @@ class _SpecialistPattientsControllerState
           final patients = state.patients;
 
           if (patients.isEmpty) {
-            return const Scaffold(
-                backgroundColor: Colors.white,
-                body: Center(
+            return Scaffold(
+                appBar: AppBar(
+                  title: const Text('Pacientes'),
+                ),
+                body: const Center(
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text(

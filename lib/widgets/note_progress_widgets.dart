@@ -237,7 +237,7 @@ Widget emotionsForWeekWidgetForStaticts(
                       //put the emotion icon in the center of the pie chart
                       title: emotionIcons[e],
                       titleStyle: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: MediaQuery.of(context).size.width * 0.05,
                       ),
                       radius: MediaQuery.of(context).size.width * 0.1,
@@ -268,7 +268,7 @@ Widget percentWidget(BuildContext context, double percent, Color color) {
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: MediaQuery.of(context).size.width * 0.025,
-              color: Colors.white),
+              color: Colors.black),
         ),
       ));
 }

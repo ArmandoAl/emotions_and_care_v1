@@ -56,6 +56,7 @@ class _PattientStackState extends State<PattientStack> {
   late ScheduleCubit scheduleCubit;
   late HomeCubit homeCubit;
   late TestCubit testCubit;
+  late PattientsDatesCubit pattientsDatesCubit;
   late UICubit uiCubit;
   late Widget _content;
 
@@ -74,6 +75,7 @@ class _PattientStackState extends State<PattientStack> {
     scheduleCubit = getIt<ScheduleCubit>();
     homeCubit = getIt<HomeCubit>();
     testCubit = getIt<TestCubit>();
+    pattientsDatesCubit = getIt<PattientsDatesCubit>();
 
     _content = _getContentForState(
       navigationBloc.state.selectedItem,
@@ -83,6 +85,7 @@ class _PattientStackState extends State<PattientStack> {
       emotionCubit,
       scheduleCubit,
       homeCubit,
+      pattientsDatesCubit,
       testCubit,
       uiCubit,
     );
@@ -108,6 +111,7 @@ class _PattientStackState extends State<PattientStack> {
                 emotionCubit,
                 scheduleCubit,
                 homeCubit,
+                pattientsDatesCubit,
                 testCubit,
                 uiCubit);
           });
@@ -290,6 +294,7 @@ Widget _getContentForState(
   EmotionCubit emotionCubit,
   ScheduleCubit scheduleCubit,
   HomeCubit homeCubit,
+  PattientsDatesCubit pattientsDatesCubit,
   TestCubit testCubit,
   UICubit uiCubit,
 ) {
@@ -329,6 +334,7 @@ Widget _getContentForState(
           testCubit.clean();
           uiCubit.clean();
           begginCubit.logout();
+          pattientsDatesCubit.clean();
         },
       );
     case NavigationItem.patients:
@@ -356,6 +362,7 @@ class _SpecialistStackState extends State<SpecialistStack> {
   late ScheduleCubit scheduleCubit;
   late HomeCubit homeCubit;
   late TestCubit testCubit;
+  late PattientsDatesCubit pattientsDatesCubit;
   late UICubit uiCubit;
 
   @override
@@ -373,6 +380,7 @@ class _SpecialistStackState extends State<SpecialistStack> {
     scheduleCubit = getIt<ScheduleCubit>();
     homeCubit = getIt<HomeCubit>();
     testCubit = getIt<TestCubit>();
+    pattientsDatesCubit = getIt<PattientsDatesCubit>();
     super.initState();
   }
 
@@ -591,7 +599,19 @@ class _SpecialistStackState extends State<SpecialistStack> {
                 return SettingsController(
                   userProvider: begginCubit,
                   isPattient: false,
-                  logout: () {},
+                  logout: () {
+                    scheduleCubit.clean();
+                    homeCubit.clean();
+                    // emotionCubit.clean();
+                    communityCubit.clean();
+                    dailyCubit.clean();
+                    testCubit.clean();
+                    uiCubit.clean();
+
+                    pattientsDatesCubit.clean();
+
+                    begginCubit.logout();
+                  },
                 );
               }));
             },

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:emotions_and_care_v1/helpers/paths.dart';
 
 class HeaderWidget extends StatefulWidget implements PreferredSizeWidget {
@@ -22,71 +23,72 @@ class _HeaderWidgetState extends State<HeaderWidget>
     with TickerProviderStateMixin {
   late BegginCubit begginCubit;
   AnimationController? _buttonController;
-  Animation<double>? _buttonAnimation;
+  Animation<Color?>? _buttonAnimation;
   String status = "";
   bool animatedMenu = false;
+  bool _isControllerDisposed = false; // Nueva bandera para rastrear el estado
+  StreamSubscription? _cubitSubscription;
 
   @override
   void initState() {
+    super.initState();
     begginCubit = getIt<BegginCubit>();
     animatedMenu = animatedMenuBools[
-            begginCubit.state.registerPatientFlow ?? "register"] ??
+            begginCubit.state.registerPatientFlow ?? "registerSuccess"] ??
         false;
 
     if (animatedMenu) {
-      _buttonController = AnimationController(
-        vsync: this,
-        duration: const Duration(seconds: 1),
-      )..repeat(reverse: true);
-
-      _buttonAnimation = Tween<double>(begin: 1, end: 1.1).animate(
-        CurvedAnimation(
-          parent: _buttonController!,
-          curve: Curves.easeInOut,
-        ),
-      );
+      _createAnimationController();
     }
 
-    //listener of the begginCubit state status
-    begginCubit.stream.listen((state) {
+    // Escuchar el stream del cubit y almacenar la suscripción
+    _cubitSubscription = begginCubit.stream.listen((state) {
+      if (!mounted) return; // Verificar si el widget está montado
+
       setState(() {
         status = state.registerPatientFlow ?? "";
-
         animatedMenu = animatedMenuBools[status]!;
 
         if (animatedMenu) {
-          // Si ya existe un controlador, lo desecha antes de crear uno nuevo
-          _buttonController?.dispose();
-          _buttonController = AnimationController(
-            vsync: this,
-            duration: const Duration(seconds: 1),
-          )..repeat(reverse: true);
-
-          _buttonAnimation = Tween<double>(begin: 1, end: 1.1).animate(
-            CurvedAnimation(
-              parent: _buttonController!,
-              curve: Curves.easeInOut,
-            ),
-          );
+          _disposeAnimationController(); // Asegurarse de eliminar el anterior
+          _createAnimationController();
         } else {
-          _buttonController!.dispose();
+          _disposeAnimationController();
         }
       });
     });
+  }
 
-    super.initState();
+  void _createAnimationController() {
+    _isControllerDisposed = false; // Restablecer bandera
+    _buttonController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat(reverse: true);
+
+    _buttonAnimation = ColorTween(
+      begin: const Color.fromARGB(255, 89, 8, 230),
+      end: const Color.fromARGB(255, 251, 255, 0),
+    ).animate(_buttonController!);
+  }
+
+  void _disposeAnimationController() {
+    if (!_isControllerDisposed) {
+      _buttonController?.dispose();
+      _isControllerDisposed = true; // Marcar como eliminado
+    }
   }
 
   @override
   void dispose() {
-    _buttonController?.dispose();
+    _cubitSubscription?.cancel(); // Cancelar la suscripción al stream
+    _disposeAnimationController(); // Eliminar el controlador si es necesario
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      //elevation: 1,
       shadowColor: Colors.black,
       shape: widget.isForReturn
           ? const RoundedRectangleBorder(
@@ -117,18 +119,13 @@ class _HeaderWidgetState extends State<HeaderWidget>
                 ? AnimatedBuilder(
                     animation: _buttonController!,
                     builder: (context, child) {
-                      return Transform.scale(
-                        scale: _buttonAnimation!.value,
-                        child: IconButton(
-                          icon: Icon(Icons.menu,
-                              color: const Color(
-                                0xff064ACB,
-                              ),
-                              size: MediaQuery.of(context).size.width * 0.1),
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                        ),
+                      return IconButton(
+                        icon: Icon(Icons.menu,
+                            color: _buttonAnimation!.value ?? Colors.black,
+                            size: MediaQuery.of(context).size.width * 0.08),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
                       );
                     },
                   )

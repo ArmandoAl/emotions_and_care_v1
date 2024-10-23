@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../config/assets/assets.dart';
 import '../../../helpers/paths.dart';
 
@@ -13,7 +15,70 @@ class CustomMenuScreen extends StatefulWidget {
   State<CustomMenuScreen> createState() => _CustomMenuScreenState();
 }
 
-class _CustomMenuScreenState extends State<CustomMenuScreen> {
+class _CustomMenuScreenState extends State<CustomMenuScreen>
+    with SingleTickerProviderStateMixin {
+  late BegginCubit userProvider;
+  bool animatedMenu = false;
+  AnimationController? _animationController;
+  Animation<Color?>? _animation;
+  bool _isControllerDisposed = false;
+
+  StreamSubscription? _cubitSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    userProvider = widget.userProvider;
+    animatedMenu = animatedMenuBools[
+            userProvider.state.registerPatientFlow ?? "registerSuccess"] ??
+        false;
+
+    if (animatedMenu) {
+      _createAnimationController();
+    }
+
+    _cubitSubscription = userProvider.stream.listen((state) {
+      if (!mounted) return;
+
+      setState(() {
+        animatedMenu =
+            animatedMenuBools[state.registerPatientFlow ?? "registerSuccess"]!;
+        if (animatedMenu) {
+          _disposeAnimationController();
+          _createAnimationController();
+        } else {
+          _disposeAnimationController();
+        }
+      });
+    });
+  }
+
+  void _createAnimationController() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    )..repeat(reverse: true);
+
+    _animation = ColorTween(
+      begin: const Color.fromARGB(255, 224, 10, 10),
+      end: const Color.fromARGB(255, 56, 5, 159),
+    ).animate(_animationController!);
+  }
+
+  void _disposeAnimationController() {
+    if (_isControllerDisposed) return;
+
+    _animationController?.dispose();
+    _isControllerDisposed = true;
+  }
+
+  @override
+  void dispose() {
+    _cubitSubscription?.cancel();
+    _disposeAnimationController();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,76 +92,68 @@ class _CustomMenuScreenState extends State<CustomMenuScreen> {
         child: ListView(
           children: [
             listItemCustom(
-              context,
-              "Paleta de colores",
-              const AssetImage(
-                Assets.colorPallete,
-              ),
-              () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChangeUiItemScreen(
-                      userProvider: widget.userProvider,
-                      uiProvider: widget.uiProvider,
-                      itemType: ItemUiType.colores,
-                      items: [
-                        widget.uiProvider.state.themes[0],
-                        widget.uiProvider.state.themes[1],
-                        widget.uiProvider.state.themes[2],
-                        widget.uiProvider.state.themes[3],
-                      ],
-                      blocks: const [false, false, true, false],
-                    ),
+                context,
+                "Paleta de colores",
+                const AssetImage(
+                  Assets.colorPallete,
+                ), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChangeUiItemScreen(
+                    userProvider: widget.userProvider,
+                    uiProvider: widget.uiProvider,
+                    itemType: ItemUiType.colores,
+                    items: [
+                      widget.uiProvider.state.themes[0],
+                      widget.uiProvider.state.themes[1],
+                      widget.uiProvider.state.themes[2],
+                      widget.uiProvider.state.themes[3],
+                    ],
+                    blocks: const [false, false, true, false],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            }, animatedMenu, false, _animationController, _animation),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+            listItemCustom(context, "Fondo de pantalla",
+                const AssetImage(Assets.backPickerIcon), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChangeUiItemScreen(
+                    userProvider: widget.userProvider,
+                    uiProvider: widget.uiProvider,
+                    itemType: ItemUiType.fondo,
+                    items: const [
+                      Assets.backgroundstatic_1,
+                      Assets.backgroundstatic_2,
+                      Assets.backgroundstatic_3,
+                      Assets.backgroundstatic_4
+                    ],
+                    blocks: const [false, true, false, false],
+                  ),
+                ),
+              );
+            }, animatedMenu, false, _animationController, _animation),
             SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             listItemCustom(
-              context,
-              "Fondo de pantalla",
-              const AssetImage(Assets.backPickerIcon),
-              () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChangeUiItemScreen(
-                      userProvider: widget.userProvider,
-                      uiProvider: widget.uiProvider,
-                      itemType: ItemUiType.fondo,
-                      items: const [
-                        Assets.backgroundstatic_1,
-                        Assets.backgroundstatic_2,
-                        Assets.backgroundstatic_3,
-                        Assets.backgroundstatic_4
-                      ],
-                      blocks: const [false, true, false, false],
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-            listItemCustom(
-              context,
-              "Perzonalizar jardín",
-              const AssetImage(
-                Assets.patioIcon,
-              ),
-              () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomeScreen(
-                            plane: null,
-                            tap: () {},
-                            registerFlow: null,
-                            customEnable: true,
-                          )),
-                );
-              },
-            ),
+                context,
+                "Perzonalizar jardín",
+                const AssetImage(
+                  Assets.patioIcon,
+                ), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomeScreen(
+                          plane: null,
+                          tap: () {},
+                          registerFlow: null,
+                          customEnable: true,
+                        )),
+              );
+            }, false, animatedMenu, _animationController, _animation),
           ],
         ),
       ),
@@ -109,19 +166,36 @@ Widget listItemCustom(
   String title,
   AssetImage icon,
   Function onTap,
+  bool disable,
+  bool animate,
+  AnimationController? animationController,
+  Animation<Color?>? animation,
 ) {
   return InkWell(
     onTap: () {
-      onTap();
+      if (!disable) {
+        onTap();
+      }
     },
     child: Container(
       padding: const EdgeInsets.all(15),
       child: Row(
         children: [
-          Text(
-            title,
-            style: const TextStyle(fontSize: 20),
-          ),
+          disable == false && animate == true
+              ? AnimatedBuilder(
+                  animation: animationController!,
+                  builder: (context, child) => Text(
+                    title,
+                    style: TextStyle(
+                        color: animation!.value ?? Colors.black, fontSize: 22),
+                  ),
+                )
+              : Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: disable ? Colors.grey : Colors.black),
+                ),
           const Spacer(),
           Image(
             image: icon,

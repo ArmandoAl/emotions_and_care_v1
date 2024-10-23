@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../helpers/paths.dart';
 
 class PattientsDatesCubit extends Cubit<PattientsDatesState> {
@@ -61,5 +60,9 @@ class PattientsDatesCubit extends Cubit<PattientsDatesState> {
       emit(state.copyWith(status: PattientsDatesStatus.error));
       return false;
     }
+  }
+
+  void clean() {
+    emit(const PattientsDatesState());
   }
 }

@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Timer? _timer;
 
   AnimationController? _buttonController;
-  Animation<double>? _buttonAnimation;
+  Animation<Color?>? _buttonAnimation;
 
   AnimationController? _stickersController;
   Animation<double>? _stickersAnimation;
@@ -58,10 +58,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         )..repeat(reverse: true);
 
         // Configurar la animación del botón
-        _buttonAnimation = Tween<double>(
-          begin: 1.0,
-          end:
-              1.1, // Cambia este valor a lo que desees (un poco más grande que 1.0)
+        _buttonAnimation = ColorTween(
+          begin: const Color.fromARGB(255, 224, 10, 10),
+          end: const Color.fromARGB(255, 0, 0, 0),
         ).animate(
           CurvedAnimation(
             parent: _buttonController!,
@@ -223,20 +222,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ? AnimatedBuilder(
                               animation: _buttonController!,
                               builder: (context, child) {
-                                return Transform.scale(
-                                  scale: _buttonAnimation!.value,
-                                  child: IconButton(
-                                    icon: Icon(Icons.menu,
-                                        color: const Color(
-                                          0xff064ACB,
-                                        ),
-                                        size:
-                                            MediaQuery.of(context).size.width *
-                                                0.1),
-                                    onPressed: () {
-                                      Scaffold.of(context).openDrawer();
-                                    },
-                                  ),
+                                return IconButton(
+                                  icon: Icon(Icons.menu,
+                                      color: _buttonAnimation!.value ??
+                                          Colors.black,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.1),
+                                  onPressed: () {
+                                    Scaffold.of(context).openDrawer();
+                                  },
                                 );
                               },
                             )

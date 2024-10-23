@@ -463,7 +463,7 @@ Widget registerForm(
                         terms: "Términos y condiciones",
                       ),
                       type: UserType.specialist,
-                      token: 'kmoniibanxoruejxncetjgrbhnoqvhqceogriqvhngre',
+                      token: 'kmoniibanxoruejxncetjgrbhnoogriqvhngre',
                       tokenForRelate: '',
                       bornDate: DateTime.now(),
                       focus: focusController.text,

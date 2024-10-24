@@ -9,34 +9,69 @@ enum FlowerState {
 
 class FlowerModel {
   int? id;
-  List<String>? urls;
-  FlowerState? state = FlowerState.initialFlowet;
+  String? name;
+  List<FlowerImageModel>? urls;
 
-  FlowerModel({this.id, this.urls, this.state});
+  FlowerModel({this.id, this.urls, this.name});
 
   FlowerModel copyWith({
     int? id,
-    List<String>? urls,
+    String? name,
+    List<FlowerImageModel>? urls,
     FlowerState? state,
   }) {
     return FlowerModel(
       id: id ?? this.id,
+      name: name ?? this.name,
       urls: urls ?? this.urls,
-      state: state ?? this.state,
     );
   }
 
   FlowerModel.fromJson(Map<String, dynamic> json) {
-    id = json['flowerId'];
-    urls = json['urls'].cast<String>();
-    state = FlowerState.values[json['state']];
+    id = json['flowerId'] ?? 0;
+    name = json['name'] ?? "";
+    urls = json['images'] != null
+        ? List<FlowerImageModel>.from(
+            json['images'].map((x) => FlowerImageModel.fromJson(x)))
+        : [];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['flowerId'] = id;
-    data['urls'] = urls;
-    data['state'] = state!.index;
-    return data;
+    return {
+      'flowerId': id,
+      'name': name,
+      'urls': urls!.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class FlowerImageModel {
+  final int id;
+  final String url;
+
+  FlowerImageModel({required this.url, required this.id});
+
+  FlowerImageModel copyWith({
+    String? url,
+    int? id,
+  }) {
+    return FlowerImageModel(
+      url: url ?? this.url,
+      id: id ?? this.id,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'url': url,
+      'int': id,
+    };
+  }
+
+  factory FlowerImageModel.fromJson(Map<String, dynamic> json) {
+    return FlowerImageModel(
+      url: json['url'] ?? "",
+      id: json['imageId'] ?? 0,
+    );
   }
 }

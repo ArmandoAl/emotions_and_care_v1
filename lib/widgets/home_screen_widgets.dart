@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+
 import '../../config/assets/assets.dart';
 import '../helpers/paths.dart';
 
@@ -20,11 +22,17 @@ Widget macetaConPlanta(
         children: [
           Positioned(
             bottom: 55,
-            left: MediaQuery.of(context).size.width * 0.42,
+            left: MediaQuery.of(context).size.width * 0.345,
             child: uiProvider.state.currentFlower != null
-                ? Image.asset(
-                    uiProvider.state.currentFlower!
-                        .urls![uiProvider.state.currentFlower!.state!.index],
+                ? CachedNetworkImage(
+                    imageUrl: uiProvider.state.currentFlower!.flower
+                        .urls![uiProvider.state.currentFlower!.state].url,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.width * 0.3,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   )
                 : const SizedBox(),
           ),

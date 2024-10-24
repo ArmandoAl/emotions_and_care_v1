@@ -91,7 +91,8 @@ class _PattientStackState extends State<PattientStack> {
     );
 
     uiCubit.setBackAssets(
-        begginCubit.state.patientModel!.userInterface!.userStickers);
+        begginCubit.state.patientModel!.userInterface!.userStickers,
+        begginCubit.state.patientModel!.userInterface!.userFlowers);
 
     super.initState();
   }

@@ -7,7 +7,6 @@ import 'modules/auth_module/presentation/ui/beggin_process_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupServiceLocator();
-
   runApp(const MyApp());
 }
 

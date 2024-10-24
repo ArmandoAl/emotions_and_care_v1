@@ -1,4 +1,3 @@
-import 'package:emotions_and_care_v1/config/assets/assets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../helpers/paths.dart';
@@ -81,13 +80,7 @@ class UICubit extends Cubit<UIState> {
       isDarkMode: false,
       themes: themes,
       currentFlower: null,
-      flowers: [
-        FlowerModel(
-          id: 1,
-          urls: [Assets.plant, Assets.flower],
-          state: FlowerState.initialFlowet,
-        ),
-      ],
+      flowers: [UserFlower(userFlowerId: 0, flower: FlowerModel(), state: 0)],
       stickers: List.generate(4, (index) => StickerModel.empty()),
       stickersInUse: List.generate(4, (index) => StickerModel.empty()),
       selectedBackground: selectedBackground,
@@ -95,7 +88,8 @@ class UICubit extends Cubit<UIState> {
     ));
   }
 
-  void setBackAssets(List<UserSticker>? userStickers) {
+  void setBackAssets(
+      List<UserSticker>? userStickers, List<UserFlower>? userFlowers) {
     emit(state.copyWith(
       status: UIStatus.loading,
     ));
@@ -111,9 +105,19 @@ class UICubit extends Cubit<UIState> {
           4 - newStickerInUse.length, (index) => StickerModel.empty()));
     }
 
+    //si las nuevas flores son menos de 4 , se rellenan con flores vacias
+
+    //busca la flor que tenga la posicion 1, si no la encuentra, asignas null
+    UserFlower? currentFlower =
+        userFlowers!.firstWhere((element) => element.position == 1, orElse: () {
+      return UserFlower(userFlowerId: -1, flower: FlowerModel(), state: 0);
+    });
+
     emit(state.copyWith(
         stickers: userStickers.map((e) => e.sticker).toList(),
         stickersInUse: newStickerInUse,
+        flowers: userFlowers,
+        currentFlower: currentFlower.userFlowerId == -1 ? null : currentFlower,
         status: UIStatus.success));
   }
 
@@ -135,15 +139,15 @@ class UICubit extends Cubit<UIState> {
     emit(state.copyWith(selectedBackground: background));
   }
 
-  void setCurrentFlower(FlowerModel flower) {
-    storageRepository.saveCurrentFlower(flower);
+  void setCurrentFlower(UserFlower flower) {
+    // storageRepository.saveCurrentFlower(flower);
     emit(state.copyWith(currentFlower: flower));
   }
 
-  void addFlower(FlowerModel flower) {
-    final List<FlowerModel> flowers = state.flowers;
+  void addFlower(UserFlower flower) {
+    final List<UserFlower> flowers = state.flowers;
     flowers.add(flower);
-    storageRepository.saveFlowers(flowers);
+    // storageRepository.saveFlowers(flowers);
     emit(state.copyWith(flowers: flowers));
   }
 
@@ -195,8 +199,8 @@ enum UIStatus { start, login, register, loading, error, success }
 class UIState extends Equatable {
   final UIStatus status;
   final bool isDarkMode;
-  final FlowerModel? currentFlower;
-  final List<FlowerModel> flowers;
+  final UserFlower? currentFlower;
+  final List<UserFlower> flowers;
   final List<StickerModel>? stickers;
   final String selectedBackground;
   final int selectedTheme;
@@ -218,8 +222,8 @@ class UIState extends Equatable {
   UIState copyWith({
     UIStatus? status,
     bool? isDarkMode,
-    FlowerModel? currentFlower,
-    List<FlowerModel>? flowers,
+    UserFlower? currentFlower,
+    List<UserFlower>? flowers,
     List<StickerModel>? stickers,
     String? selectedBackground,
     int? selectedTheme,

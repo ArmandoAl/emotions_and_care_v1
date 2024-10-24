@@ -76,14 +76,12 @@ class CommunityCubit extends Cubit<CommunityState> {
     }
   }
 
-  Future<GoalWithResponseCart> addResponse(
-      CartResponse cartResponse, int idCart, bool isPatient) async {
+  Future<GoalWithResponseCart> addResponse(CartResponse cartResponse,
+      int idCart, bool isPatient, int idPatient) async {
     emit(state.copyWith(status: CommunityStatus.loading));
     try {
       GoalWithResponseCart result = await repository.addResponse(
-          cartResponse,
-          idCart,
-          state.cartFromUser.where((element) => element.id == idCart).isEmpty);
+          cartResponse, idCart, haveAnswersInMyInbox(state, idPatient));
 
       emit(state.copyWith(
           cartFromCommunity: state.cartFromCommunity
@@ -101,4 +99,10 @@ class CommunityCubit extends Cubit<CommunityState> {
   void clean() {
     emit(const CommunityState());
   }
+}
+
+bool haveAnswersInMyInbox(CommunityState state, int userId) {
+  //busca si el user id existe en alguna respuesta de la comunidad, cualquier carta que tenga una respuesta con el id del usuario retorna true
+  return state.cartFromCommunity.any((element) =>
+      element.respuestas!.any((response) => response.idReceptor == userId));
 }

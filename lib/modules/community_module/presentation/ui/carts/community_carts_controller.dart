@@ -94,6 +94,9 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
                                   cartResponse,
                                   cart.id!,
                                   widget.isPatient,
+                                  widget.isPatient
+                                      ? widget.patient!.id!
+                                      : widget.specialist!.id!,
                                 );
                         if (res.goalModel != null) {
                           final UICubit uiProvider = getIt<UICubit>();

@@ -220,7 +220,8 @@ class UserFlower {
 
   Map<String, dynamic> toJson() {
     return {
-      'flowerId': flower.id,
+      'userFlowerId': flower.id,
+      'flower': flower.toJson(),
       'state': state,
       'position': position,
     };
@@ -228,10 +229,10 @@ class UserFlower {
 
   factory UserFlower.fromJson(Map<String, dynamic> json) {
     return UserFlower(
-      userFlowerId: json['userFlowerId'],
+      userFlowerId: json['userFlowerId'] ?? 0,
       flower: FlowerModel.fromJson(json['flower']),
-      state: json['state'],
-      position: json['position'],
+      state: json['state'] ?? 0,
+      position: json['position'] ?? 0,
     );
   }
 }
@@ -256,6 +257,14 @@ class UserSticker {
       userStickerId: userStickerId ?? this.userStickerId,
       sticker: sticker ?? this.sticker,
       position: position ?? this.position,
+    );
+  }
+
+  UserSticker empty() {
+    return UserSticker(
+      userStickerId: -1,
+      sticker: StickerModel.empty(),
+      position: 0,
     );
   }
 

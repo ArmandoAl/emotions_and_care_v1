@@ -37,13 +37,13 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
 
   void setIsPatient(bool isPatient) async {
     if (isPatient) {
-      termsRepository.getTerms(2).then((value) {
+      termsRepository.getTerms(1).then((value) {
         setState(() {
           termsText = value;
         });
       });
     } else {
-      termsRepository.getTerms(1).then((value) {
+      termsRepository.getTerms(2).then((value) {
         setState(() {
           termsText = value;
         });

@@ -52,16 +52,16 @@ class _TestControllerState extends State<TestController> {
                   testList: state.testList,
                   completedTestList: state.completedTestList,
                   onTestTap: (TestModel test) {
-                    // if (state.completedTestList
-                    //     .any((element) => element.testId == test.id)) {
-                    //   showDialogForCompletedTest(
-                    //       context,
-                    //       state.completedTestList
-                    //           .firstWhere(
-                    //               (element) => element.testId == test.id)
-                    //           .date);
-                    //   return;
-                    // }
+                    if (state.completedTestList
+                        .any((element) => element.testId == test.id)) {
+                      showDialogForCompletedTest(
+                          context,
+                          state.completedTestList
+                              .firstWhere(
+                                  (element) => element.testId == test.id)
+                              .date);
+                      return;
+                    }
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => CompleteTest(

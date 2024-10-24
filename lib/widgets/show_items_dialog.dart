@@ -46,10 +46,13 @@ Future<void> showItemsDialog(
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.sticky_note_2),
                       )
-                    : Image.asset(
-                        uiCubit.state.flowers[index].urls![0],
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.width * 0.2,
+                    : CachedNetworkImage(
+                        imageUrl: uiCubit.state.flowers[index].flower
+                            .urls![uiCubit.state.flowers[index].state].url,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
               );
             },
@@ -148,7 +151,9 @@ void showMessageDialog(BuildContext context, String title, String message) {
     builder: (context) {
       return AlertDialog(
         title: Text(title),
-        content: Text(message),
+        content: Text(message,
+            style:
+                TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05)),
         actions: <Widget>[
           TextButton(
             onPressed: () {

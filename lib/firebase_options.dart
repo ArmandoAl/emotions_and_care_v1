@@ -87,4 +87,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'emotionsandcareal.appspot.com',
     measurementId: 'G-JBDSEDSCFK',
   );
+
 }

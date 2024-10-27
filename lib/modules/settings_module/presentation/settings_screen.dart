@@ -21,10 +21,11 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen>
     with SingleTickerProviderStateMixin {
   late BegginCubit userProvider;
-  bool animatedMenu = false;
+  bool animatedMenu = true;
   AnimationController? _animationController;
   Animation<Color?>? _animation;
   bool _isControllerDisposed = false;
+  bool _dialogShown = false; // Evitar mostrar el diálogo más de una vez
 
   StreamSubscription? _cubitSubscription;
 
@@ -32,9 +33,9 @@ class _SettingsScreenState extends State<SettingsScreen>
   void initState() {
     super.initState();
     userProvider = widget.userProvider;
+
     animatedMenu = animatedMenuBools[
-            userProvider.state.registerPatientFlow ?? "registerSuccess"] ??
-        false;
+        userProvider.state.registerPatientFlow ?? "registerSuccess"]!;
 
     if (animatedMenu) {
       _createAnimationController();
@@ -46,6 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen>
       setState(() {
         animatedMenu =
             animatedMenuBools[state.registerPatientFlow ?? "registerSuccess"]!;
+
         if (animatedMenu) {
           _disposeAnimationController();
           _createAnimationController();
@@ -54,6 +56,37 @@ class _SettingsScreenState extends State<SettingsScreen>
         }
       });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Solo mostrar el diálogo si estamos en el tutorial (animatedMenu es true)
+    if (animatedMenu && !_dialogShown) {
+      _dialogShown = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: const Text(
+              "¡Diríjase a la sección de personalización para elegir su planta y personalizar su jardín!",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Aceptar"),
+              ),
+            ],
+          ),
+        );
+      });
+    }
   }
 
   void _createAnimationController() {

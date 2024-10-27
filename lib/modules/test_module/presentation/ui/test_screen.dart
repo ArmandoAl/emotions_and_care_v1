@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../../helpers/paths.dart';
 
 class TestsScreen extends StatefulWidget {
@@ -17,7 +19,64 @@ class TestsScreen extends StatefulWidget {
   State<TestsScreen> createState() => _TestsScreenState();
 }
 
-class _TestsScreenState extends State<TestsScreen> {
+class _TestsScreenState extends State<TestsScreen>
+    with SingleTickerProviderStateMixin {
+  late BegginCubit userProvider;
+  bool animatedMenu = true;
+  bool _dialogShown = false; // Evitar mostrar el diálogo más de una vez
+
+  StreamSubscription? _cubitSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    userProvider = getIt<BegginCubit>();
+
+    animatedMenu = animatedMenuBools[
+        userProvider.state.registerPatientFlow ?? "registerSuccess"]!;
+
+    _cubitSubscription = userProvider.stream.listen((state) {
+      if (!mounted) return;
+
+      setState(() {
+        animatedMenu =
+            animatedMenuBools[state.registerPatientFlow ?? "registerSuccess"]!;
+      });
+
+      if (animatedMenu && !_dialogShown) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: const Text(
+                "¡Completaste tu primer test! Ahora puedes dirigirte a la sección de Configuración para personalizar tu experiencia.",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Aceptar"),
+                ),
+              ],
+            ),
+          );
+        });
+
+        _dialogShown = true;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _cubitSubscription?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

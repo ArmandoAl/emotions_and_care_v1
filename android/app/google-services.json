@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "337730650555",
+    "project_id": "emotionsandcareal",
+    "storage_bucket": "emotionsandcareal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337730650555:android:04a66e98dfdcec25bcc49e",
+        "android_client_info": {
+          "package_name": "com.axample.emotionsandcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337730650555-r6vleke1rf2c8ghshgt142e77nn91cai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHKnCAcbYf0FRGGUAuZfmioP7d1WIp8Ag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337730650555-r6vleke1rf2c8ghshgt142e77nn91cai.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "337730650555-81r7jhq5fj6v6b32rl1meeme1jhpnm9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.emotionsAndCare"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337730650555:android:0223342204b1cf2ebcc49e",
+        "android_client_info": {
+          "package_name": "com.example.emotions_and_care"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337730650555-r6vleke1rf2c8ghshgt142e77nn91cai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHKnCAcbYf0FRGGUAuZfmioP7d1WIp8Ag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337730650555-r6vleke1rf2c8ghshgt142e77nn91cai.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "337730650555-81r7jhq5fj6v6b32rl1meeme1jhpnm9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.emotionsAndCare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

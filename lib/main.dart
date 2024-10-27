@@ -1,3 +1,5 @@
+import 'package:emotions_and_care_v1/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'config/assets/assets.dart';
 import 'helpers/navigation_bloc.dart';
@@ -7,6 +9,10 @@ import 'modules/auth_module/presentation/ui/beggin_process_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupServiceLocator();
+  await Firebase.initializeApp(
+    options:
+        DefaultFirebaseOptions.currentPlatform, // Usa las opciones correctas
+  );
   runApp(const MyApp());
 }
 

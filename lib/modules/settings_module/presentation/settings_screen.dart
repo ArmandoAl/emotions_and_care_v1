@@ -69,6 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen>
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
+            title: const Text(""),
             content: const Text(
               "¡Diríjase a la sección de personalización para elegir su planta y personalizar su jardín!",
               style: TextStyle(

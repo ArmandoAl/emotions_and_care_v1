@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showMessageDialog(context, '¡Bienvenido!',
-              "Bienvenido(a) a Emotions&Care. dirígete al menú lateral y dirígete a la sección de Cuestionarios para completar tu registro.");
+              "Bienvenid@ a Emotions&Care. Dirigete al menú lateral y dirígete a la sección de Cuestionarios para completar tu registro.");
         });
       }
 

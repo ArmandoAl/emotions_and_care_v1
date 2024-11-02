@@ -88,7 +88,6 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
-                                Navigator.pop(context);
                               },
                               child: const Text('Salir'),
                             ),

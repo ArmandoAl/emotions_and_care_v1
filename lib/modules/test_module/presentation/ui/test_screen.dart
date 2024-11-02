@@ -48,6 +48,7 @@ class _TestsScreenState extends State<TestsScreen>
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
+              title: const Text(""),
               content: const Text(
                 "¡Completaste tu primer test! Ahora puedes dirigirte a la sección de Configuración para personalizar tu experiencia.",
                 style: TextStyle(

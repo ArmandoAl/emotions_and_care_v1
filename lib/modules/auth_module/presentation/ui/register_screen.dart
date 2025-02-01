@@ -279,12 +279,12 @@ Widget registerForm(
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
             ),
-            _customTextFieldForRegister(context, nameController, "Nombre *",
+            _customTextFieldForRegister(context, nameController, "Nombre",
                 Icons.person, null, null, TextInputType.text),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
             ),
-            _customTextFieldForRegister(context, emailController, "Correo *",
+            _customTextFieldForRegister(context, emailController, "Correo",
                 Icons.email, null, null, TextInputType.emailAddress),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
@@ -292,7 +292,7 @@ Widget registerForm(
             isPatient
                 ? _customDataOfBornWiget(
                     context,
-                    "Fecha de nacimiento *",
+                    "Fecha de nacimiento",
                     Icons.calendar_today,
                     null,
                     null,
@@ -300,17 +300,17 @@ Widget registerForm(
                     bornDate, (DateTime value) {
                     changeBornDate(value);
                   })
-                : _customTextFieldForRegister(context, ageController, "Edad *",
+                : _customTextFieldForRegister(context, ageController, "Edad",
                     Icons.person, null, null, TextInputType.number),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
             ),
             _genderCuestomDropDown(
-                context, sex, "Genero *", Icons.person, changeSex),
+                context, sex, "Genero", Icons.person, changeSex),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
             ),
-            _customTextFieldForRegister(context, phoneController, "Teléfono *",
+            _customTextFieldForRegister(context, phoneController, "Teléfono",
                 Icons.phone, null, null, TextInputType.phone),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
@@ -319,7 +319,7 @@ Widget registerForm(
               _customTextFieldForRegister(
                   context,
                   licenseController!,
-                  "Cedula profesional *",
+                  "Cedula profesional",
                   Icons.credit_card,
                   null,
                   null,
@@ -332,7 +332,7 @@ Widget registerForm(
               _customTextFieldForRegister(
                   context,
                   focusController,
-                  "Especialidad *",
+                  "Especialidad",
                   Icons.credit_card,
                   null,
                   null,
@@ -355,14 +355,14 @@ Widget registerForm(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
             _customTextFieldForRegister(context, passwordController,
-                "Contraseña *", Icons.lock, null, null, TextInputType.text),
+                "Contraseña", Icons.lock, null, null, TextInputType.text),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
             ),
             _customTextFieldForRegister(
                 context,
                 confirmPasswordController,
-                "Confirmar contraseña *",
+                "Confirmar contraseña",
                 Icons.lock,
                 null,
                 null,
@@ -521,6 +521,14 @@ Widget _customTextFieldForRegister(
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.03,
                   color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none),
+            ),
+            Text(
+              "*",
+              style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.03,
+                  color: Colors.red,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.none),
             ),
@@ -834,13 +842,25 @@ Widget _customDataOfBornWiget(
         children: [
           Row(
             children: [
-              Text(
-                hintText,
-                style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.03,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.none),
+              Row(
+                children: [
+                  Text(
+                    hintText,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.03,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none),
+                  ),
+                  Text(
+                    "*",
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.03,
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none),
+                  ),
+                ],
               ),
             ],
           ),

@@ -50,7 +50,7 @@ class _TestsScreenState extends State<TestsScreen>
             builder: (context) => AlertDialog(
               title: const Text(""),
               content: const Text(
-                "¡Completaste tu primer test! Ahora puedes dirigirte a la sección de Configuración para personalizar tu experiencia.",
+                "¡Completaste tu primer Cuestionario! Ahora puedes dirigirte a la sección de Configuración para personalizar tu experiencia.",
                 style: TextStyle(
                   fontSize: 20,
                 ),

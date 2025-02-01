@@ -97,7 +97,7 @@ class _DailyControllerState extends State<DailyController> {
                           context.read<DailyCubit>().remove(note);
                         },
                         reload: () async {
-                          context
+                          await context
                               .read<DailyCubit>()
                               .getNotes(widget.patientModel.id!);
                         },

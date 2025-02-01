@@ -7,6 +7,9 @@ abstract class UIRepository {
 
   Future<void> setStickerInInterface(
       int idpatient, StickerModel sticker, int index);
+
+  Future<void> setFlowerInInterface(
+      int idpatient, UserFlower flower, int position);
 }
 
 class UIRepositoryImpl extends UIRepository {
@@ -49,6 +52,27 @@ class UIRepositoryImpl extends UIRepository {
       }
     } catch (e) {
       throw Exception('Failed to set sticker in interface');
+    }
+  }
+
+  @override
+  Future<void> setFlowerInInterface(
+      int idpatient, UserFlower flower, int position) async {
+    try {
+      final response = await http.put(
+        Uri.parse(
+            '${Api.baseUrl}Paciente/$idpatient/putFlowerInInterface/${flower.userFlowerId}/$position'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to set flower in interface');
+      }
+    } catch (e) {
+      throw Exception('Failed to set flower in interface');
     }
   }
 }

@@ -94,6 +94,8 @@ class _PattientStackState extends State<PattientStack> {
         begginCubit.state.patientModel!.userInterface!.userStickers,
         begginCubit.state.patientModel!.userInterface!.userFlowers);
 
+    //TODO: Get progress and gifts from back
+
     super.initState();
   }
 

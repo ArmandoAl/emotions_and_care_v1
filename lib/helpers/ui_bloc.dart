@@ -94,10 +94,21 @@ class UICubit extends Cubit<UIState> {
       status: UIStatus.loading,
     ));
     if (userStickers == null) return;
-    List<StickerModel> newStickerInUse = userStickers
+
+    //crea una nueva lista de userSticerks con los stickers que si tienen posicion
+
+    List<UserSticker> newStickersInUse =
+        userStickers.where((element) => element.position != null).toList();
+
+    //odena los userStickers por la posicion de menor a mayor
+    newStickersInUse.sort((a, b) => a.position!.compareTo(b.position!));
+
+    List<StickerModel> newStickerInUse = newStickersInUse
         .where((element) => element.position != null)
         .map((e) => e.sticker)
         .toList();
+
+    //ordenalos por la posicion
 
     //si los nuevos estickers son menos de 4 , se rellenan con stickers vacios
     if (newStickerInUse.length < 4) {
@@ -147,7 +158,18 @@ class UICubit extends Cubit<UIState> {
   void addFlower(UserFlower flower) {
     final List<UserFlower> flowers = state.flowers;
     flowers.add(flower);
-    // storageRepository.saveFlowers(flowers);
+    emit(state.copyWith(flowers: flowers));
+  }
+
+  void setFlower(int idpatient, UserFlower flower, {int position = 1}) {
+    List<UserFlower> flowers = state.flowers.map((e) {
+      if (e.userFlowerId == flower.userFlowerId) {
+        return e.copyWith(position: position);
+      }
+      return e;
+    }).toList();
+
+    uiRepoitory.setFlowerInInterface(idpatient, flower, position);
     emit(state.copyWith(flowers: flowers));
   }
 
@@ -157,11 +179,14 @@ class UICubit extends Cubit<UIState> {
     if (stickersInUse.length <= index) {
       stickersInUse.add(sticker);
     } else {
+      //si ya hay un sticker en esa posicion, lo reemplaza, y si el sticker que se va a poner esta en otra posicion, lo elimina de la lista
+      stickersInUse.removeWhere((element) => element.id == sticker.id);
+
       stickersInUse[index] = sticker;
     }
 
+    //TODO: Poner en back
     //uiRepoitory.setStickerInInterface(idpatient, sticker, index + 1);
-
     emit(state.copyWith(stickersInUse: stickersInUse));
   }
 

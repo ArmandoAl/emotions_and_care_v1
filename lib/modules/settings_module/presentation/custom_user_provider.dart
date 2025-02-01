@@ -148,7 +148,14 @@ class _CustomMenuScreenState extends State<CustomMenuScreen>
                 MaterialPageRoute(
                     builder: (context) => HomeScreen(
                           plane: null,
-                          tap: () {},
+                          tap: () {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text(
+                                  'Debes eligir una flor, haz click en la maceta para elegir una de las flores disponibles'),
+                              duration: Duration(seconds: 1),
+                            ));
+                          },
                           registerFlow: null,
                           customEnable: true,
                         )),

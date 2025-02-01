@@ -197,10 +197,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 ),
                                 size: MediaQuery.of(context).size.width * 0.1),
                             onPressed: () async {
-                              if (uiProvider.state.currentFlower == null) {
-                                await widget.tap();
-                                return;
-                              }
+                              // if (uiProvider.state.currentFlower == null) {
+                              //   await widget.tap();
+                              //   return;
+                              // }
 
                               if (widget.registerFlow != "registerSuccess") {
                                 final userProvider =

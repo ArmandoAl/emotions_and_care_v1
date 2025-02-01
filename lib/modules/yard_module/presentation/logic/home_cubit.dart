@@ -54,4 +54,15 @@ class HomeCubit extends Cubit<HomeState> {
   void clean() {
     emit(const HomeState());
   }
+
+  void changeNotificationCompleteStatud(int id) {
+    final notifications = state.items.map((e) {
+      if (e.id == id) {
+        return e.copyWith(completed: !e.completed!);
+      }
+      return e;
+    }).toList();
+
+    emit(state.copyWith(items: notifications));
+  }
 }

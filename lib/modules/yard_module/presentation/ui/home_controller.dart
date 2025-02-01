@@ -64,12 +64,15 @@ class _HomeControllerState extends State<HomeController> {
           ),
           body: HomeScreen(
               plane: notificationModel,
-              tap: () {
+              tap: () async {
                 if (notificationModel != null) {
-                  showCustomDialog(context, notificationModel);
-                  builderContext
-                      .read<HomeCubit>()
-                      .deleteNotification(notificationModel.id);
+                  await showCustomDialog(context);
+
+                  if (context.mounted) {
+                    builderContext
+                        .read<HomeCubit>()
+                        .deleteNotification(notificationModel.id);
+                  }
                 }
               },
               registerFlow: registerFlow,

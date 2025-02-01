@@ -8,11 +8,13 @@ import 'modules/auth_module/presentation/ui/beggin_process_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await setupServiceLocator();
+
   await Firebase.initializeApp(
-    options:
-        DefaultFirebaseOptions.currentPlatform, // Usa las opciones correctas
+    options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await setupServiceLocator();
+
   runApp(const MyApp());
 }
 

@@ -1,4 +1,5 @@
 import 'package:emotions_and_care_v1/helpers/navigation_bloc.dart';
+import 'package:emotions_and_care_v1/helpers/notifications_cubit.dart';
 import 'package:emotions_and_care_v1/helpers/paths.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,11 @@ Future<void> setupServiceLocator() async {
   getIt.registerSingleton<StorageRepository>(StorageRepository(
     sharedPreferences: await getIt.getAsync<SharedPreferences>(),
   ));
+
+  getIt.registerSingleton<FirebaseNotificationsCubit>(
+      FirebaseNotificationsCubit());
+
+  getIt<FirebaseNotificationsCubit>().initialize();
 
   // Otros registros de objetos sincrónicos
   getIt.registerSingleton<NavigationBloc>(NavigationBloc(NavigationItem.home));

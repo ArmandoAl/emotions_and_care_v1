@@ -16,6 +16,7 @@ class NotificationModel {
   final RecomendationType? recomendationType;
   final String? reference;
   final String? url;
+  final bool? completed;
 
   NotificationModel({
     required this.id,
@@ -27,6 +28,7 @@ class NotificationModel {
     this.recomendationType,
     this.reference,
     this.url,
+    this.completed = false,
   });
 
   NotificationModel copyWith({
@@ -39,6 +41,7 @@ class NotificationModel {
     RecomendationType? recomendationType,
     String? reference,
     String? url,
+    bool? completed,
   }) {
     return NotificationModel(
       id: id ?? this.id,
@@ -50,6 +53,7 @@ class NotificationModel {
       recomendationType: recomendationType ?? this.recomendationType,
       reference: reference ?? this.reference,
       url: url ?? this.url,
+      completed: completed ?? this.completed,
     );
   }
 

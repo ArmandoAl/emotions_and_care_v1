@@ -65,81 +65,126 @@ Future<void> showItemsDialog(
 
 Future<void> showCustomDialog(
   BuildContext context,
-  NotificationModel notification,
 ) async {
   //l want that the dialog has a background image
-  showDialog(
+  await showDialog(
     context: context,
     builder: (BuildContext context) {
-      return Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.7,
-          height: MediaQuery.of(context).size.height * 0.45,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(Assets.paper),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: Text(
-                    notification.title,
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+      return BlocConsumer<HomeCubit, HomeState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          final notificationModel =
+              state.items.isEmpty ? null : state.items.first;
+
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.7,
+              height: MediaQuery.of(context).size.height * 0.45,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(Assets.paper),
+                  fit: BoxFit.cover,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(28.0),
-                    child: SingleChildScrollView(
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: Text(
-                        notification.description,
+                        notificationModel!.title,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: MediaQuery.of(context).size.width * 0.045,
+                          fontSize: MediaQuery.of(context).size.width * 0.05,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ),
-                ),
-                notification.type == NotificationType.notificacionRecomendacion
-                    ? Row(
-                        children: [
-                          const Spacer(),
-                          const Text("Realizado: ",
-                              style: TextStyle(color: Colors.black)),
-                          Checkbox(
-                              value: false,
-                              onChanged: (value) {
-                                //  onCompletedChanged(value!);
-                              }),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.075,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(28.0),
+                        child: SingleChildScrollView(
+                          child: Text(
+                            notificationModel.description,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.045,
+                            ),
                           ),
-                        ],
-                      )
-                    : const SizedBox(),
-                notification.type == NotificationType.notificacionRecomendacion
-                    ? SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.015)
-                    : const SizedBox(),
-              ],
+                        ),
+                      ),
+                    ),
+                    notificationModel.type ==
+                            NotificationType.notificacionRecomendacion
+                        ? Row(
+                            children: [
+                              const Spacer(),
+                              const Text("Completado: ",
+                                  style: TextStyle(color: Colors.black)),
+                              Checkbox(
+                                  value: notificationModel.completed,
+                                  onChanged: (value) {
+                                    context
+                                        .read<HomeCubit>()
+                                        .changeNotificationCompleteStatud(
+                                            notificationModel.id);
+
+                                    //TODO: Poner en back
+                                    //tenemos que cambiar la liogica, en el back, la funcion de delete notification va modificar la variable nueva de later y eso servira para determinar si se puede mostar o no en las notificaciones
+
+                                    //haz pop despues de 2 segundos
+                                    Future.delayed(const Duration(seconds: 1),
+                                        () {
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                      }
+                                    });
+                                  }),
+                              SizedBox(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.075,
+                              ),
+                            ],
+                          )
+                        : const SizedBox(),
+                    // notificationModel.type ==
+                    //         NotificationType.notificacionRecomendacion
+                    //     ? Row(
+                    //         children: [
+                    //           GestureDetector(
+                    //             onTap: () {
+                    //               Navigator.of(context).pop();
+                    //             },
+                    //             child: const Padding(
+                    //               padding: EdgeInsets.only(left: 15.0),
+                    //               child: Text("Mas tarde",
+                    //                   style: TextStyle(
+                    //                       color: Colors.brown,
+                    //                       fontSize: 16,
+                    //                       fontWeight: FontWeight.bold)),
+                    //             ),
+                    //           )
+                    //         ],
+                    //       )
+                    //     : const SizedBox(),
+                    notificationModel.type ==
+                            NotificationType.notificacionRecomendacion
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.015)
+                        : const SizedBox(),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       );
     },
   );

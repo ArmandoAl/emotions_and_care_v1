@@ -41,18 +41,18 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCJM7C7Z7EMiD7CnP4pkzXWjLRUPbtuofc',
-    appId: '1:337730650555:web:18b80ce95876f66fbcc49e',
+    apiKey: 'AIzaSyDRGlfxdeR22WX4gPF2Im7YLiH9k9QskwA',
+    appId: '1:337730650555:web:f9629f09774e07edbcc49e',
     messagingSenderId: '337730650555',
     projectId: 'emotionsandcareal',
     authDomain: 'emotionsandcareal.firebaseapp.com',
     storageBucket: 'emotionsandcareal.appspot.com',
-    measurementId: 'G-E9V5MYFCBP',
+    measurementId: 'G-906S1H6J2C',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCHKnCAcbYf0FRGGUAuZfmioP7d1WIp8Ag',
-    appId: '1:337730650555:android:04a66e98dfdcec25bcc49e',
+    apiKey: 'AIzaSyDRGlfxdeR22WX4gPF2Im7YLiH9k9QskwA',
+    appId: '1:337730650555:android:0223342204b1cf2ebcc49e',
     messagingSenderId: '337730650555',
     projectId: 'emotionsandcareal',
     storageBucket: 'emotionsandcareal.appspot.com',
@@ -64,7 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '337730650555',
     projectId: 'emotionsandcareal',
     storageBucket: 'emotionsandcareal.appspot.com',
-    iosClientId: '337730650555-ni26o23adgai1gf6udgkqka9tm3fnuv1.apps.googleusercontent.com',
+    iosClientId:
+        '337730650555-ni26o23adgai1gf6udgkqka9tm3fnuv1.apps.googleusercontent.com',
     iosBundleId: 'com.example.emotionsAndCareV1',
   );
 
@@ -74,7 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '337730650555',
     projectId: 'emotionsandcareal',
     storageBucket: 'emotionsandcareal.appspot.com',
-    iosClientId: '337730650555-ni26o23adgai1gf6udgkqka9tm3fnuv1.apps.googleusercontent.com',
+    iosClientId:
+        '337730650555-ni26o23adgai1gf6udgkqka9tm3fnuv1.apps.googleusercontent.com',
     iosBundleId: 'com.example.emotionsAndCareV1',
   );
 
@@ -87,5 +89,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'emotionsandcareal.appspot.com',
     measurementId: 'G-JBDSEDSCFK',
   );
-
 }

@@ -132,6 +132,26 @@ class UICubit extends Cubit<UIState> {
         status: UIStatus.success));
   }
 
+  void growFlowerStage() {
+    //encuentra la flor que tenga la posicion 1
+    UserFlower? currentFlower = state.currentFlower;
+
+    if (currentFlower == null) {
+      return;
+    }
+
+    currentFlower = currentFlower.copyWith(state: currentFlower.state + 1);
+
+    List<UserFlower> flowers = state.flowers.map((e) {
+      if (e.userFlowerId == currentFlower!.userFlowerId) {
+        return currentFlower;
+      }
+      return e;
+    }).toList();
+
+    emit(state.copyWith(flowers: flowers, currentFlower: currentFlower));
+  }
+
   void changeStatus(UIStatus status) {
     emit(state.copyWith(status: status));
   }
@@ -151,7 +171,7 @@ class UICubit extends Cubit<UIState> {
   }
 
   void setCurrentFlower(UserFlower flower) {
-    // storageRepository.saveCurrentFlower(flower);
+    //storageRepository.saveCurrentFlower(flower);
     emit(state.copyWith(currentFlower: flower));
   }
 

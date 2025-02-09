@@ -65,4 +65,27 @@ class HomeCubit extends Cubit<HomeState> {
 
     emit(state.copyWith(items: notifications));
   }
+
+  void growFlower() {
+    emit(state.copyWith(status: HomeStatus.growing));
+  }
+
+  void growStage(int id) async {
+    emit(state.copyWith(status: HomeStatus.loading));
+    try {
+      final response = await repository.growStage(id);
+
+      if (response) {
+        emit(state.copyWith(status: HomeStatus.loaded));
+      }
+    } catch (e) {
+      emit(state.copyWith(status: HomeStatus.error));
+    }
+  }
+
+  void changeStatus(
+    HomeStatus status,
+  ) {
+    emit(state.copyWith(status: status));
+  }
 }

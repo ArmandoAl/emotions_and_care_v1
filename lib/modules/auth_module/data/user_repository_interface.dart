@@ -17,4 +17,6 @@ abstract class IUserRepository {
   Future<bool> syncByCode(int patientId, String code);
 
   Future<PatientModel> getPatient(int id);
+
+  Future<bool> refreshToken(int id, String token);
 }

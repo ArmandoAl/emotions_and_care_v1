@@ -7,6 +7,7 @@ Widget macetaConPlanta(
     BuildContext context,
     bool customEnable,
     UICubit uiProvider,
+    UIState uiState,
     AnimationController? animationController,
     Animation? animation) {
   return GestureDetector(
@@ -25,8 +26,8 @@ Widget macetaConPlanta(
             left: MediaQuery.of(context).size.width * 0.345,
             child: uiProvider.state.currentFlower != null
                 ? CachedNetworkImage(
-                    imageUrl: uiProvider.state.currentFlower!.flower
-                        .urls![uiProvider.state.currentFlower!.state].url,
+                    imageUrl: uiState.currentFlower!.flower
+                        .urls![uiState.currentFlower!.state].url,
                     width: MediaQuery.of(context).size.width * 0.3,
                     height: MediaQuery.of(context).size.width * 0.3,
                     placeholder: (context, url) =>

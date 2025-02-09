@@ -17,11 +17,6 @@ Future<void> setupServiceLocator() async {
     sharedPreferences: await getIt.getAsync<SharedPreferences>(),
   ));
 
-  getIt.registerSingleton<FirebaseNotificationsCubit>(
-      FirebaseNotificationsCubit());
-
-  getIt<FirebaseNotificationsCubit>().initialize();
-
   // Otros registros de objetos sincrónicos
   getIt.registerSingleton<NavigationBloc>(NavigationBloc(NavigationItem.home));
 
@@ -71,6 +66,14 @@ Future<void> setupServiceLocator() async {
   getIt.registerSingleton<PattientsDatesCubit>(PattientsDatesCubit(
     repository: getIt<ScheduleRepository>(),
   ));
+
+  getIt
+      .registerSingleton<FirebaseNotificationsCubit>(FirebaseNotificationsCubit(
+    begginCubit: getIt<BegginCubit>(),
+    homeCubit: getIt<HomeCubit>(),
+  ));
+
+  getIt<FirebaseNotificationsCubit>().initialize();
 
   // Espera a que las instancias asincrónicas estén listas antes de continuar
   await getIt.allReady();

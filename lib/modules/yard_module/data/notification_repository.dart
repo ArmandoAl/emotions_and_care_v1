@@ -57,6 +57,8 @@ class NotificationRepository implements INotificationRepository {
         },
       );
 
+      print(response.body);
+
       if (response.statusCode != 200) {
         throw Exception('Failed to load notifications');
       }
@@ -66,6 +68,29 @@ class NotificationRepository implements INotificationRepository {
           .toList();
     } catch (e) {
       throw Exception('Failed to load notifications');
+    }
+  }
+
+  @override
+  Future<bool> growStage(int id) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${Api.baseUrl}/Paciente/$id/growStage'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      print(response.statusCode);
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to grow stage');
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to grow stage');
     }
   }
 }

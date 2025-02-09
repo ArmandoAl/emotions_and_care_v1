@@ -5,7 +5,7 @@ import '../helpers/paths.dart';
 
 Future<void> showItemsDialog(
     BuildContext context, String title, int position, UICubit uiCubit) async {
-  showDialog(
+  await showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(

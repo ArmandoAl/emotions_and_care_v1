@@ -54,6 +54,8 @@ class BegginCubit extends Cubit<BegginState> {
         user: true,
       ));
 
+      refreshToken(patientModel.id!);
+
       return 'success';
     } else {
       storageRepository.saveSpecialist(response!);
@@ -87,10 +89,14 @@ class BegginCubit extends Cubit<BegginState> {
       final specialist = SpecialistModel.fromJson(user);
 
       await multiLogin(specialist.email!, specialist.password!);
+
+      refreshToken(specialist.id!);
     } else {
       final patientModel = PatientModel.fromJson(user, true);
 
       await multiLogin(patientModel.email!, patientModel.password!);
+
+      refreshToken(patientModel.id!);
     }
   }
 
@@ -229,6 +235,39 @@ class BegginCubit extends Cubit<BegginState> {
       emit(state.copyWith(status: BegginStatus.errorSingingWithSpecialist));
       return false;
     }
+  }
+
+  Future<bool> refreshToken(int id) async {
+    final response = await userRepoitory.refreshToken(id, state.token);
+
+    if (response) {
+      if (state.isPatient == true) {
+        final newPatient = state.patientModel!.copyWith(token: state.token);
+        await storageRepository.savePatient(newPatient);
+        emit(state.copyWith(
+          status: BegginStatus.success,
+          patientModel: newPatient,
+        ));
+      } else {
+        final newSpecialist =
+            state.specialistModel!.copyWith(token: state.token);
+        await storageRepository.saveSpecialist(newSpecialist);
+
+        emit(state.copyWith(
+          status: BegginStatus.success,
+          specialistModel: newSpecialist,
+        ));
+      }
+
+      return true;
+    } else {
+      emit(state.copyWith(status: BegginStatus.errorSingingWithSpecialist));
+      return false;
+    }
+  }
+
+  void setToken(String token) {
+    emit(state.copyWith(token: token));
   }
 }
 

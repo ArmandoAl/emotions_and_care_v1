@@ -6,4 +6,6 @@ abstract class INotificationRepository {
   Future<NotificationModel> getNotification(int id);
 
   Future<List<NotificationModel>> init(int id);
+
+  Future<bool> growStage(int id);
 }

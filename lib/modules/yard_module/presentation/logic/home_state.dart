@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../helpers/paths.dart';
 
-enum HomeStatus { initial, loading, loaded, error }
+enum HomeStatus { initial, loading, loaded, error, growing }
 
 class HomeState extends Equatable {
   final List<NotificationModel> items;

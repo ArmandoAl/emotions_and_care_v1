@@ -175,4 +175,25 @@ class UserRepository implements IUserRepository {
       throw Exception('Failed to get patient');
     }
   }
+
+  @override
+  Future<bool> refreshToken(int id, String token) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${Api.baseUrl}Usuario/refreshToken/$id/$token'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to refresh token');
+    }
+  }
 }

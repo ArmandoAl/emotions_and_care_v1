@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../helpers/paths.dart';
 
@@ -12,11 +14,21 @@ class HomeController extends StatefulWidget {
 }
 
 class _HomeControllerState extends State<HomeController> {
+  StreamSubscription? _subscription;
+
   @override
   void initState() {
     super.initState();
 
     context.read<HomeCubit>().getNotifications(widget.idUser);
+
+    _subscription = context.read<HomeCubit>().stream.listen((event) {
+      if (event.status == HomeStatus.growing) {
+        if (mounted) {
+          showGrowingDialog(context);
+        }
+      }
+    });
   }
 
   @override
@@ -69,9 +81,11 @@ class _HomeControllerState extends State<HomeController> {
                   await showCustomDialog(context);
 
                   if (context.mounted) {
-                    builderContext
-                        .read<HomeCubit>()
-                        .deleteNotification(notificationModel.id);
+                    print(notificationModel.id);
+                    // builderContext
+                    //     .read<HomeCubit>()
+                    //     .deleteNotification(notificationModel.id);
+                    context.read<HomeCubit>().changeStatus(HomeStatus.growing);
                   }
                 }
               },
@@ -81,4 +95,22 @@ class _HomeControllerState extends State<HomeController> {
       },
     );
   }
+}
+
+void showGrowingDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Creciendo flor'),
+        content: ElevatedButton(
+            onPressed: () {
+              context.read<UICubit>().growFlowerStage();
+
+              Navigator.of(context).pop();
+            },
+            child: const Text('Aceptar')),
+      );
+    },
+  );
 }

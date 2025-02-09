@@ -291,6 +291,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         context,
                         widget.customEnable,
                         uiProvider,
+                        state,
                         _animationController,
                         _animation,
                       ),

@@ -61,10 +61,12 @@ class NotificationModel {
     return NotificationModel(
       id: json['notificationId'],
       title: json['titulo'],
-      type: NotificationType.values[json['notificationType']],
+      // type: NotificationType.values[json['notificationType']],
+      type: NotificationType.notificacionRecomendacion,
       description: json['descripcion'],
       idRecomendation: json['recomendationId'],
-      recomendationType: RecomendationType.values[json['recomendationType']],
+      // recomendationType: RecomendationType.values[json['recomendationType']],
+      recomendationType: RecomendationType.recomendacion,
       reference: json['reference'],
       url: json['url'],
     );

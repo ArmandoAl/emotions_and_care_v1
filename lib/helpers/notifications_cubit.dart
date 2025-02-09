@@ -1,4 +1,7 @@
 // ignore_for_file: avoid_print
+import 'dart:convert';
+
+import 'package:emotions_and_care_v1/helpers/paths.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,7 +9,12 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class FirebaseNotificationsCubit extends Cubit<NotificationState> {
-  FirebaseNotificationsCubit() : super(const NotificationState());
+  final BegginCubit begginCubit;
+  final HomeCubit homeCubit;
+
+  FirebaseNotificationsCubit(
+      {required this.begginCubit, required this.homeCubit})
+      : super(const NotificationState());
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -26,12 +34,15 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
       _firebaseMessaging.onTokenRefresh.listen((token) {
         // print('FirebaseMessaging token refreshed: $token');
         print("token refreshed: $token");
+        begginCubit.setToken(token);
         emit(state.copyWith(token: token));
       });
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         // print('Got a message while in the foreground!');
-        print('Message data: $message');
+        print('Message data: ${message.data}');
+
+        mapNotification(message.data, homeCubit);
         emit(state.copyWith(message: message.data));
       });
 
@@ -58,10 +69,39 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
         }
       }
 
+      begginCubit.setToken(token);
       emit(state.copyWith(token: token));
     } else {
       print('User declined or has not accepted permission');
       emit(state.copyWith(token: ''));
+    }
+  }
+
+  void mapNotification(
+    Map<String, dynamic> data,
+    HomeCubit homeCubit,
+  ) {
+    final String type = jsonDecode(data['module'] ?? '{}');
+    switch (type) {
+      case 'schedule':
+        // final Map<String, dynamic> imageData = jsonData['data'] ?? {};
+        // final String url = imageData['url'] ?? '';
+        // final int position = imageData['position'] ?? 0;
+
+        break;
+      case "yard":
+        final String action = jsonDecode(data['type'] ?? '');
+        switch (action) {
+          case 'canGrow':
+            homeCubit.growFlower();
+            break;
+          default:
+            break;
+        }
+
+        break;
+      default:
+        break;
     }
   }
 }

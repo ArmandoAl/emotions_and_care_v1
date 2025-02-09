@@ -41,7 +41,7 @@ class _SearchSpecialistControllerState
             title: const Text("Buscar especialista"),
           ),
           body: SearchSpecialistScreen(
-            patientModel: null,
+            patientModel: widget.patientModel,
             controller: controller,
             searchController: searchController,
             searchFunction: (value) {

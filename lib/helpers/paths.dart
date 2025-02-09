@@ -69,7 +69,7 @@ export 'package:emotions_and_care_v1/modules/patients_module/presentation/ui/pat
 export 'package:emotions_and_care_v1/modules/patients_module/presentation/ui/specialist_pattients_controller.dart';
 
 export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/search_specialist/search_specialist_screen.dart';
-export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/search_specialist/specialist_etail_screen.dart';
+export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/search_specialist/specialist_detail_screen.dart';
 
 export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/date_detail_screen.dart';
 export 'package:emotions_and_care_v1/modules/schedule_module/presentation/ui/schedule_screen.dart';

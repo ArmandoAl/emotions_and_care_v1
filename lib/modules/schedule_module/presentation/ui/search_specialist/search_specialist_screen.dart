@@ -71,7 +71,10 @@ class _SearchSpecialistScreenState extends State<SearchSpecialistScreen> {
                 },
                 child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
+                      color: widget.specislist[index].id ==
+                              widget.patientModel!.specialist!.id
+                          ? Colors.grey
+                          : Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(

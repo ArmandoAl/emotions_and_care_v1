@@ -1,4 +1,3 @@
-import 'package:provider/provider.dart';
 import '../helpers/paths.dart';
 
 Widget questionItems(
@@ -53,7 +52,6 @@ Widget questionItems(
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
         LinearProgressIndicator(
           value: progress,
-          backgroundColor: Colors.grey,
           valueColor: AlwaysStoppedAnimation<Color>(Color.lerp(
               const Color(0xff1C8AAD),
               const Color.fromARGB(255, 21, 137, 19),
@@ -65,23 +63,27 @@ Widget questionItems(
             Text("Pregunta ${index.toString()}",
                 style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width * 0.04,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
                     decoration: TextDecoration.none)),
             const Spacer()
           ],
         ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(item.question,
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.07,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none)),
-            ),
-          ],
-        ),
+        const SizedBox(height: 5),
+        // Row(
+        //   children: [
+        //     Expanded(
+        //       child: Text(item.question,
+        //           style: TextStyle(
+        //               fontSize: MediaQuery.of(context).size.width * 0.07,
+        //               fontWeight: FontWeight.bold,
+        //               decoration: TextDecoration.none)),
+        //     ),
+        //   ],
+        // ),
+        Text(item.question,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.07,
+                decoration: TextDecoration.none)),
         Expanded(
           child: ListView.builder(
             shrinkWrap: true,
@@ -96,7 +98,7 @@ Widget questionItems(
                     },
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: !answer.isSelected
                             ? Colors.transparent
@@ -108,7 +110,6 @@ Widget questionItems(
                         //border just in the bottom
                         border: const Border(
                           bottom: BorderSide(
-                            color: Colors.grey,
                             width: 0.5,
                           ),
                           top: BorderSide.none,
@@ -128,7 +129,6 @@ Widget questionItems(
                                   : Colors.amberAccent,
                               borderRadius: BorderRadius.circular(50),
                               border: Border.all(
-                                color: Colors.grey,
                                 width: 1,
                               ),
                             ),
@@ -140,7 +140,6 @@ Widget questionItems(
                                 "",
                                 style: TextStyle(
                                     fontSize: 20,
-                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     decoration: TextDecoration.none),
                               ),
@@ -153,12 +152,12 @@ Widget questionItems(
                                         MediaQuery.of(context).size.width *
                                             0.055,
                                     color: !answer.isSelected
-                                        ? uiProvider.state.themes[uiProvider
-                                                    .state.selectedTheme] ==
-                                                uiProvider.state.themes[3]
-                                            ? Colors.white
-                                            : Colors.black
-                                        : Colors.white,
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
                                     fontWeight: FontWeight.normal,
                                     decoration: TextDecoration.none)),
                           ),
@@ -167,7 +166,7 @@ Widget questionItems(
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.065,
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
                 ],
               );
@@ -223,9 +222,8 @@ Widget questionItems(
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
-                        fontWeight: FontWeight.bold,
                         decoration: TextDecoration.none))),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
       ],
     ),
   );

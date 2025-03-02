@@ -1,4 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../helpers/paths.dart';
 
 class DateDetailScreen extends StatefulWidget {
@@ -38,13 +37,14 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Detalle de la cita'),
+        appBar: HeaderWidget(
+          title: "",
+          isForReturn: true,
           actions: [
             IconButton(
               icon: Icon(
                 _isEditing ? Icons.save : Icons.edit,
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: () {
                 setState(() {
@@ -68,177 +68,238 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
 
                   if (context.mounted) Navigator.of(context).pop();
                 },
-                icon: const Icon(Icons.delete)),
+                icon: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).colorScheme.surface,
+                )),
           ],
         ),
         body: Container(
           width: double.infinity,
           height: double.infinity,
           padding: const EdgeInsets.all(20),
-          child: ListView(
-            children: [
-              widget.isPattient == false
-                  ? Text("Patient: ${widget.dateModel!.patient!.name}")
-                  : Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.65),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        border: const Border.fromBorderSide(
-                          BorderSide(
-                            color: Colors.grey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                widget.isPattient == false
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            convertToName(widget.dateModel!.patient!.name!),
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 5.0,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ),
+                          Text(
+                            "Cita",
+                            style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.04,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.calendar_month,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.02,
+                              ),
+                              Text(
+                                "${widget.dateModel!.date!.day}/${widget.dateModel!.date!.month}/${widget.dateModel!.date!.year}",
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.04,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.access_time,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.02,
+                              ),
+                              Text(
+                                getTimeFormatWithText(widget.dateModel!.hour!),
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.04,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.02,
+                              ),
+                              Text(
+                                widget.dateModel!.place!,
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.04,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.05,
-                            vertical:
-                                MediaQuery.of(context).size.height * 0.01),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Especialista: ${widget.patientModel!.specialist!.name}",
-                              style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.05,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.65),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: const Border.fromBorderSide(
+                            BorderSide(
+                              color: Colors.grey,
                             ),
-                            Text(
-                              "Numero: ${widget.patientModel!.specialist!.phone}",
-                              style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.035,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                            Text(
-                              "Correo: ${widget.patientModel!.specialist!.email}",
-                              style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.035,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-                              ),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 5.0,
                             ),
                           ],
                         ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width * 0.05,
+                              vertical:
+                                  MediaQuery.of(context).size.height * 0.01),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Especialista: ${widget.patientModel!.specialist!.name}",
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "Numero: ${widget.patientModel!.specialist!.phone}",
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.035,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              Text(
+                                "Correo: ${widget.patientModel!.specialist!.email}",
+                                style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.035,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                Row(
+                  children: [
+                    Text("Descripción",
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                            color: Colors.black,
+                            decoration: TextDecoration.none)),
+                  ],
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border.fromBorderSide(
+                      BorderSide(
+                        color: Colors.black,
                       ),
                     ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  border: Border.fromBorderSide(
-                    BorderSide(
-                      color: Colors.grey,
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: TextField(
+                    controller: descriptionController,
+                    enabled: _isEditing,
+                    maxLines: null,
+                    decoration: const InputDecoration(
+                      hintText: "Descripción",
+                      border: InputBorder.none,
                     ),
                   ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                Row(
                   children: [
                     Text(
-                      "Fecha: ${widget.dateModel!.date!.day}/${widget.dateModel!.date!.month}/${widget.dateModel!.date!.year} ",
+                      "Notas del especialista:",
                       style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width * 0.05,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "Hora: ${widget.dateModel!.hour}",
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "Lugar: ${widget.dateModel!.place}",
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        decoration: TextDecoration.none,
                       ),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.3,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  border: Border.fromBorderSide(
-                    BorderSide(
-                      color: Colors.grey,
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border.fromBorderSide(
+                      BorderSide(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: notesController,
+                          enabled: _isEditing,
+                          maxLines: null,
+                          decoration: const InputDecoration(
+                            hintText: "Notas",
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                padding: const EdgeInsets.all(20),
-                child: TextField(
-                  controller: descriptionController,
-                  enabled: _isEditing,
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                    hintText: "Descripción",
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.3,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  border: Border.fromBorderSide(
-                    BorderSide(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Text(
-                        "Notas del especialista:",
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 0.04,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextField(
-                        controller: notesController,
-                        enabled: _isEditing,
-                        maxLines: null,
-                        decoration: const InputDecoration(
-                          hintText: "Notas",
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

@@ -1,5 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../helpers/paths.dart';
 
 class NewNoteScreen extends StatefulWidget {
@@ -31,6 +29,15 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
     context.read<DailyCubit>().changeVisibility(
           widget.patientModel.settings!.diaryActivated,
         );
+
+    //add listeners para actualizar el color del boton
+    titleController.addListener(() {
+      setState(() {});
+    });
+
+    contentController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -165,6 +172,8 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                   ? const Color(0xff2CB5E0)
                   : Colors.grey,
               onPressed: () async {
+                if (loading) return;
+
                 if (titleController.text.isEmpty ||
                     contentController.text.isEmpty ||
                     _selectedIcon == null) {

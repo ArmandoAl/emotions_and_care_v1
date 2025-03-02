@@ -1,12 +1,11 @@
-import '../../../../config/assets/assets.dart';
 import '../../../../helpers/paths.dart';
 
 class RegisterProcessScreen extends StatefulWidget {
   final Future<void> Function(
-      PatientModel patient, PageController pageController)? onPatientRegister;
-  final Future<void> Function(
-          SpecialistModel specialist, PageController pageController)?
-      onSpecialistrRegister;
+          PatientModel patient, PageController pageController, bool remember)?
+      onPatientRegister;
+  final Future<void> Function(SpecialistModel specialist,
+      PageController pageController, bool remember)? onSpecialistrRegister;
   const RegisterProcessScreen(
       {super.key, this.onPatientRegister, this.onSpecialistrRegister});
 
@@ -23,6 +22,7 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
   String sex = "Masculino";
   bool isLoaing = false;
   DateTime? bornDate;
+  bool isRemember = true;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -52,6 +52,12 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
 
     setState(() {
       this.isPatient = isPatient;
+    });
+  }
+
+  void setRemember(bool remember) {
+    setState(() {
+      isRemember = remember;
     });
   }
 
@@ -115,11 +121,12 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
                   },
                   licenseController,
                   (PatientModel patient) async {
-                    await widget.onPatientRegister!(patient, pageController);
+                    await widget.onPatientRegister!(
+                        patient, pageController, isRemember);
                   },
                   (SpecialistModel specialist) async {
                     await widget.onSpecialistrRegister!(
-                        specialist, pageController);
+                        specialist, pageController, isRemember);
                   },
                   oscureText,
                   () {
@@ -138,7 +145,9 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
                     setState(() {
                       bornDate = value;
                     });
-                  });
+                  },
+                  isRemember,
+                  setRemember);
             case 3:
               return welcomeMessage(
                   context,
@@ -175,7 +184,6 @@ Widget welcomeMessage(
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width * 0.1,
-                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.none)),
         SizedBox(height: MediaQuery.of(context).size.height * 0.1),
@@ -226,6 +234,8 @@ Widget registerForm(
   void Function() setState,
   DateTime? bornDate,
   Function changeBornDate,
+  bool isRemember,
+  void Function(bool remember) setRemember,
 ) {
   return Scaffold(
     backgroundColor: const Color(0xffE3EDF3),
@@ -248,8 +258,7 @@ Widget registerForm(
                         curve: Curves.easeIn);
                   },
                   icon: Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    color: Colors.black,
+                    Icons.arrow_back_rounded,
                     size: MediaQuery.of(context).size.width * 0.05,
                   ),
                 ),
@@ -260,7 +269,6 @@ Widget registerForm(
               "¡Listo para empezar!",
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.075,
-                  color: Colors.black,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.none),
             ),
@@ -354,21 +362,46 @@ Widget registerForm(
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
-            _customTextFieldForRegister(context, passwordController,
-                "Contraseña", Icons.lock, null, null, TextInputType.text),
+            _customTextFieldForRegister(
+              context,
+              passwordController,
+              "Contraseña",
+              Icons.lock,
+              oscureText,
+              changeObscureText,
+              TextInputType.text,
+            ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.05,
             ),
             _customTextFieldForRegister(
-                context,
-                confirmPasswordController,
-                "Confirmar contraseña",
-                Icons.lock,
-                null,
-                null,
-                TextInputType.text),
+              context,
+              confirmPasswordController,
+              "Confirmar contraseña",
+              Icons.lock,
+              oscureText,
+              null,
+              TextInputType.text,
+            ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            Row(
+              children: [
+                Checkbox(
+                    value: isRemember,
+                    onChanged: (value) {
+                      setRemember(value!);
+                    }),
+                Text(
+                  "Recordar mis datos",
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.03,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.none),
+                ),
+              ],
             ),
             SizedBox(
               width: double.infinity,
@@ -425,6 +458,26 @@ Widget registerForm(
                     }
                   }
 
+                  //validar numero y correo
+                  if (!RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
+                      .hasMatch(emailController.text)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Correo no valido'),
+                      ),
+                    );
+                    return;
+                  }
+
+                  if (!RegExp(r'^[0-9]{10}$').hasMatch(phoneController.text)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Telefono no valido'),
+                      ),
+                    );
+                    return;
+                  }
+
                   setState();
 
                   if (isPatient) {
@@ -442,7 +495,7 @@ Widget registerForm(
                       type: UserType.patient,
                       specialist: null,
                       token:
-                          'jiknknbvibnrwevruibweqig4wufinj6hrveuheic4buwn4ivh2ug54ifwhvn6g354c8',
+                          'jknbvibnrwevruibweqig4wufinj6hrveuheic4buwn4ivh2ug54ifwhvn6g354c8rytaejke7jrhaeg456k7el8kt7jrsteahrgef${passwordController.text}',
                       tokenForRelate: '',
                       settings: null,
                       bornDate: bornDate!,
@@ -463,7 +516,8 @@ Widget registerForm(
                         terms: "Términos y condiciones",
                       ),
                       type: UserType.specialist,
-                      token: 'kmoniibanxoruejxncetjgrbhnoogriqvhngre',
+                      token:
+                          'jknbvibnrwevruibweqig4wufinj6hrveuheic4buwn4ivh2ug54ifwhvn6g354c8rytaejke7jrhaeg456k7el8kt7jrsteahrgef${passwordController.text}',
                       tokenForRelate: '',
                       bornDate: DateTime.now(),
                       focus: focusController.text,
@@ -486,6 +540,9 @@ Widget registerForm(
                             fontSize: 20),
                       ),
               ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
           ],
         ),
@@ -520,8 +577,6 @@ Widget _customTextFieldForRegister(
               hintText,
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.03,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
                   decoration: TextDecoration.none),
             ),
             Text(
@@ -529,25 +584,40 @@ Widget _customTextFieldForRegister(
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.03,
                   color: Colors.red,
-                  fontWeight: FontWeight.bold,
                   decoration: TextDecoration.none),
             ),
             const Spacer()
           ],
         ),
         const SizedBox(height: 5),
-        TextField(
-          controller: controller,
-          keyboardType: type,
-          obscureText: obscureText ?? false, // Verificar si obscureText es nulo
-          decoration: InputDecoration(
-            hintText: hintText,
-            prefixIcon: Icon(icon),
-            //border just in the bottom,
-            border: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: controller,
+                keyboardType: type,
+                obscureText:
+                    obscureText ?? false, // Verificar si obscureText es nulo
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  prefixIcon: Icon(icon),
+                  //border just in the bottom,
+                  border: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                ),
+              ),
             ),
-          ),
+            if (changeObscureText != null)
+              IconButton(
+                onPressed: changeObscureText,
+                icon: Icon(
+                  obscureText!
+                      ? Icons.visibility_off
+                      : Icons.visibility_outlined,
+                ),
+              ),
+          ],
         ),
       ],
     ),
@@ -670,8 +740,7 @@ Widget choiseUserType(
                   Navigator.of(context).pop();
                 },
                 icon: Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  color: Colors.black,
+                  Icons.arrow_back_rounded,
                   size: MediaQuery.of(context).size.width * 0.1,
                 ),
               ),
@@ -686,7 +755,6 @@ Widget choiseUserType(
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.1,
-                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.none,
                     )),
@@ -779,14 +847,15 @@ Widget _genderCuestomDropDown(
     child: DropdownButton<String>(
       value: sex,
       isExpanded: true,
-      icon: const Icon(Icons.keyboard_arrow_down_outlined, color: Colors.black),
+      icon: const Icon(
+        Icons.keyboard_arrow_down_outlined,
+      ),
       iconSize: 24,
       elevation: 16,
-      style: const TextStyle(color: Colors.black),
+
       //no underline
       underline: Container(
         height: 0,
-        color: const Color.fromARGB(255, 0, 0, 0),
       ),
 
       onChanged: (String? newValue) {
@@ -848,7 +917,6 @@ Widget _customDataOfBornWiget(
                     hintText,
                     style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width * 0.03,
-                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.none),
                   ),
@@ -857,7 +925,6 @@ Widget _customDataOfBornWiget(
                     style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width * 0.03,
                         color: Colors.red,
-                        fontWeight: FontWeight.bold,
                         decoration: TextDecoration.none),
                   ),
                 ],
@@ -877,7 +944,9 @@ Widget _customDataOfBornWiget(
             ),
             child: Row(
               children: [
-                const Icon(Icons.calendar_today, color: Colors.black),
+                const Icon(
+                  Icons.calendar_today,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -886,8 +955,6 @@ Widget _customDataOfBornWiget(
                         : "Selecciona tu fecha de nacimiento",
                     style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width * 0.03,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
                         decoration: TextDecoration.none),
                   ),
                 ),

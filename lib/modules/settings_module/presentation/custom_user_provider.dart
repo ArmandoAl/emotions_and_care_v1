@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import '../../../config/assets/assets.dart';
 import '../../../helpers/paths.dart';
 
 enum ItemUiType { colores, fondo, jardin, flores }
@@ -148,15 +146,15 @@ class _CustomMenuScreenState extends State<CustomMenuScreen>
                 MaterialPageRoute(
                     builder: (context) => HomeScreen(
                           plane: null,
-                          tap: () {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text(
-                                  'Debes eligir una flor, haz click en la maceta para elegir una de las flores disponibles'),
-                              duration: Duration(seconds: 1),
-                            ));
+                          tap: () async {
+                            final uiProvider = context.read<UICubit>();
+
+                            if (uiProvider.state.currentFlower == null) {
+                              await showMessageDialog(context, "",
+                                  'Debes colocar una for en la maceta para poder continuar, haz click en la maceta para elegir una de las flores disponibles');
+                            }
                           },
-                          registerFlow: null,
+                          registerFlow: userProvider.state.registerPatientFlow,
                           customEnable: true,
                         )),
               );
@@ -194,14 +192,18 @@ Widget listItemCustom(
                   builder: (context, child) => Text(
                     title,
                     style: TextStyle(
-                        color: animation!.value ?? Colors.black, fontSize: 22),
+                        color: animation!.value ??
+                            Theme.of(context).colorScheme.onSurface,
+                        fontSize: 22),
                   ),
                 )
               : Text(
                   title,
                   style: TextStyle(
                       fontSize: 20,
-                      color: disable ? Colors.grey : Colors.black),
+                      color: disable
+                          ? Theme.of(context).colorScheme.secondary
+                          : Theme.of(context).colorScheme.onSurface),
                 ),
           const Spacer(),
           Image(

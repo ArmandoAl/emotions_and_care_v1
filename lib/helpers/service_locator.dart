@@ -1,6 +1,8 @@
 import 'package:emotions_and_care_v1/helpers/navigation_bloc.dart';
 import 'package:emotions_and_care_v1/helpers/notifications_cubit.dart';
 import 'package:emotions_and_care_v1/helpers/paths.dart';
+import 'package:emotions_and_care_v1/modules/patients_request/presentation/logic/patient_request_cubit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -67,13 +69,21 @@ Future<void> setupServiceLocator() async {
     repository: getIt<ScheduleRepository>(),
   ));
 
-  getIt
-      .registerSingleton<FirebaseNotificationsCubit>(FirebaseNotificationsCubit(
-    begginCubit: getIt<BegginCubit>(),
-    homeCubit: getIt<HomeCubit>(),
+  getIt.registerSingleton<PatientsRequestCubit>(PatientsRequestCubit(
+    userRepository: getIt<UserRepository>(),
+    specialistRepository: getIt<SpecialistRepository>(),
   ));
 
-  getIt<FirebaseNotificationsCubit>().initialize();
+  if (kIsWeb) {
+    getIt.registerSingleton<FirebaseNotificationsCubit>(
+        FirebaseNotificationsCubit(
+      begginCubit: getIt<BegginCubit>(),
+      homeCubit: getIt<HomeCubit>(),
+      patientsRequestCubit: getIt<PatientsRequestCubit>(),
+    ));
+
+    getIt<FirebaseNotificationsCubit>().initialize();
+  }
 
   // Espera a que las instancias asincrónicas estén listas antes de continuar
   await getIt.allReady();

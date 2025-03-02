@@ -1,13 +1,16 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../helpers/paths.dart';
 
 class HomeController extends StatefulWidget {
   final int idUser;
   final Function(int) changeIndex;
+  final BegginState begginState;
   const HomeController(
-      {super.key, required this.idUser, required this.changeIndex});
+      {super.key,
+      required this.idUser,
+      required this.changeIndex,
+      required this.begginState});
 
   @override
   State<HomeController> createState() => _HomeControllerState();
@@ -20,15 +23,15 @@ class _HomeControllerState extends State<HomeController> {
   void initState() {
     super.initState();
 
-    context.read<HomeCubit>().getNotifications(widget.idUser);
+    if (widget.begginState.registerPatientFlow == "registerSuccess") {
+      context.read<HomeCubit>().getNotifications(widget.idUser);
+    }
+  }
 
-    _subscription = context.read<HomeCubit>().stream.listen((event) {
-      if (event.status == HomeStatus.growing) {
-        if (mounted) {
-          showGrowingDialog(context);
-        }
-      }
-    });
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
   }
 
   @override
@@ -78,14 +81,26 @@ class _HomeControllerState extends State<HomeController> {
               plane: notificationModel,
               tap: () async {
                 if (notificationModel != null) {
-                  await showCustomDialog(context);
+                  final UICubit uiProvider = context.read<UICubit>();
+                  await showCustomDialog(
+                    context,
+                    uiProvider,
+                  );
 
-                  if (context.mounted) {
-                    print(notificationModel.id);
-                    // builderContext
-                    //     .read<HomeCubit>()
-                    //     .deleteNotification(notificationModel.id);
-                    context.read<HomeCubit>().changeStatus(HomeStatus.growing);
+                  if (context.mounted &&
+                      (notificationModel.type ==
+                              NotificationType.notificacionNota ||
+                          notificationModel.type ==
+                              NotificationType.notificacionRecordatorio)) {
+                    builderContext
+                        .read<HomeCubit>()
+                        .deleteNotification(notificationModel.id);
+                  } else {
+                    if (context.mounted) {
+                      builderContext
+                          .read<HomeCubit>()
+                          .deleteNotification(notificationModel.id);
+                    }
                   }
                 }
               },
@@ -95,22 +110,4 @@ class _HomeControllerState extends State<HomeController> {
       },
     );
   }
-}
-
-void showGrowingDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Creciendo flor'),
-        content: ElevatedButton(
-            onPressed: () {
-              context.read<UICubit>().growFlowerStage();
-
-              Navigator.of(context).pop();
-            },
-            child: const Text('Aceptar')),
-      );
-    },
-  );
 }

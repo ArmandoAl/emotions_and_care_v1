@@ -1,9 +1,7 @@
 // ignore_for_file: avoid_print
-import 'dart:convert';
-
 import 'package:emotions_and_care_v1/helpers/paths.dart';
+import 'package:emotions_and_care_v1/modules/patients_request/presentation/logic/patient_request_cubit.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -11,9 +9,12 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 class FirebaseNotificationsCubit extends Cubit<NotificationState> {
   final BegginCubit begginCubit;
   final HomeCubit homeCubit;
+  final PatientsRequestCubit patientsRequestCubit;
 
   FirebaseNotificationsCubit(
-      {required this.begginCubit, required this.homeCubit})
+      {required this.begginCubit,
+      required this.homeCubit,
+      required this.patientsRequestCubit})
       : super(const NotificationState());
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -42,7 +43,7 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
         // print('Got a message while in the foreground!');
         print('Message data: ${message.data}');
 
-        mapNotification(message.data, homeCubit);
+        mapNotification(message.data);
         emit(state.copyWith(message: message.data));
       });
 
@@ -79,9 +80,8 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
 
   void mapNotification(
     Map<String, dynamic> data,
-    HomeCubit homeCubit,
   ) {
-    final String type = jsonDecode(data['module'] ?? '{}');
+    final String type = data['module'] ?? '{}';
     switch (type) {
       case 'schedule':
         // final Map<String, dynamic> imageData = jsonData['data'] ?? {};
@@ -89,12 +89,47 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
         // final int position = imageData['position'] ?? 0;
 
         break;
-      case "yard":
-        final String action = jsonDecode(data['type'] ?? '');
+      case 'datesRequest':
+        final String action = data['event'] ?? '';
+        switch (action) {
+          case 'newRequest':
+            patientsRequestCubit
+                .getPatientsRequestList(begginCubit.state.specialistModel!.id!);
+            break;
+          default:
+            break;
+        }
+
+        break;
+      case 'yard':
+        final String action = data['event'] ?? '';
         switch (action) {
           case 'canGrow':
-            homeCubit.growFlower();
+            // begginCubit.changeStatus(BegginStatus.growing);
+            //add manual code here about create the note
             break;
+          default:
+            break;
+        }
+
+        break;
+      case 'sync':
+        final String action = data['event'] ?? '';
+        switch (action) {
+          case 'specialistSync':
+            if (begginCubit.state.patientModel != null) {
+              begginCubit.reloginPatient(
+                begginCubit.state.patientModel!,
+              );
+            }
+            break;
+          // case 'patientSync':
+          //   if (begginCubit.state.specialistModel != null) {
+          //     begginCubit.getPatients(
+          //       begginCubit.state.specialistModel!,
+          //     );
+          //   }
+          //   break;
           default:
             break;
         }

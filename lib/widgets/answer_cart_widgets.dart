@@ -1,4 +1,3 @@
-import '../../config/assets/assets.dart';
 import '../helpers/paths.dart';
 
 Widget cartWidget(BuildContext context, CartModel cart) {
@@ -72,7 +71,7 @@ Widget responseWidget(
       color: const Color(0xfefdf6ec),
       image: DecorationImage(
         colorFilter: ColorFilter.mode(
-            Theme.of(context).colorScheme.surface.withOpacity(0.99),
+            Theme.of(context).colorScheme.secondary.withOpacity(0.99),
             BlendMode.src),
         image: const AssetImage(Assets.cartPaper),
         fit: BoxFit.cover,

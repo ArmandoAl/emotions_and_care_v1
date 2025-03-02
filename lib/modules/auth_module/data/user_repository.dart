@@ -42,7 +42,6 @@ class UserRepository implements IUserRepository {
         },
         body: jsonEncode(patient.toJson()),
       );
-
       if (response.statusCode != 200) {
         throw Exception('Failed to create patient');
       }
@@ -156,6 +155,50 @@ class UserRepository implements IUserRepository {
   }
 
   @override
+  Future<bool> vincularPaciente(int specialistId, int patientId) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            '${Api.baseUrl}Paciente/$specialistId/vincularPaciente/$patientId'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to sync by code');
+    }
+  }
+
+  @override
+  Future<bool> syncByDirectCode(int id, String code) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            '${Api.baseUrl}Paciente/$id/vincluarDirectamenteConCodigo/$code'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to sync by direct code');
+    }
+  }
+
+  @override
   Future<PatientModel> getPatient(int id) async {
     try {
       final response = await http.get(
@@ -177,7 +220,7 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<bool> refreshToken(int id, String token) async {
+  Future<dynamic> refreshToken(int id, String token) async {
     try {
       final response = await http.put(
         Uri.parse('${Api.baseUrl}Usuario/refreshToken/$id/$token'),
@@ -188,12 +231,18 @@ class UserRepository implements IUserRepository {
       );
 
       if (response.statusCode != 200) {
-        return false;
+        return null;
       }
 
-      return true;
+      final data = jsonDecode(response.body);
+
+      if (data['license'] != null) {
+        return SpecialistModel.fromJson(data);
+      } else {
+        return PatientModel.fromJson(data, true);
+      }
     } catch (e) {
-      throw Exception('Failed to refresh token');
+      return null;
     }
   }
 }

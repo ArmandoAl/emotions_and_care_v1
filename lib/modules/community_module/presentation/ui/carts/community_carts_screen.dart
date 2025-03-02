@@ -1,5 +1,4 @@
 import 'package:card_swiper/card_swiper.dart';
-import '../../../../../config/assets/assets.dart';
 import '../../../../../helpers/paths.dart';
 
 class CommunityCartsScreen extends StatefulWidget {
@@ -25,7 +24,6 @@ class _CommunityCartsScreenState extends State<CommunityCartsScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: MediaQuery.of(context).size.height * 0.02,
-                fontWeight: FontWeight.bold,
                 decoration: TextDecoration.none,
               )),
           SizedBox(height: MediaQuery.of(context).size.height * 0.025),
@@ -44,7 +42,10 @@ class _CommunityCartsScreenState extends State<CommunityCartsScreen> {
                   borderRadius: BorderRadius.circular(30),
                   image: DecorationImage(
                     colorFilter: ColorFilter.mode(
-                        Theme.of(context).colorScheme.surface.withOpacity(0.99),
+                        Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.99),
                         BlendMode.src),
                     image: const AssetImage(
                       Assets.cartPaper,

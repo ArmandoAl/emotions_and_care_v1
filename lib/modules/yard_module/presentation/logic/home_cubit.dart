@@ -1,5 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../helpers/paths.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -66,10 +64,6 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(items: notifications));
   }
 
-  void growFlower() {
-    emit(state.copyWith(status: HomeStatus.growing));
-  }
-
   void growStage(int id) async {
     emit(state.copyWith(status: HomeStatus.loading));
     try {
@@ -78,6 +72,30 @@ class HomeCubit extends Cubit<HomeState> {
       if (response) {
         emit(state.copyWith(status: HomeStatus.loaded));
       }
+    } catch (e) {
+      emit(state.copyWith(status: HomeStatus.error));
+    }
+  }
+
+  void canGrowStage(int id) async {
+    emit(state.copyWith(status: HomeStatus.loading));
+    try {
+      final response = await repository.canGrowStage(id);
+
+      if (response) {
+        emit(state.copyWith(status: HomeStatus.loaded));
+      }
+    } catch (e) {
+      emit(state.copyWith(status: HomeStatus.error));
+    }
+  }
+
+  void growFlowerinBack(int idPatient, int idUserFlower) async {
+    emit(state.copyWith(status: HomeStatus.growing));
+    try {
+      await repository.growFlower(idPatient, idUserFlower);
+
+      emit(state.copyWith(status: HomeStatus.loaded));
     } catch (e) {
       emit(state.copyWith(status: HomeStatus.error));
     }

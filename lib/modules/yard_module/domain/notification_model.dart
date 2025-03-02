@@ -1,7 +1,8 @@
 enum NotificationType {
   notificacionRecordatorio,
   notificacionRecomendacion,
-  notificacionNota
+  notificacionNota,
+  growNotifications
 }
 
 enum RecomendationType { recomendacion, recordatorio }
@@ -58,15 +59,18 @@ class NotificationModel {
   }
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    print(json);
     return NotificationModel(
       id: json['notificationId'],
       title: json['titulo'],
-      // type: NotificationType.values[json['notificationType']],
-      type: NotificationType.notificacionRecomendacion,
+      type: json['notificationType'] == null
+          ? NotificationType.notificacionNota
+          : NotificationType.values[json['notificationType']],
       description: json['descripcion'],
       idRecomendation: json['recomendationId'],
-      // recomendationType: RecomendationType.values[json['recomendationType']],
-      recomendationType: RecomendationType.recomendacion,
+      recomendationType: json['recomendationType'] == null
+          ? null
+          : RecomendationType.values[json['recomendationType']],
       reference: json['reference'],
       url: json['url'],
     );

@@ -1,4 +1,3 @@
-import 'package:provider/provider.dart';
 import '../helpers/paths.dart';
 
 Widget containerContentWidget(
@@ -23,8 +22,9 @@ Widget containerContentWidget(
               context,
               MaterialPageRoute(
                 builder: (context) => NewDateScreen(
-                  patientModel: isPatient ? patientModel! : null,
-                  specialistModel: isPatient ? null : especialistaModel!,
+                  patientModel:
+                      isPatient && patientModel != null ? patientModel : null,
+                  specialistModel: isPatient ? null : especialistaModel,
                   isPatient: isPatient,
                   dates: dates,
                   onSave: (date, id) async {

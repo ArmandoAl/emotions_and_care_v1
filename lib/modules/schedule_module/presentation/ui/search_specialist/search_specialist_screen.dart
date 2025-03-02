@@ -9,6 +9,8 @@ class SearchSpecialistScreen extends StatefulWidget {
   final Function(SpecialistModel) onTapSpecialist;
   final Function onFilterTap;
   final Future<bool> Function(String) syncByCode;
+  final Future<bool> Function(String) syncDirectByCode;
+  //syncDirectByCode
   const SearchSpecialistScreen(
       {super.key,
       required this.patientModel,
@@ -18,7 +20,8 @@ class SearchSpecialistScreen extends StatefulWidget {
       required this.onTapSpecialist,
       required this.onFilterTap,
       required this.searchFunction,
-      required this.syncByCode});
+      required this.syncByCode,
+      required this.syncDirectByCode});
 
   @override
   State<SearchSpecialistScreen> createState() => _SearchSpecialistScreenState();
@@ -71,8 +74,9 @@ class _SearchSpecialistScreenState extends State<SearchSpecialistScreen> {
                 },
                 child: Container(
                     decoration: BoxDecoration(
-                      color: widget.specislist[index].id ==
-                              widget.patientModel!.specialist!.id
+                      color: widget.patientModel!.specialist != null &&
+                              widget.specislist[index].id ==
+                                  widget.patientModel!.specialist!.id
                           ? Colors.grey
                           : Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(10),
@@ -173,7 +177,7 @@ Widget requestByCodeWidget(
               changeLoadingState();
               bool result = await syncByCode(controller.text);
               changeLoadingState();
-              if (context.mounted) {
+              if (result == true && context.mounted) {
                 showConfirmialog(
                     context,
                     result

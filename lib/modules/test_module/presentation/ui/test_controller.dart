@@ -1,6 +1,4 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import '../../../../config/assets/assets.dart';
 import '../../../../helpers/paths.dart';
 
 class TestController extends StatefulWidget {

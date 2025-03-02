@@ -1,5 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../helpers/paths.dart';
 import '../modules/test_module/presentation/utils/test_module_strings.dart';
 
@@ -61,7 +59,6 @@ Widget intructionsWidget(
               'Empezar cuesionario',
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.05,
-                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.none),
             )),
@@ -85,8 +82,8 @@ Widget testResultWidget(
       Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.3,
-        decoration: const BoxDecoration(
-          color: Color(0xff1C8AAD),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary,
         ),
         child: Icon(
           Icons.check_circle,
@@ -94,9 +91,8 @@ Widget testResultWidget(
         ),
       ),
       Expanded(
-          child: Container(
+          child: SizedBox(
         width: double.infinity,
-        color: Theme.of(context).scaffoldBackgroundColor,
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.07,
@@ -109,9 +105,6 @@ Widget testResultWidget(
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.045,
-                      color: context.read<UICubit>().state.selectedTheme == 3
-                          ? Colors.white
-                          : Colors.black,
                       fontWeight: FontWeight.normal,
                       decoration: TextDecoration.none)),
               SizedBox(height: MediaQuery.of(context).size.height * 0.005),
@@ -119,9 +112,6 @@ Widget testResultWidget(
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.09,
-                      color: context.read<UICubit>().state.selectedTheme == 3
-                          ? Colors.white
-                          : Colors.black,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.none)),
               SizedBox(height: MediaQuery.of(context).size.height * 0.08),
@@ -130,9 +120,6 @@ Widget testResultWidget(
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width * 0.035,
                       fontWeight: FontWeight.bold,
-                      color: context.read<UICubit>().state.selectedTheme == 3
-                          ? Colors.white
-                          : Colors.black,
                       decoration: TextDecoration.none)),
               SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               ElevatedButton(

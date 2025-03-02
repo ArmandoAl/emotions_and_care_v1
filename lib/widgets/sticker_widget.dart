@@ -8,6 +8,7 @@ Widget stickerWidget(
     AnimationController? controller,
     Animation<double>? animation,
     UICubit uiProvider,
+    UIState uiState,
     int index,
     bool customEnable) {
   return SizedBox(
@@ -22,7 +23,7 @@ Widget stickerWidget(
                 ? GestureDetector(
                     onTap: () async {
                       await showItemsDialog(
-                          context, "Tus stickers", index, uiProvider);
+                          context, "Tus stickers", index, uiProvider, uiState);
                     },
                     child: AnimatedBuilder(
                         animation: controller!,

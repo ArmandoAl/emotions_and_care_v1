@@ -13,7 +13,9 @@ enum BegginStatus {
   loged,
   logind,
   notLoged,
-  errorSingingWithSpecialist
+  errorSingingWithSpecialist,
+  growing,
+  relogin
 }
 
 class BegginState extends Equatable {

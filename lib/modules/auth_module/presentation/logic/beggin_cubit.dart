@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../helpers/paths.dart';
 
 enum RegisterSpecialistFlow { registerSuccess, licenseValidated }
@@ -13,7 +12,8 @@ class BegginCubit extends Cubit<BegginState> {
     required this.userRepoitory,
   }) : super(const BegginState());
 
-  Future<String> multiLogin(String email, String password) async {
+  Future<String> multiLogin(String email, String password,
+      [bool isRememberPassword = false]) async {
     emit(state.copyWith(status: BegginStatus.loading));
 
     final response = await userRepoitory.multiLogin(email, password);
@@ -30,27 +30,16 @@ class BegginCubit extends Cubit<BegginState> {
 
     if (response is PatientModel) {
       PatientModel patientModel = response;
-      String status;
 
-      storageRepository.savePatient(response);
-
-      if (patientModel.registerStatus != "registerSuccess") {
-        final registerPatientFlow =
-            await storageRepository.getRegisterPatientFlow();
-        if (registerPatientFlow != null) {
-          status = registerPatientFlow;
-        } else {
-          status = "register";
-        }
-      } else {
-        status = "registerSuccess";
+      if (isRememberPassword) {
+        storageRepository.savePatient(response);
       }
 
       emit(state.copyWith(
         status: BegginStatus.success,
         patientModel: response,
         isPatient: true,
-        registerPatientFlow: status,
+        registerPatientFlow: patientModel.registerStatus,
         user: true,
       ));
 
@@ -58,7 +47,13 @@ class BegginCubit extends Cubit<BegginState> {
 
       return 'success';
     } else {
-      storageRepository.saveSpecialist(response!);
+      SpecialistModel specialistModel = response;
+
+      if (isRememberPassword) {
+        storageRepository.saveSpecialist(specialistModel);
+      }
+
+      refreshToken(specialistModel.id!);
 
       emit(state.copyWith(
         status: BegginStatus.loged,
@@ -70,6 +65,41 @@ class BegginCubit extends Cubit<BegginState> {
       return 'success';
     }
   }
+
+  Future<bool> reloginPatient(PatientModel patient) async {
+    emit(state.copyWith(status: BegginStatus.relogin));
+
+    PatientModel user = await userRepoitory.getPatient(patient.id!);
+
+    emit(state.copyWith(
+      status: BegginStatus.success,
+      patientModel: user,
+      isPatient: true,
+      registerPatientFlow: patient.registerStatus,
+      user: true,
+    ));
+
+    refreshToken(patient.id!);
+
+    return true;
+  }
+
+  // Future<bool> reloginSpecialist(SpecialistModel specialist) async {
+  //   emit(state.copyWith(status: BegginStatus.relogin));
+
+  //   SpecialistModel user = await userRepoitory.getSpecialist(specialist.id!);
+
+  //   emit(state.copyWith(
+  //     status: BegginStatus.success,
+  //     specialistModel: user,
+  //     isPatient: false,
+  //     user: true,
+  //   ));
+
+  //   refreshToken(specialist.id!);
+
+  //   return true;
+  // }
 
   Future<void> getUser() async {
     // emit(state.copyWith(status: BegginStatus.notLoged));
@@ -106,12 +136,12 @@ class BegginCubit extends Cubit<BegginState> {
     if (state.isPatient!) {
       final patientModel =
           state.patientModel!.copyWith(registerStatus: registerStatus);
-      storageRepository.savePatient(patientModel);
       emit(state.copyWith(patientModel: patientModel));
     }
   }
 
-  Future<String> registerPatient(PatientModel patientModel) async {
+  Future<String> registerPatient(
+      PatientModel patientModel, bool remember) async {
     emit(state.copyWith(status: BegginStatus.loading));
 
     final response = await userRepoitory.createPatient(patientModel);
@@ -134,7 +164,9 @@ class BegginCubit extends Cubit<BegginState> {
       return 'Error al registrar paciente, el correo o teléfono ya están registrados';
     }
 
-    await storageRepository.saveRegisterPatientFlow("register");
+    if (remember) {
+      storageRepository.savePatient(patientModel);
+    }
 
     emit(state.copyWith(
       isPatient: true,
@@ -142,7 +174,8 @@ class BegginCubit extends Cubit<BegginState> {
     return 'success';
   }
 
-  Future<String> registerSpecialist(SpecialistModel specialistModel) async {
+  Future<String> registerSpecialist(
+      SpecialistModel specialistModel, bool remember) async {
     emit(state.copyWith(status: BegginStatus.loading));
 
     final response = await userRepoitory.createSpecialist(specialistModel);
@@ -165,7 +198,9 @@ class BegginCubit extends Cubit<BegginState> {
       return 'Error al registrar especialista, el correo o teléfono ya están registrados';
     }
 
-    await storageRepository.saveSpecialist(specialistModel);
+    if (remember) {
+      storageRepository.saveSpecialist(specialistModel);
+    }
 
     emit(state.copyWith(
       status: BegginStatus.success,
@@ -221,6 +256,21 @@ class BegginCubit extends Cubit<BegginState> {
     final response = await userRepoitory.syncByCode(id, code);
 
     if (response) {
+      emit(state.copyWith(
+        status: BegginStatus.success,
+      ));
+
+      return true;
+    } else {
+      emit(state.copyWith(status: BegginStatus.errorSingingWithSpecialist));
+      return false;
+    }
+  }
+
+  Future<bool> syncByDirectCode(int id, String code) async {
+    final response = await userRepoitory.syncByDirectCode(id, code);
+
+    if (response) {
       final newPatient = await userRepoitory.getPatient(id);
 
       await storageRepository.savePatient(newPatient);
@@ -240,23 +290,29 @@ class BegginCubit extends Cubit<BegginState> {
   Future<bool> refreshToken(int id) async {
     final response = await userRepoitory.refreshToken(id, state.token);
 
-    if (response) {
-      if (state.isPatient == true) {
-        final newPatient = state.patientModel!.copyWith(token: state.token);
+    if (response != null) {
+      if (state.isPatient == true && response is PatientModel) {
+        final newPatient = state.patientModel!.copyWith(
+          token: state.token,
+        );
         await storageRepository.savePatient(newPatient);
         emit(state.copyWith(
           status: BegginStatus.success,
           patientModel: newPatient,
         ));
       } else {
-        final newSpecialist =
-            state.specialistModel!.copyWith(token: state.token);
-        await storageRepository.saveSpecialist(newSpecialist);
+        if (response is SpecialistModel) {
+          final newSpecialist = state.specialistModel!.copyWith(
+            token: state.token,
+            tokenForRelate: response.tokenForRelate,
+          );
+          await storageRepository.saveSpecialist(newSpecialist);
 
-        emit(state.copyWith(
-          status: BegginStatus.success,
-          specialistModel: newSpecialist,
-        ));
+          emit(state.copyWith(
+            status: BegginStatus.success,
+            specialistModel: newSpecialist,
+          ));
+        }
       }
 
       return true;
@@ -268,6 +324,12 @@ class BegginCubit extends Cubit<BegginState> {
 
   void setToken(String token) {
     emit(state.copyWith(token: token));
+  }
+
+  void changeStatus(
+    BegginStatus status,
+  ) {
+    emit(state.copyWith(status: status));
   }
 }
 

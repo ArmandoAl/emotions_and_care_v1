@@ -336,7 +336,7 @@ Widget notesForDayWidget(
         ),
         Text(
           days[dayIndex % 7],
-          style: const TextStyle(fontSize: 15, color: Colors.black),
+          style: const TextStyle(fontSize: 15),
         ),
         Expanded(
           child: ListView.builder(
@@ -359,8 +359,8 @@ Widget notePerDay(BuildContext context, List<NoteModel> notes, int index) {
     child: Center(
       child: Text(notes[index].emotion.icon!,
           style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width * 0.05,
-              color: emotionColors[notes[index].emotion.name]!)),
+            fontSize: MediaQuery.of(context).size.width * 0.05,
+          )),
     ),
   );
 }

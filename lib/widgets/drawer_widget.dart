@@ -1,5 +1,5 @@
 import 'package:emotions_and_care_v1/helpers/navigation_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../helpers/paths.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -138,6 +138,23 @@ class _DrawerWidgetState extends State<DrawerWidget>
                 IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
+
+                      context.read<ScheduleCubit>().clean();
+                      context.read<HomeCubit>().clean();
+
+                      // emotionCubit.clean();
+
+                      context.read<CommunityCubit>().clean();
+
+                      context.read<DailyCubit>().clean();
+
+                      context.read<TestCubit>().clean();
+
+                      context.read<UICubit>().clean();
+
+                      context.read<BegginCubit>().logout();
+
+                      context.read<PattientsDatesCubit>().clean();
                     },
                     icon: Icon(Icons.help,
                         size: MediaQuery.of(context).size.width * 0.1)),
@@ -177,16 +194,12 @@ Widget _menuItem({
             title: Text(
               title,
               style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color:
-                    animation.value ?? Colors.white, // Aplica el color animado
                 fontSize: MediaQuery.of(context).size.width * 0.04,
               ),
             ),
             leading: Icon(
               size: MediaQuery.of(context).size.width * 0.05,
               icon,
-              color: animation.value ?? Colors.white, // Aplica el color animado
             ),
             onTap: () {
               onTap();
@@ -200,7 +213,6 @@ Widget _menuItem({
       title: Text(
         title,
         style: TextStyle(
-          fontWeight: FontWeight.bold,
           fontSize: MediaQuery.of(context).size.width * 0.04,
         ),
       ),

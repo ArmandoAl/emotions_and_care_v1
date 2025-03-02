@@ -92,4 +92,78 @@ class SpecialistRepository implements ISpecialistRepository {
       throw Exception('Failed to load patients');
     }
   }
+
+  @override
+  Future<List<PatientRequest>> getPatientRequest(int idSpecialist) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '${Api.baseUrl}Especialista/$idSpecialist/getPatientsRequest'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return (jsonDecode(response.body) as List)
+            .map((e) => PatientRequest.fromMap(e))
+            .toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      throw Exception('Failed to load patient requests');
+    }
+  }
+
+  @override
+  Future<bool> acceptPatientRequest(int idSpecialist, int idPatient) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            '${Api.baseUrl}Especialista/$idSpecialist/aceptarSolicitud/$idPatient'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      print(response.statusCode);
+      print(response.body);
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to accept patient request');
+    }
+  }
+
+  @override
+  Future<bool> rejectPatientRequest(int idSpecialist, int idPatient) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            '${Api.baseUrl}Especialista/$idSpecialist/rechazarSolicitud/$idPatient'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      print(response.statusCode);
+      print(response.body);
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to reject patient request');
+    }
+  }
 }

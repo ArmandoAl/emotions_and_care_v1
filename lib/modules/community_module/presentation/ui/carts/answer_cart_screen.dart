@@ -29,9 +29,9 @@ class _AnswerCartScreenState extends State<AnswerCartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Escribe una carta para - ${widget.cart.letraEmisor[0]}'),
-      ),
+      appBar: HeaderWidget(
+          title: 'Escribe una carta para - ${widget.cart.letraEmisor[0]}',
+          isForReturn: true),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,

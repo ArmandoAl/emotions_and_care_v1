@@ -1,6 +1,5 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../helpers/paths.dart';
+import '../../../../widgets/header_specialist_widget.dart';
 
 class SpecialisPattientsScreen extends StatefulWidget {
   final String title;
@@ -23,15 +22,11 @@ class _SpecialisPattientsScreenState extends State<SpecialisPattientsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Container(
+      appBar: HeaderSpecialistWidget(
+          title: widget.title, isForReturn: true, context: context),
+      body: SizedBox(
         height: double.infinity,
         width: double.infinity,
-        decoration: const BoxDecoration(
-          color: Color(0xFFE3EDF3),
-        ),
         child: RefreshIndicator(
           onRefresh: () async {
             context.read<PattientsCubit>().getPattients(widget.userId);
@@ -56,13 +51,9 @@ List<Widget> itemsList(
     list.add(containerItem(
       context,
       Colors.white,
-      Icon(
-        Icons.person,
-        color: const Color(0xFF71D5FF),
-        size: MediaQuery.of(context).size.width * 0.1,
-      ),
       pattient.name!,
-      pattient.sex!,
+      pattient.email!,
+      pattient.sex ?? '',
       () {
         onTap(pattient);
       },

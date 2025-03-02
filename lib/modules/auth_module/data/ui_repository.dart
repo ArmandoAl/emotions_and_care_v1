@@ -61,7 +61,7 @@ class UIRepositoryImpl extends UIRepository {
     try {
       final response = await http.put(
         Uri.parse(
-            '${Api.baseUrl}Paciente/$idpatient/putFlowerInInterface/${flower.userFlowerId}/$position'),
+            '${Api.baseUrl}Paciente/$idpatient/putFlowerInInterface/${flower.userFlowerId}/2'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

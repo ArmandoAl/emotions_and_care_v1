@@ -1,6 +1,4 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import '../../../../../config/assets/assets.dart';
 import '../../../../../helpers/paths.dart';
 
 class CommunityCartsControoler extends StatefulWidget {
@@ -54,24 +52,28 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
             appBar: HeaderWidget(
               title: 'Cartas de apoyo',
               isForReturn: true,
-              action: widget.isPatient
-                  ? ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UserCartsController(
-                                      patientModel: widget.patient,
-                                      specialistModel: widget.specialist,
-                                      isPatient: widget.isPatient,
-                                    )));
-                      },
-                      child: Text('Buzón',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: MediaQuery.of(context).size.width * 0.03,
-                            fontWeight: FontWeight.bold,
-                          )))
+              actions: widget.isPatient
+                  ? [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserCartsController(
+                                          patientModel: widget.patient,
+                                          specialistModel: widget.specialist,
+                                          isPatient: widget.isPatient,
+                                        )));
+                          },
+                          child: Text('Buzón',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.03,
+                                fontWeight: FontWeight.bold,
+                              ))),
+                      const SizedBox(width: 10),
+                    ]
                   : null,
             ),
             body: CommunityCartsScreen(

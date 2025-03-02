@@ -1,4 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../config/utils_functions/show_message.dart';
 import '../../../../helpers/paths.dart';
 
@@ -31,8 +30,8 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => LoginScreen(
-                          onLogin: (String email, String password) async {
+                  builder: (context) => LoginScreen(onLogin: (String email,
+                          String password, bool isRememberPassword) async {
                         if (email.isEmpty || password.isEmpty) {
                           showMessage(
                               context, 'Por favor, rellene todos los campos');
@@ -45,8 +44,8 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                           return;
                         }
 
-                        final result =
-                            await userProvider.multiLogin(email, password);
+                        final result = await userProvider.multiLogin(
+                            email, password, isRememberPassword);
 
                         if (result == 'error' && context.mounted) {
                           showMessage(context, 'Error al iniciar sesión');
@@ -67,7 +66,8 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                             MaterialPageRoute(
                                 builder: (context) => RegisterProcessScreen(
                                       onPatientRegister: (PatientModel patient,
-                                          PageController pageController) async {
+                                          PageController pageController,
+                                          bool remember) async {
                                         if (validatePhone(patient.phone!) ==
                                             false) {
                                           showMessage(context,
@@ -96,7 +96,7 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                         }
 
                                         final result = await userProvider
-                                            .registerPatient(patient);
+                                            .registerPatient(patient, remember);
 
                                         if (result != 'success' &&
                                             context.mounted) {
@@ -109,9 +109,10 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                                 milliseconds: 500),
                                             curve: Curves.easeInOut);
                                       },
-                                      onSpecialistrRegister: (SpecialistModel
-                                              specialist,
-                                          PageController pageController) async {
+                                      onSpecialistrRegister:
+                                          (SpecialistModel specialist,
+                                              PageController pageController,
+                                              bool remember) async {
                                         if (validatePhone(specialist.phone!) ==
                                             false) {
                                           showMessage(context,
@@ -134,7 +135,8 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
                                         }
 
                                         final result = await userProvider
-                                            .registerSpecialist(specialist);
+                                            .registerSpecialist(
+                                                specialist, remember);
 
                                         if (result != 'success' &&
                                             context.mounted) {

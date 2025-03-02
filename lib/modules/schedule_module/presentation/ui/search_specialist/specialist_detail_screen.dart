@@ -234,7 +234,7 @@ class _SpecialistDetailScreenState extends State<SpecialistDetailScreen> {
                               context,
                               result
                                   ? "Solicitud enviada, te notificaremos cuando el especialista responda a tu solicitud"
-                                  : "Error");
+                                  : "Error al enviar la solicitud, por favor intenta de nuevo más tarde");
                         }
                         if (context.mounted) Navigator.pop(context);
                       },

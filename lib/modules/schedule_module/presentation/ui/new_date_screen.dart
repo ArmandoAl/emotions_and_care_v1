@@ -1,4 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../helpers/paths.dart';
 
 class NewDateScreen extends StatefulWidget {
@@ -49,6 +48,15 @@ class _NewDateScreenState extends State<NewDateScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nueva cita'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () async {
+              await showMessageDialog(context, "", '''
+                En esta pantalla puedes agendar una nueva cita, selecciona el paciente, la fecha y la hora de la cita, ademas de la descripcion y el lugar de la misma. Una vez que hayas llenado todos los campos, presiona el boton de guardar para agendar la cita''');
+            },
+          ),
+        ],
       ),
       body: Container(
         width: double.infinity,

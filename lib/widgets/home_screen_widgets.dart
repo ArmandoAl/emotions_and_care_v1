@@ -1,6 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-
-import '../../config/assets/assets.dart';
 import '../helpers/paths.dart';
 
 Widget macetaConPlanta(
@@ -13,7 +11,7 @@ Widget macetaConPlanta(
   return GestureDetector(
     onTap: () async {
       if (customEnable == true) {
-        await showItemsDialog(context, "Tus plantas", 0, uiProvider);
+        await showItemsDialog(context, "Tus plantas", 0, uiProvider, uiState);
       }
     },
     child: SizedBox(
@@ -22,7 +20,7 @@ Widget macetaConPlanta(
       child: Stack(
         children: [
           Positioned(
-            bottom: 55,
+            bottom: 45,
             left: MediaQuery.of(context).size.width * 0.345,
             child: uiProvider.state.currentFlower != null
                 ? CachedNetworkImage(

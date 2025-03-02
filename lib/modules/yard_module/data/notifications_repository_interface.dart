@@ -8,4 +8,8 @@ abstract class INotificationRepository {
   Future<List<NotificationModel>> init(int id);
 
   Future<bool> growStage(int id);
+
+  Future<bool> growFlower(int idPatient, int idUserFlower);
+
+  Future<bool> canGrowStage(int idPatient);
 }

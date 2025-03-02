@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
-import '../../../../config/assets/assets.dart';
 import '../../../../helpers/paths.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,7 +22,41 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.customEnable) {
+      return CustomUIScreen(
+        tap: widget.tap,
+        registerFlow: widget.registerFlow,
+      );
+    } else {
+      return StaticHomeScreen(
+        plane: widget.plane,
+        registerFlow: widget.registerFlow,
+        tap: widget.tap,
+      );
+    }
+  }
+}
+
+class StaticHomeScreen extends StatefulWidget {
+  static const String route = 'home';
+  final NotificationModel? plane;
+  final String? registerFlow;
+  final Function tap;
+  const StaticHomeScreen(
+      {super.key,
+      required this.plane,
+      required this.registerFlow,
+      required this.tap});
+
+  @override
+  State<StaticHomeScreen> createState() => _StaticHomeScreenState();
+}
+
+class _StaticHomeScreenState extends State<StaticHomeScreen>
+    with TickerProviderStateMixin {
   double _animationTop = 0;
   double _animationLeft = -0.2;
   double angle = 0;
@@ -35,11 +67,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   AnimationController? _buttonController;
   Animation<Color?>? _buttonAnimation;
 
-  AnimationController? _stickersController;
-  Animation<double>? _stickersAnimation;
+  AnimationController? _flashController;
+  Animation<double>? _flashAnimation;
 
-  AnimationController? _animationController;
-  Animation? _animation;
+  StreamSubscription? _subscription;
 
   late UICubit uiProvider;
   late BegginCubit userProvider;
@@ -51,6 +82,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     userProvider = getIt<BegginCubit>();
 
     if (mounted) {
+      _flashController = AnimationController(
+        duration: const Duration(seconds: 1),
+        vsync: this,
+      );
+      _flashAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+          CurvedAnimation(parent: _flashController!, curve: Curves.bounceIn));
+
       if (widget.registerFlow != null && widget.registerFlow == "register") {
         _buttonController = AnimationController(
           vsync: this,
@@ -75,49 +113,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           });
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          showMessageDialog(context, '¡Bienvenido!',
-              "Bienvenid@ a Emotions&Care. Dirigete al menú lateral y dirígete a la sección de Cuestionarios para completar tu registro.");
+          showMessageDialog(context, "¡Hola!",
+              "Te damos la bienvenida a Emotions&Care, una aplicación móvil diseñada para la detección y seguimiento de la salud mental de personas que se encuentran estudiando la universidad. |Sabemos que el camino universitario puede ser retador, pero no te preocupes, ¡Estamos aquí para apoyarte en cada paso del camino!. |Por favor, selecciona el menú para iniciar.",
+              dimiss: false);
         });
       }
 
-      if (widget.customEnable == true) {
-        _stickersController = AnimationController(
-          vsync: this,
-          duration: const Duration(seconds: 1),
-        )..repeat(reverse: true);
-        // Configurar la animación de los stickers
-        _stickersAnimation = Tween<double>(
-          begin: 1.0,
-          end:
-              1.1, // Cambia este valor a lo que desees (un poco más grande que 1.0)
-        ).animate(
-          CurvedAnimation(
-            parent: _stickersController!,
-            curve: Curves.easeInOut,
-          ),
-        )..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              _stickersController!.reverse();
-            } else if (status == AnimationStatus.dismissed) {
-              _stickersController!.forward();
-            }
-          });
+      // if (widget.registerFlow != null &&
+      //     widget.registerFlow == "registerSuccess") {}
 
-        _animationController = AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 2000),
-        )..repeat(reverse: true);
-
-        _animation = ColorTween(
-          begin: const Color.fromARGB(255, 255, 255, 255),
-          end: const Color.fromARGB(255, 87, 87, 83),
-        ).animate(_animationController!);
-
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          showMessageDialog(context, "Hora de personalizar",
-              "Selecciona un espacio para colocar tu sticker.");
-        });
-      } else {
+      //revisar como haremos este dialog
+      // ¡Estás listo para despegar hacia el bienestar!
+      // Tu avión de recomendaciones diarias está aquí para guiarte.
+      // Recibirás recomendaciones diarias y personalizadas que te ayudarán a darle seguimiento tu salud mental
+      // Cada día, despegamos hacia nuevas posibilidades y pequeñas acciones que marcarán la diferencia en tu camino hacia el crecimiento personal.
+      if (widget.registerFlow != null &&
+          widget.registerFlow == "registerSuccess") {
         _controller = AnimationController(
           duration: const Duration(seconds: 3),
           vsync: this,
@@ -130,6 +141,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
+  //didChangeDependencies
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _subscription = context.read<BegginCubit>().stream.listen((event) {
+      if (event.status == BegginStatus.growing) {
+        if (mounted) {
+          playFlashEffect();
+        }
+      }
+    });
+  }
+
+  void playFlashEffect() {
+    _flashController!.forward().then((value) {
+      context.read<UICubit>().growFlowerStage();
+      _flashController!.reverse();
+    });
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -137,10 +168,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _controller?.dispose();
     _buttonController?.stop();
     _buttonController?.dispose();
-    _stickersController?.stop();
-    _stickersController?.dispose();
-    _animationController?.stop();
-    _animationController?.dispose();
+    _flashController?.stop();
+    _flashController?.dispose();
+    _subscription?.cancel();
     super.dispose();
   }
 
@@ -158,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             if (state.status == UIStatus.loading) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                title: 'Flutter Demo',
+                title: 'Emotions&Care',
                 theme: ThemeData(
                   primarySwatch: Colors.blue,
                 ),
@@ -185,70 +215,119 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         height: double.infinity,
                       )
                     : const SizedBox(),
+                if (_flashAnimation != null)
+                  Positioned(
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Center(
+                        child: FadeTransition(
+                          opacity: _flashAnimation ??
+                              const AlwaysStoppedAnimation(0),
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(100)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: Column(
+                    children: [
+                      macetaConPlanta(
+                        context,
+                        false,
+                        uiProvider,
+                        state,
+                        null,
+                        null,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(Assets.wood),
+                            fit: BoxFit.cover,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black,
+                              blurRadius: 10,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        height: 150,
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.05,
+                  left: MediaQuery.of(context).size.width * 0.08,
+                  child: stickerWidget(context, getStickerFromState(state, 0),
+                      null, null, uiProvider, state, 0, false),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.02,
+                  left: MediaQuery.of(context).size.width * 0.4,
+                  child: stickerWidget(context, getStickerFromState(state, 1),
+                      null, null, uiProvider, state, 1, false),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.04,
+                  right: MediaQuery.of(context).size.width * 0.09,
+                  child: stickerWidget(context, getStickerFromState(state, 2),
+                      null, null, uiProvider, state, 2, false),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.13,
+                  right: MediaQuery.of(context).size.width * 0.008,
+                  child: stickerWidget(context, getStickerFromState(state, 3),
+                      null, null, uiProvider, state, 3, false),
+                ),
                 Positioned(
                   top: MediaQuery.of(context).size.height * 0.05,
                   left: MediaQuery.of(context).size.width * 0.01,
-                  child: widget.customEnable
-                      ? Builder(builder: (context) {
+                  child: widget.registerFlow != null &&
+                          widget.registerFlow == "register"
+                      ? AnimatedBuilder(
+                          animation: _buttonController!,
+                          builder: (context, child) {
+                            return IconButton(
+                              icon: Icon(Icons.menu,
+                                  color:
+                                      _buttonAnimation!.value ?? Colors.black,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.1),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                            );
+                          },
+                        )
+                      : Builder(builder: (context) {
                           return IconButton(
-                            icon: Icon(Icons.check_circle,
+                            icon: Icon(Icons.menu,
                                 color: const Color(
                                   0xff064ACB,
                                 ),
                                 size: MediaQuery.of(context).size.width * 0.1),
-                            onPressed: () async {
-                              // if (uiProvider.state.currentFlower == null) {
-                              //   await widget.tap();
-                              //   return;
-                              // }
-
-                              if (widget.registerFlow != "registerSuccess") {
-                                final userProvider =
-                                    context.read<BegginCubit>();
-                                userProvider.setRegisterFlow(
-                                    userProvider.state.patientModel!.id!,
-                                    "registerSuccess");
-
-                                await userProvider
-                                    .setRegisterSet("registerSuccess");
-                              }
-
-                              if (context.mounted) Navigator.of(context).pop();
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
                             },
                           );
-                        })
-                      : widget.registerFlow != null &&
-                              widget.registerFlow == "register"
-                          ? AnimatedBuilder(
-                              animation: _buttonController!,
-                              builder: (context, child) {
-                                return IconButton(
-                                  icon: Icon(Icons.menu,
-                                      color: _buttonAnimation!.value ??
-                                          Colors.black,
-                                      size: MediaQuery.of(context).size.width *
-                                          0.1),
-                                  onPressed: () {
-                                    Scaffold.of(context).openDrawer();
-                                  },
-                                );
-                              },
-                            )
-                          : Builder(builder: (context) {
-                              return IconButton(
-                                icon: Icon(Icons.menu,
-                                    color: const Color(
-                                      0xff064ACB,
-                                    ),
-                                    size: MediaQuery.of(context).size.width *
-                                        0.1),
-                                onPressed: () {
-                                  Scaffold.of(context).openDrawer();
-                                },
-                              );
-                            }),
+                        }),
                 ),
-                widget.plane != null && widget.customEnable == false
+                widget.plane != null && _controller != null
                     ? AnimatedBuilder(
                         animation: _controller!,
                         builder: (context, child) {
@@ -282,87 +361,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         },
                       )
                     : const SizedBox(),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  child: Column(
-                    children: [
-                      macetaConPlanta(
-                        context,
-                        widget.customEnable,
-                        uiProvider,
-                        state,
-                        _animationController,
-                        _animation,
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(Assets.wood),
-                            fit: BoxFit.cover,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              blurRadius: 10,
-                              spreadRadius: 1,
-                            ),
-                          ],
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        height: 150,
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.05,
-                  left: MediaQuery.of(context).size.width * 0.08,
-                  child: stickerWidget(
-                      context,
-                      getStickerFromState(uiProvider, 0),
-                      _stickersController,
-                      _stickersAnimation,
-                      uiProvider,
-                      0,
-                      widget.customEnable),
-                ),
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.02,
-                  left: MediaQuery.of(context).size.width * 0.4,
-                  child: stickerWidget(
-                      context,
-                      getStickerFromState(uiProvider, 1),
-                      _stickersController,
-                      _stickersAnimation,
-                      uiProvider,
-                      1,
-                      widget.customEnable),
-                ),
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.04,
-                  right: MediaQuery.of(context).size.width * 0.09,
-                  child: stickerWidget(
-                      context,
-                      getStickerFromState(uiProvider, 2),
-                      _stickersController,
-                      _stickersAnimation,
-                      uiProvider,
-                      2,
-                      widget.customEnable),
-                ),
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.13,
-                  right: MediaQuery.of(context).size.width * 0.008,
-                  child: stickerWidget(
-                      context,
-                      getStickerFromState(uiProvider, 3),
-                      _stickersController,
-                      _stickersAnimation,
-                      uiProvider,
-                      3,
-                      widget.customEnable),
-                ),
               ],
             );
           }),
@@ -391,11 +389,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 }
 
-StickerModel? getStickerFromState(UICubit uiProvider, int index) {
-  if (uiProvider.state.stickersInUse.length > index) {
-    if (uiProvider.state.stickersInUse[index].url != null &&
-        uiProvider.state.stickersInUse[index].url != "") {
-      return uiProvider.state.stickersInUse[index];
+StickerModel? getStickerFromState(UIState state, int index) {
+  if (state.stickersInUse.length > index) {
+    if (state.stickersInUse[index].url != null &&
+        state.stickersInUse[index].url != "") {
+      return state.stickersInUse[index];
     } else {
       return null;
     }

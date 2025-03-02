@@ -38,6 +38,12 @@ class _TestsScreenState extends State<TestsScreen>
     _cubitSubscription = userProvider.stream.listen((state) {
       if (!mounted) return;
 
+      if (state.registerPatientFlow! == "firstTestCompleted") {
+        setState(() {
+          _dialogShown = false;
+        });
+      }
+
       setState(() {
         animatedMenu =
             animatedMenuBools[state.registerPatientFlow ?? "registerSuccess"]!;
@@ -45,26 +51,12 @@ class _TestsScreenState extends State<TestsScreen>
 
       if (animatedMenu && !_dialogShown) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text(""),
-              content: const Text(
-                "¡Completaste tu primer Cuestionario! Ahora puedes dirigirte a la sección de Configuración para personalizar tu experiencia.",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Aceptar"),
-                ),
-              ],
-            ),
-          );
+          showMessageDialog(
+              context,
+              "Cuestionarios",
+              state.registerPatientFlow! == "register"
+                  ? "Para nosotros es muy importante detectar si existe algún riesgo de padecer algún trastorno relacionado con la salud mental. |Para esto, debes dirigirte a cuestionarios. Es importante que respondas tu primer cuestionario para que podamos ofrecerte todas las funcionalidades. |Es importante señalar que la aplicación en ningún momento pretende sustituir la ayuda profesional (opcional)."
+                  : "¡Gracias por completar el cuestionario!| Ahora, dirígete de nuevo al menú principal y selecciona configuración para continuar.");
         });
 
         _dialogShown = true;

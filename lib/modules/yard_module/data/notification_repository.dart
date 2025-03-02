@@ -57,8 +57,6 @@ class NotificationRepository implements INotificationRepository {
         },
       );
 
-      print(response.body);
-
       if (response.statusCode != 200) {
         throw Exception('Failed to load notifications');
       }
@@ -74,7 +72,7 @@ class NotificationRepository implements INotificationRepository {
   @override
   Future<bool> growStage(int id) async {
     try {
-      final response = await http.post(
+      final response = await http.put(
         Uri.parse('${Api.baseUrl}/Paciente/$id/growStage'),
         headers: {
           'Accept': 'application/json',
@@ -82,7 +80,50 @@ class NotificationRepository implements INotificationRepository {
         },
       );
 
-      print(response.statusCode);
+      if (response.statusCode != 200) {
+        throw Exception('Failed to grow stage');
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to grow stage');
+    }
+  }
+
+  @override
+  Future<bool> growFlower(int idPatient, int idUserFlower) async {
+    try {
+      final response = await http.put(
+        Uri.parse(
+            '${Api.baseUrl}/Paciente/$idPatient/growFlower/$idUserFlower'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to grow flower');
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to grow flower');
+    }
+  }
+
+  @override
+  Future<bool> canGrowStage(int idPatient) async {
+    try {
+      final response = await http.get(
+        Uri.parse('${Api.baseUrl}/Paciente/$idPatient/canGrowFlower'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      print(response.body);
 
       if (response.statusCode != 200) {
         throw Exception('Failed to grow stage');

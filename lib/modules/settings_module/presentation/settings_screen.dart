@@ -66,26 +66,8 @@ class _SettingsScreenState extends State<SettingsScreen>
     if (animatedMenu && !_dialogShown) {
       _dialogShown = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text(""),
-            content: const Text(
-              "¡Diríjase a la sección de personalización para elegir su planta y personalizar su jardín!",
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Aceptar"),
-              ),
-            ],
-          ),
-        );
+        showMessageDialog(context, "¡Hora de personalizar tu espacio!",
+            "Personaliza la app para que refleje tu esencia y te inspire en cada paso del camino para tu crecimiento personal. |Por favor, dirígete a personalización.");
       });
     }
   }
@@ -269,7 +251,8 @@ Widget listItem(
                     builder: (context, child) => Text(
                       title,
                       style: TextStyle(
-                          color: animation!.value ?? Colors.black,
+                          color: animation!.value ??
+                              Theme.of(context).colorScheme.onSurface,
                           fontSize: MediaQuery.of(context).size.width * 0.06),
                     ),
                   )
@@ -277,10 +260,10 @@ Widget listItem(
                     title,
                     style: TextStyle(
                         color: disable == false && animate == true
-                            ? animation!.value ?? Colors.black
+                            ? animation!.value ?? Theme.of(context).primaryColor
                             : disable == false
-                                ? Colors.black
-                                : Colors.grey,
+                                ? Theme.of(context).colorScheme.onSurface
+                                : Theme.of(context).colorScheme.secondary,
                         fontSize: MediaQuery.of(context).size.width * 0.05),
                   ),
           ),

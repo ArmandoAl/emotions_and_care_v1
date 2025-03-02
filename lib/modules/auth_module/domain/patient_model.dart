@@ -108,7 +108,7 @@ class PatientModel extends UserModel {
       'sex': sex,
       'token': token,
       "relationalToken": tokenForRelate,
-      "settings": settings!.toJson(),
+      // "settings": settings!.toJson(),
       "termsAndConditions": termsClass!.toJson(),
       "specialist": specialist?.toStore(),
       "registerStatus": registerStatus,
@@ -124,7 +124,7 @@ class PatientModel extends UserModel {
       'password': password,
       'phone': phone,
       'bornDate': bornDate!.toIso8601String(),
-      'sexo': sex,
+      'sex': sex,
       'token': token,
       "termsiD": 1,
     };

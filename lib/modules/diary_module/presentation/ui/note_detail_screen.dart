@@ -38,9 +38,9 @@ class NoteDetailScreen extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(note.emotion.icon!,
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: emotionColors[note.emotion.name]!)),
+                    style: const TextStyle(
+                      fontSize: 30,
+                    )),
               ],
             ),
             const Divider(),

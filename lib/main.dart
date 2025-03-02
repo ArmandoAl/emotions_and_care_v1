@@ -1,20 +1,17 @@
 import 'package:emotions_and_care_v1/firebase_options.dart';
+import 'package:emotions_and_care_v1/helpers/notifications_cubit.dart';
+import 'package:emotions_and_care_v1/modules/patients_request/presentation/logic/patient_request_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'config/assets/assets.dart';
 import 'helpers/navigation_bloc.dart';
 import 'helpers/paths.dart';
 import 'modules/auth_module/presentation/ui/beggin_process_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   await setupServiceLocator();
-
   runApp(const MyApp());
 }
 
@@ -57,6 +54,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<PattientsDatesCubit>(
           create: (context) => getIt<PattientsDatesCubit>(),
         ),
+        BlocProvider<PatientsRequestCubit>(
+          create: (context) => getIt<PatientsRequestCubit>(),
+        ),
+        BlocProvider<FirebaseNotificationsCubit>(
+          create: (context) => getIt<FirebaseNotificationsCubit>(),
+        ),
       ],
       child: const App(),
     );
@@ -87,7 +90,7 @@ class _AppState extends State<App> {
     if (uiCubit.state.themes.isEmpty) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Emotions and Care',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -106,7 +109,7 @@ class _AppState extends State<App> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Emotions and Care',
       theme: uiCubit.state.themes[uiCubit.state.selectedTheme],
       home: BlocBuilder<BegginCubit, BegginState>(
         bloc: getIt<BegginCubit>(), // No llamamos a getUser aquí

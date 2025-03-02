@@ -1,5 +1,5 @@
 import 'package:emotions_and_care_v1/helpers/paths.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:emotions_and_care_v1/widgets/header_specialist_widget.dart';
 
 class GlobalCommunityController extends StatefulWidget {
   final PatientModel? patientModel;
@@ -26,7 +26,8 @@ class _GlobalCommunityControllerState extends State<GlobalCommunityController> {
         return Scaffold(
           appBar: widget.isPatient
               ? null
-              : const HeaderWidget(title: "Comunidad", isForReturn: true),
+              : HeaderSpecialistWidget(
+                  title: "Comunidad", isForReturn: true, context: context),
           body: CommunityMenuScreen(
             onCartsTap: () {
               Navigator.push(

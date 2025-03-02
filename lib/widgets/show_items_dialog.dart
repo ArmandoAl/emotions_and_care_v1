@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../config/assets/assets.dart';
 import '../helpers/paths.dart';
 
-Future<void> showItemsDialog(
-    BuildContext context, String title, int position, UICubit uiCubit) async {
+Future<void> showItemsDialog(BuildContext context, String title, int position,
+    UICubit uiCubit, UIState uiState) async {
   await showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -22,33 +20,57 @@ Future<void> showItemsDialog(
               mainAxisSpacing: 10,
             ),
             itemCount: title == "Tus stickers"
-                ? uiCubit.state.stickers!.length
-                : uiCubit.state.flowers.length,
+                ? uiState.stickers!.length
+                : uiState.flowers.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
+                onTap: () async {
                   final authCubit = context.read<BegginCubit>();
 
                   if (title == "Tus stickers") {
                     uiCubit.setStickerInUse(authCubit.state.patientModel!.id!,
-                        uiCubit.state.stickers![index], position);
-                  } else {
-                    uiCubit.setCurrentFlower(uiCubit.state.flowers[index]);
-                  }
+                        uiState.stickers![index], position);
 
-                  Navigator.of(context).pop();
+                    if (authCubit.state.registerPatientFlow! ==
+                        "firstTestCompleted") {
+                      await showMessageDialog(context, "",
+                          "Selecciona la palomita azul superior para continuar. ");
+                    }
+
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  } else {
+                    uiCubit.setFlowerInInterface(
+                        authCubit.state.patientModel!.id!,
+                        uiState.flowers[index],
+                        position);
+
+                    if (authCubit.state.registerPatientFlow! ==
+                        "firstTestCompleted") {
+                      await showMessageDialog(
+                        context,
+                        "Añade stickers a tu jardín",
+                        "¡Decora tu jardín con stickers! |Añade un toque personal a tu espacio eligiendo diversos stickers. |Cada sticker que elijas será un recordatorio de la importancia de celebrar cada pequeño logro en tu camino hacia el bienestar. |Selecciona uno de los espacios en tu jardín y añade los stickers que has conseguido.",
+                      );
+                    }
+
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  }
                 },
                 child: title == "Tus stickers"
                     ? CachedNetworkImage(
-                        imageUrl: uiCubit.state.stickers![index].url ?? "",
+                        imageUrl: uiState.stickers![index].url ?? "",
                         placeholder: (context, url) =>
                             const CircularProgressIndicator(),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.sticky_note_2),
                       )
                     : CachedNetworkImage(
-                        imageUrl: uiCubit.state.flowers[index].flower
-                            .urls![uiCubit.state.flowers[index].state].url,
+                        imageUrl: uiState.flowers[index].flower
+                            .urls![uiState.flowers[index].state].url,
                         placeholder: (context, url) =>
                             const CircularProgressIndicator(),
                         errorWidget: (context, url, error) =>
@@ -65,8 +87,38 @@ Future<void> showItemsDialog(
 
 Future<void> showCustomDialog(
   BuildContext context,
+  UICubit uiCubit,
 ) async {
   //l want that the dialog has a background image
+
+  AnimationController animationController = AnimationController(
+    vsync: Navigator.of(context),
+    duration:
+        const Duration(milliseconds: 500), // Changed to 500ms for better effect
+  );
+
+  // Remove or comment out the unused animation
+  // Animation<Color> animationn = ColorTween(
+  //   begin: Colors.white,
+  //   end: Colors.green,
+  // ).animate(animationController);
+
+  // Add scale animation
+  Animation<double> scaleAnimation = Tween<double>(
+    begin: 1.0,
+    end: 1.1,
+  ).animate(
+    CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeInOut,
+    ),
+  );
+
+  //que este en ciclo infinito
+  animationController.repeat(reverse: true);
+
+  final userFlower = uiCubit.state.currentFlower;
+
   await showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -179,6 +231,54 @@ Future<void> showCustomDialog(
                         ? SizedBox(
                             height: MediaQuery.of(context).size.height * 0.015)
                         : const SizedBox(),
+                    if (userFlower != null &&
+                        userFlower.state < 5 &&
+                        notificationModel.type ==
+                            NotificationType.growNotifications)
+                      Row(
+                        children: [
+                          AnimatedBuilder(
+                            animation: animationController,
+                            builder: (context, child) {
+                              return Transform.scale(
+                                scale: scaleAnimation.value,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    final BegginCubit begginCubit =
+                                        context.read<BegginCubit>();
+                                    final HomeCubit homeCubit =
+                                        context.read<HomeCubit>();
+
+                                    if (userFlower.state < 5) {
+                                      begginCubit
+                                          .changeStatus(BegginStatus.growing);
+
+                                      homeCubit.growFlowerinBack(
+                                          begginCubit.state.patientModel!.id!,
+                                          uiCubit.state.currentFlower!
+                                              .userFlowerId);
+                                    }
+
+                                    Navigator.of(context).pop();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                  ),
+                                  child: const Text(
+                                    "Crecer mi planta",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          const Spacer(),
+                        ],
+                      )
                   ],
                 ),
               ),
@@ -190,13 +290,16 @@ Future<void> showCustomDialog(
   );
 }
 
-void showMessageDialog(BuildContext context, String title, String message) {
-  showDialog(
+Future<void> showMessageDialog(
+    BuildContext context, String title, String message,
+    {bool dimiss = true}) async {
+  await showDialog(
     context: context,
+    barrierDismissible: dimiss,
     builder: (context) {
       return AlertDialog(
         title: Text(title),
-        content: Text(message,
+        content: Text(message.replaceAll("|", "\n"),
             style:
                 TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05)),
         actions: <Widget>[

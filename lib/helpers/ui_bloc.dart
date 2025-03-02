@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../helpers/paths.dart';
 
 class UICubit extends Cubit<UIState> {
@@ -16,57 +15,229 @@ class UICubit extends Cubit<UIState> {
     selectedTheme ??= 0;
 
     List<ThemeData> themes = [
+      // 🌊 Tema Azul (Principal)
       ThemeData(
         useMaterial3: true,
         primaryColor: Colors.blue[50]!,
         colorScheme: const ColorScheme.light(
             primary: Colors.blue,
-            secondary: Colors.blueAccent,
-            surface: Colors.blueGrey),
+            secondary: Colors.blueGrey,
+            surface: Color(0xFFE3EDF3),
+            onSecondary: Colors.black,
+            onPrimary: Colors.white,
+            onSurface: Colors.black),
         scaffoldBackgroundColor: const Color(0xFFE3EDF3),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFFE3EDF3),
         ),
+        dialogTheme: const DialogTheme(
+          backgroundColor: Color(0xFFE3EDF3),
+          iconColor: Colors.black,
+          surfaceTintColor: Colors.black,
+        ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Color(0xFFE3EDF3),
+          surfaceTintColor: Colors.black,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+              Colors.blueGrey,
+            ),
+            surfaceTintColor: MaterialStateProperty.all(
+              Colors.black,
+            ),
+          ),
+        ),
+        dropdownMenuTheme: const DropdownMenuThemeData(
+          menuStyle: MenuStyle(
+            backgroundColor: WidgetStatePropertyAll(Color(0xFFE3EDF3)),
+            surfaceTintColor: WidgetStatePropertyAll(Colors.black),
+          ),
+        ),
+        drawerTheme: const DrawerThemeData(backgroundColor: Colors.blueGrey),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontFamily: 'Gilroy',
+          ),
+          bodyLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontFamily: 'Gilroy',
+          ),
+          titleLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontFamily: 'Gilroy',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
+
+      // 🌿 Tema Verde Agua
       ThemeData(
         useMaterial3: true,
         primaryColor: const Color(0xff005954),
         colorScheme: const ColorScheme.light(
-            primary: Color(0xff005954),
-            secondary: Color(0xff9ce0db),
-            surface: Color(0xff338b85)),
+          primary: Color(0xff005954),
+          secondary: Color(0xff9ce0db),
+          surface: Color(0xff338b85),
+        ),
         scaffoldBackgroundColor: const Color(0xffd5ffff),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xffd5ffff),
         ),
+        dialogTheme: const DialogTheme(
+          backgroundColor: Color(0xffd5ffff),
+          iconColor: Colors.black,
+          surfaceTintColor: Colors.black,
+        ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Color(0xffd5ffff),
+          surfaceTintColor: Colors.black,
+        ),
+        dropdownMenuTheme: const DropdownMenuThemeData(
+          menuStyle: MenuStyle(
+            backgroundColor: WidgetStatePropertyAll(Color(0xffd5ffff)),
+            surfaceTintColor: WidgetStatePropertyAll(Colors.black),
+          ),
+        ),
+        drawerTheme: const DrawerThemeData(
+          backgroundColor: Color(0xff9ce0db),
+        ),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontFamily: 'Gilroy',
+          ),
+          bodyLarge: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontFamily: 'Gilroy',
+          ),
+          titleLarge: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontFamily: 'Gilroy',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
+
+      // 💜 Tema Morado
       ThemeData(
         useMaterial3: true,
         primaryColor: Colors.purple,
         colorScheme: const ColorScheme.light(
-            primary: Colors.purple,
-            secondary: Colors.purpleAccent,
-            surface: Colors.purpleAccent),
+          primary: Colors.purple,
+          secondary: Colors.purpleAccent,
+          surface: Colors.purpleAccent,
+        ),
         scaffoldBackgroundColor: const Color.fromARGB(255, 242, 211, 247),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color.fromARGB(255, 242, 211, 247),
         ),
+        dialogTheme: const DialogTheme(
+          backgroundColor: Color.fromARGB(255, 242, 211, 247),
+          iconColor: Colors.black,
+          surfaceTintColor: Colors.black,
+        ),
+        drawerTheme:
+            const DrawerThemeData(backgroundColor: Colors.purpleAccent),
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Color.fromARGB(255, 242, 211, 247),
+          surfaceTintColor: Colors.black,
+        ),
+        dropdownMenuTheme: const DropdownMenuThemeData(
+          menuStyle: MenuStyle(
+            backgroundColor:
+                WidgetStatePropertyAll(Color.fromARGB(255, 242, 211, 247)),
+            surfaceTintColor: WidgetStatePropertyAll(Colors.black),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+              Colors.blueGrey,
+            ),
+            surfaceTintColor: MaterialStateProperty.all(
+              Colors.black,
+            ),
+          ),
+        ),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontFamily: 'Gilroy',
+          ),
+          bodyLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontFamily: 'Gilroy',
+          ),
+          titleLarge: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontFamily: 'Gilroy',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
-      //dark theme
+
+      // 🌙 Tema Oscuro
       ThemeData(
+        useMaterial3: true,
         primaryColor: Colors.blue,
-        colorScheme: const ColorScheme.dark().copyWith(
+        colorScheme: ColorScheme.dark(
           primary: Colors.blue,
-          secondary: Colors.green,
-          surface: Colors.grey[900],
-          onPrimary: Colors.white,
+          secondary: Colors.greenAccent,
+          surface: Colors.grey[900]!,
+          onPrimary: Colors.black,
           onSecondary: Colors.white,
           onSurface: Colors.white,
         ),
-        scaffoldBackgroundColor: Colors.grey[800],
+        scaffoldBackgroundColor: Colors.grey[850],
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey[800],
+          backgroundColor: Colors.grey[900],
           foregroundColor: Colors.white,
+        ),
+        dialogTheme: DialogTheme(
+          backgroundColor: Colors.grey[900],
+          iconColor: Colors.white,
+          surfaceTintColor: Colors.white,
+        ),
+        bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: Colors.grey[900],
+          surfaceTintColor: Colors.white,
+        ),
+        drawerTheme: const DrawerThemeData(backgroundColor: Colors.grey),
+        dropdownMenuTheme: DropdownMenuThemeData(
+          menuStyle: MenuStyle(
+            backgroundColor: WidgetStatePropertyAll(Colors.grey[900]),
+            surfaceTintColor: const WidgetStatePropertyAll(Colors.white),
+          ),
+        ),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontFamily: 'Gilroy',
+          ),
+          bodyLarge: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontFamily: 'Gilroy',
+          ),
+          titleLarge: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontFamily: 'Gilroy',
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     ];
@@ -120,7 +291,7 @@ class UICubit extends Cubit<UIState> {
 
     //busca la flor que tenga la posicion 1, si no la encuentra, asignas null
     UserFlower? currentFlower =
-        userFlowers!.firstWhere((element) => element.position == 1, orElse: () {
+        userFlowers!.firstWhere((element) => element.position == 2, orElse: () {
       return UserFlower(userFlowerId: -1, flower: FlowerModel(), state: 0);
     });
 
@@ -181,33 +352,48 @@ class UICubit extends Cubit<UIState> {
     emit(state.copyWith(flowers: flowers));
   }
 
-  void setFlower(int idpatient, UserFlower flower, {int position = 1}) {
+  void setFlowerInInterface(int idpatient, UserFlower flower, int position) {
+    // Primero emitimos el estado loading
+    emit(state.copyWith(status: UIStatus.loading));
+
     List<UserFlower> flowers = state.flowers.map((e) {
-      if (e.userFlowerId == flower.userFlowerId) {
-        return e.copyWith(position: position);
+      if (e.position == position) {
+        return flower.copyWith(position: null);
       }
       return e;
     }).toList();
 
-    uiRepoitory.setFlowerInInterface(idpatient, flower, position);
-    emit(state.copyWith(flowers: flowers));
+    //ahora que hicimos que la flor que ya tenia esa posicion la tuviera de nuevo en 0, debemos asignarle la posicion a la nueva flor
+
+    // Emitimos el cambio antes de la llamada al repositorio
+    emit(state.copyWith(
+        currentFlower: flower, flowers: flowers, status: UIStatus.success));
+
+    // Hacemos la llamada al repositorio después
+    uiRepoitory.setFlowerInInterface(idpatient, flower, position + 1);
   }
 
   void setStickerInUse(int idpatient, StickerModel sticker, int index) {
-    List<StickerModel> stickersInUse = state.stickersInUse;
+    // Primero emitimos el estado loading
+    emit(state.copyWith(status: UIStatus.loading));
 
-    if (stickersInUse.length <= index) {
-      stickersInUse.add(sticker);
+    List<StickerModel> stickersInUse = List.from(state.stickersInUse);
+
+    if (stickersInUse.contains(sticker)) {
+      int existingIndex =
+          stickersInUse.indexWhere((element) => element == sticker);
+      stickersInUse[existingIndex] = StickerModel.empty();
+      stickersInUse[index] = sticker;
     } else {
-      //si ya hay un sticker en esa posicion, lo reemplaza, y si el sticker que se va a poner esta en otra posicion, lo elimina de la lista
-      stickersInUse.removeWhere((element) => element.id == sticker.id);
-
       stickersInUse[index] = sticker;
     }
 
-    //TODO: Poner en back
-    //uiRepoitory.setStickerInInterface(idpatient, sticker, index + 1);
-    emit(state.copyWith(stickersInUse: stickersInUse));
+    // Emitimos el cambio antes de la llamada al repositorio
+    emit(
+        state.copyWith(stickersInUse: stickersInUse, status: UIStatus.success));
+
+    // Hacemos la llamada al repositorio después
+    uiRepoitory.setStickerInInterface(idpatient, sticker, index + 1);
   }
 
   void addSticker(StickerModel sticker) {

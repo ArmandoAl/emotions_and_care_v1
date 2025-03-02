@@ -29,9 +29,7 @@ class _NewRequestCartScreenState extends State<NewRequestCartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nueva carta'),
-      ),
+      appBar: const HeaderWidget(title: '', isForReturn: true),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,

@@ -1,5 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../helpers/paths.dart';
 
 class UserCartsController extends StatefulWidget {
@@ -68,9 +66,7 @@ class _UserCartsControllerState extends State<UserCartsController> {
             .toList();
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text(''),
-          ),
+          appBar: const HeaderWidget(title: "", isForReturn: true),
           body: UserCartsScreen(
             carts: index == 1 ? sentCarts : recievedCarts,
             index: index,

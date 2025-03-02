@@ -1,5 +1,3 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../helpers/paths.dart';
 
 class SearchSpecialistController extends StatefulWidget {
@@ -67,6 +65,19 @@ class _SearchSpecialistControllerState
             },
             onFilterTap: () {
               showFilterialog(context);
+            },
+            syncDirectByCode: (code) async {
+              final res = await context
+                  .read<BegginCubit>()
+                  .syncByDirectCode(widget.patientModel!.id!, code);
+
+              if (res && context.mounted) {
+                context
+                    .read<BegginCubit>()
+                    .reloginPatient(widget.patientModel!);
+              }
+
+              return res;
             },
             syncByCode: (code) async {
               final res = await context

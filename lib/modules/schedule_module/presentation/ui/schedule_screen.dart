@@ -43,8 +43,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 headerStyle: HeaderStyle(
                   formatButtonVisible: false,
                   titleCentered: true,
-                  leftChevronVisible: false,
-                  rightChevronVisible: false,
+                  leftChevronVisible: true,
+                  rightChevronVisible: true,
+                  rightChevronIcon: const Icon(
+                    Icons.chevron_right,
+                  ),
+                  leftChevronIcon: const Icon(
+                    Icons.chevron_left,
+                  ),
                   headerMargin: const EdgeInsets.only(bottom: 10, top: 10),
                   titleTextStyle: const TextStyle(
                     fontSize: 20,
@@ -55,11 +61,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 ),
                 daysOfWeekStyle: const DaysOfWeekStyle(
                   weekdayStyle: TextStyle(
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                   weekendStyle: TextStyle(
-                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

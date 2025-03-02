@@ -1,3 +1,4 @@
+import 'package:emotions_and_care_v1/widgets/header_specialist_widget.dart';
 import '../../../helpers/paths.dart';
 
 class SettingsController extends StatefulWidget {
@@ -22,7 +23,8 @@ class _SettingsControllerState extends State<SettingsController> {
     return Scaffold(
       appBar: widget.isPattient
           ? null
-          : const HeaderWidget(title: "Configuracion", isForReturn: true),
+          : HeaderSpecialistWidget(
+              title: "Configuracion", isForReturn: true, context: context),
       body: SettingsScreen(
         userProvider: widget.userProvider,
         isPattient: widget.isPattient,

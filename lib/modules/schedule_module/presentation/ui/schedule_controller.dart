@@ -1,33 +1,38 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:emotions_and_care_v1/widgets/header_specialist_widget.dart';
 import 'package:lottie/lottie.dart';
-import '../../../../config/assets/assets.dart';
 import '../../../../helpers/paths.dart';
 
 class ScheduleController extends StatefulWidget {
-  final PatientModel? patientModel;
   final bool isPattient;
-  final SpecialistModel? especialistaModel;
-  const ScheduleController(
-      {super.key,
-      required this.patientModel,
-      required this.isPattient,
-      required this.especialistaModel});
+  const ScheduleController({
+    super.key,
+    required this.isPattient,
+  });
 
   @override
   State<ScheduleController> createState() => _ScheduleControllerState();
 }
 
 class _ScheduleControllerState extends State<ScheduleController> {
+  PatientModel? patientModel;
+  SpecialistModel? especialistaModel;
+
   @override
   void initState() {
     super.initState();
-    if (widget.isPattient == false) {
-      context
-          .read<ScheduleCubit>()
-          .getDatesForSpecialist(widget.especialistaModel!.id!);
-    } else {
-      context.read<ScheduleCubit>().getSchedule(widget.patientModel!.id!);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.isPattient == false) {
+        especialistaModel = getIt<BegginCubit>().state.specialistModel;
+        patientModel = null;
+        context
+            .read<ScheduleCubit>()
+            .getDatesForSpecialist(especialistaModel!.id!);
+      } else {
+        patientModel = getIt<BegginCubit>().state.patientModel;
+        especialistaModel = null;
+        context.read<ScheduleCubit>().getSchedule(patientModel!.id!);
+      }
+    });
   }
 
   @override
@@ -51,27 +56,26 @@ class _ScheduleControllerState extends State<ScheduleController> {
         return Scaffold(
           appBar: widget.isPattient
               ? null
-              : AppBar(
-                  title: const Text('Agenda'),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.help),
-                      color: Colors.black,
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              title: Text('Ayuda'),
-                              content: Text(
-                                  'En esta pantalla podrá ver las citas que tiene programadas, si desea ver más detalles de una cita, solo debe dar clic en la cita que desea ver.'),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
+              : HeaderSpecialistWidget(
+                  title: 'Agenda',
+                  isForReturn: true,
+                  context: context,
+                  action: IconButton(
+                    icon: const Icon(Icons.help),
+                    color: Colors.black,
+                    onPressed: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const AlertDialog(
+                            title: Text('Ayuda'),
+                            content: Text(
+                                'En esta pantalla podrá ver las citas que tiene programadas, si desea ver más detalles de una cita, solo debe dar clic en la cita que desea ver.'),
+                          );
+                        },
+                      );
+                    },
+                  )),
           body: state.status == ScheduleStatus.loading
               ? Center(
                   child: Lottie.asset(Assets.brainLoading),
@@ -79,16 +83,16 @@ class _ScheduleControllerState extends State<ScheduleController> {
               : ScheduleScreen(
                   dates: state.dates,
                   isPatient: widget.isPattient,
-                  patient: widget.patientModel,
-                  specialist: widget.especialistaModel,
+                  patient: patientModel,
+                  specialist: especialistaModel,
                   onDateTap: (DateModel date) {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => DateDetailScreen(
                           dateModel: date,
                           isPattient: widget.isPattient,
-                          patientModel: widget.patientModel,
-                          especialistaModel: widget.especialistaModel,
+                          patientModel: patientModel,
+                          especialistaModel: especialistaModel,
                         ),
                       ),
                     );
@@ -97,11 +101,11 @@ class _ScheduleControllerState extends State<ScheduleController> {
                     if (widget.isPattient == false) {
                       context
                           .read<ScheduleCubit>()
-                          .getDatesForSpecialist(widget.especialistaModel!.id!);
+                          .getDatesForSpecialist(especialistaModel!.id!);
                     } else {
                       context
                           .read<ScheduleCubit>()
-                          .getSchedule(widget.patientModel!.id!);
+                          .getSchedule(patientModel!.id!);
                     }
                   },
                 ),

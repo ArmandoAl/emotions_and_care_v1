@@ -1,5 +1,5 @@
 import 'package:emotions_and_care_v1/modules/patients_module/presentation/ui/specialiste_patients_items_screen.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../helpers/paths.dart';
 
 class SpecialistPattientsController extends StatefulWidget {
@@ -30,7 +30,6 @@ class _SpecialistPattientsControllerState
         builder: (context, state) {
           if (state.status == PattientsStatus.loading) {
             return const Scaffold(
-              backgroundColor: Colors.white,
               body: Center(
                 child: CircularProgressIndicator(),
               ),

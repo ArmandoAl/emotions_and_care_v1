@@ -59,8 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         : textToUpperCateFirstLetter(
                             widget.userProvider.state.specialistModel!.name!),
                     style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width * 0.05,
-                        color: Colors.black),
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                    ),
                   ),
                   !widget.isPatient
                       ? const Text("Codigo de vinculación: ")
@@ -69,9 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ? Text(
                           widget.specialistModel!.tokenForRelate!,
                           style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.05,
-                              color: Colors.black),
+                            fontSize: MediaQuery.of(context).size.width * 0.05,
+                          ),
                         )
                       : Container(),
                 ],
@@ -329,14 +328,14 @@ Widget profileItem(BuildContext context, String text, String title, Icon? icon,
                   Text(
                     title,
                     style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width * 0.05,
-                        color: Colors.black),
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                    ),
                   ),
                   Text(
                     title == "Contraseña" ? "********" : text,
                     style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
-                        color: Colors.black),
+                      fontSize: MediaQuery.of(context).size.width * 0.04,
+                    ),
                   ),
                 ],
               ),

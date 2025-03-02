@@ -219,7 +219,6 @@ class _ChangeUiItemScreenState extends State<ChangeUiItemScreen> {
                   } else {
                     // widget.uiProvider.changeFlower(selectedItem);
                   }
-                  Navigator.pop(context);
                 },
                 child: const Icon(Icons.check),
               )

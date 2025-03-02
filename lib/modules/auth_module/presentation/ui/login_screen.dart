@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../config/assets/assets.dart';
 
 class LoginScreen extends StatefulWidget {
-  final Future<void> Function(String email, String password) onLogin;
+  final Future<void> Function(
+      String email, String password, bool isRememberPassword) onLogin;
   final void Function() onRegister;
   const LoginScreen(
       {super.key, required this.onLogin, required this.onRegister});
@@ -17,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = true;
   bool isLoading = false;
+  bool isRememberPassword = true;
 
   @override
   void dispose() {
@@ -99,6 +101,23 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: isRememberPassword,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isRememberPassword = value!;
+                                  });
+                                }),
+                            Text('Recordar contraseña',
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.03,
+                                    color: Colors.black)),
+                          ],
+                        ),
                         SizedBox(
                             height: MediaQuery.of(context).size.height * 0.05),
                         SizedBox(
@@ -113,7 +132,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                                 await widget.onLogin(
                                     emailController.text.trim(),
-                                    passwordController.text.trim());
+                                    passwordController.text.trim(),
+                                    isRememberPassword);
                                 setState(() {
                                   isLoading = false;
                                 });

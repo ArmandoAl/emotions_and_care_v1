@@ -4,12 +4,12 @@ import 'package:emotions_and_care_v1/helpers/paths.dart';
 class HeaderWidget extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final bool isForReturn;
-  final Widget? action;
+  final List<Widget>? actions;
   const HeaderWidget({
     super.key,
     required this.title,
     required this.isForReturn,
-    this.action,
+    this.actions,
   });
 
   @override
@@ -109,7 +109,7 @@ class _HeaderWidgetState extends State<HeaderWidget>
         margin: const EdgeInsets.only(left: 10),
         child: widget.isForReturn
             ? IconButton(
-                icon: const Icon(Icons.arrow_back_ios_rounded,
+                icon: const Icon(Icons.arrow_back_rounded,
                     color: Colors.black, size: 30),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -138,19 +138,13 @@ class _HeaderWidgetState extends State<HeaderWidget>
                     },
                   ),
       ),
-      actions: widget.action != null
-          ? [
-              Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: widget.action!)
-            ]
-          : null,
+      actions: widget.actions,
     );
   }
 }
 
 const Map<String, bool> animatedMenuBools = {
   "registerSuccess": false,
-  "register": false,
+  "register": true,
   'firstTestCompleted': true,
 };

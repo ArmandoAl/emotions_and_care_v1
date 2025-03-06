@@ -89,7 +89,7 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
         // final int position = imageData['position'] ?? 0;
 
         break;
-      case 'datesRequest':
+      case 'patientRequest':
         final String action = data['event'] ?? '';
         switch (action) {
           case 'newRequest':
@@ -123,13 +123,13 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
               );
             }
             break;
-          // case 'patientSync':
-          //   if (begginCubit.state.specialistModel != null) {
-          //     begginCubit.getPatients(
-          //       begginCubit.state.specialistModel!,
-          //     );
-          //   }
-          //   break;
+          case 'patientSync':
+            if (begginCubit.state.specialistModel != null) {
+              // begginCubit.getPatients(
+              //   begginCubit.state.specialistModel!,
+              // );
+            }
+            break;
           default:
             break;
         }

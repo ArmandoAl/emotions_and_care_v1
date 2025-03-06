@@ -20,16 +20,19 @@ abstract class ISpecialistRepository {
 class PatientRequest {
   final int id;
   final PatientModel patient;
+  final DateTime date;
 
-  PatientRequest({required this.id, required this.patient});
+  PatientRequest({required this.id, required this.patient, required this.date});
 
   PatientRequest copyWith({
     int? id,
     PatientModel? patient,
+    DateTime? date,
   }) {
     return PatientRequest(
       id: id ?? this.id,
       patient: patient ?? this.patient,
+      date: date ?? this.date,
     );
   }
 
@@ -41,6 +44,7 @@ class PatientRequest {
     return PatientRequest(
       id: map['patientRequestId'],
       patient: PatientModel.fromJson(map['patient'], false),
+      date: DateTime.tryParse(map['date']) ?? DateTime.now(),
     );
   }
 }

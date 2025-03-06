@@ -136,3 +136,53 @@ class SpecialistModel extends UserModel {
     };
   }
 }
+
+class SpecialistPatientContainer {
+  final List<PatientModel> patients;
+  final List<SyncDates> syncDates;
+
+  SpecialistPatientContainer({
+    required this.patients,
+    required this.syncDates,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'patients': patients.map((e) => e.toJson()).toList(),
+      'syncDates': syncDates.map((e) => e.toJson()).toList(),
+    };
+  }
+
+  factory SpecialistPatientContainer.fromJson(Map<String, dynamic> json) {
+    return SpecialistPatientContainer(
+      patients: List<PatientModel>.from(
+          json['patients'].map((e) => PatientModel.fromJson(e, false))),
+      syncDates: List<SyncDates>.from(
+          json['syncDates'].map((e) => SyncDates.fromJson(e))),
+    );
+  }
+}
+
+class SyncDates {
+  final int patientId;
+  final DateTime date;
+
+  SyncDates({
+    required this.patientId,
+    required this.date,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'patientId': patientId,
+      'date': date.toIso8601String(),
+    };
+  }
+
+  factory SyncDates.fromJson(Map<String, dynamic> json) {
+    return SyncDates(
+      patientId: json['patientId'],
+      date: DateTime.parse(json['date']),
+    );
+  }
+}

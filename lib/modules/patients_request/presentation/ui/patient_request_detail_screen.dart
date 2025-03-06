@@ -47,7 +47,7 @@ class _PatientRequestDetailState extends State<PatientRequestDetail> {
                       ),
                     ),
                     Text(
-                      "Fecha de solicitud: ***",
+                      "Fecha de solicitud: ${widget.patientRequest.date.day}/${widget.patientRequest.date.month}/${widget.patientRequest.date.year}",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: MediaQuery.of(context).size.width * 0.04,

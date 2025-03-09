@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../../../helpers/paths.dart';
 
 class ScheduleCubit extends Cubit<ScheduleState> {
@@ -8,17 +10,8 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       int idPatient, DateModel date, int idSpecialist) async {
     emit(state.copyWith(status: ScheduleStatus.loading));
     try {
-      GoalwithDate res = await repository.addSchedule(
-          idPatient, date, idSpecialist, state.dates.isEmpty ? true : false);
-
-      // if (date.confirmByEspetialist) {
-      //   await repository.confirmDateBySpecialist(id, idSpecialist!, idPatient);
-      // }
-
-      // if (date.confirmByPatient) {
-      //   print('confirmByPatient');
-      //   await repository.confirmDateByPatient(id, idPatient);
-      // }
+      final GoalwithDate res =
+          await repository.addSchedule(idPatient, date, idSpecialist);
 
       date = date.copyWith(id: res.id);
 
@@ -30,7 +23,27 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       return res;
     } catch (e) {
       emit(state.copyWith(status: ScheduleStatus.error));
-      rethrow;
+      throw Exception('Failed to add date');
+    }
+  }
+
+  Future<bool> updateDate(DateModel date, int patientId, int specialistId,
+      bool isFromSpecialist) async {
+    emit(state.copyWith(status: ScheduleStatus.loading));
+    try {
+      await repository.updateSchedule(
+          date, patientId, specialistId, isFromSpecialist);
+      final List<DateModel> dates = state.dates;
+      final int index = dates.indexWhere((element) => element.id == date.id);
+      dates[index] = date;
+      emit(state.copyWith(
+        dates: dates,
+        status: ScheduleStatus.loaded,
+      ));
+      return true;
+    } catch (e) {
+      emit(state.copyWith(status: ScheduleStatus.error));
+      return false;
     }
   }
 
@@ -120,8 +133,9 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     }
   }
 
-  Future<void> getSchedule(int patientId) async {
-    emit(state.copyWith(status: ScheduleStatus.loading));
+  Future<void> getSchedule(int patientId, {bool reloading = false}) async {
+    emit(state.copyWith(
+        status: reloading ? ScheduleStatus.reloading : ScheduleStatus.loading));
     try {
       final List<DateModel> dates = await repository.getSchedules(patientId);
       emit(state.copyWith(
@@ -133,8 +147,9 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     }
   }
 
-  Future<void> getDatesForSpecialist(int id) async {
-    emit(state.copyWith(status: ScheduleStatus.loading));
+  Future<void> getDatesForSpecialist(int id, {bool reloading = false}) async {
+    emit(state.copyWith(
+        status: reloading ? ScheduleStatus.reloading : ScheduleStatus.loading));
     try {
       final List<DateModel> dates = await repository.getDatesForSpecialist(id);
       emit(state.copyWith(

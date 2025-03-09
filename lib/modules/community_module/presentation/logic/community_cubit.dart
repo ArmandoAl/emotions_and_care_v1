@@ -11,6 +11,7 @@ class CommunityCubit extends Cubit<CommunityState> {
     emit(state.copyWith(status: CommunityStatus.loading));
     try {
       final cartList = await repository.initCommunity(userId);
+
       emit(state.copyWith(
         cartFromCommunity: cartList,
         status: CommunityStatus.loaded,
@@ -19,16 +20,6 @@ class CommunityCubit extends Cubit<CommunityState> {
       emit(state.copyWith(status: CommunityStatus.error));
     }
   }
-
-  // Future<void> getPosts() async {
-  //   emit(state.copyWith(status: CommunityStatus.loading));
-  //   try {
-  //     final posts = await postRepository.getPostList();
-  //     emit(state.copyWith(posts: posts, status: CommunityStatus.loaded));
-  //   } catch (e) {
-  //     emit(state.copyWith(status: CommunityStatus.error));
-  //   }
-  // }
 
   Future<void> getCartFromUser(int userId, bool isPatient) async {
     emit(state.copyWith(status: CommunityStatus.loading));

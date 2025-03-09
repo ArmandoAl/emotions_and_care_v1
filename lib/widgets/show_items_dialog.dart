@@ -291,8 +291,12 @@ Future<void> showCustomDialog(
 }
 
 Future<void> showMessageDialog(
-    BuildContext context, String title, String message,
-    {bool dimiss = true}) async {
+  BuildContext context,
+  String title,
+  String message, {
+  bool dimiss = true,
+  List<Widget>? actions,
+}) async {
   await showDialog(
     context: context,
     barrierDismissible: dimiss,
@@ -302,15 +306,38 @@ Future<void> showMessageDialog(
         content: Text(message.replaceAll("|", "\n"),
             style:
                 TextStyle(fontSize: MediaQuery.of(context).size.width * 0.05)),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Aceptar'),
-          ),
-        ],
+        actions: actions ??
+            [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Ok"),
+              ),
+            ],
       );
     },
   );
+}
+
+Future<void> showLoadingdialog(String message, BuildContext context,
+    Future<void> Function() function) async {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: 10),
+            Text(message),
+          ],
+        ),
+      );
+    },
+  );
+
+  await function();
 }

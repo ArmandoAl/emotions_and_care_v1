@@ -27,11 +27,12 @@ Widget containerContentWidget(
                   specialistModel: isPatient ? null : especialistaModel,
                   isPatient: isPatient,
                   dates: dates,
-                  onSave: (date, id) async {
+                  onSave: (DateModel date, PatientModel patient) async {
                     if (isPatient) {
-                      GoalwithDate res = await context
+                      GoalwithDate? res = await context
                           .read<ScheduleCubit>()
-                          .addDate(id, date, patientModel!.specialist!.id!);
+                          .addDate(
+                              patient.id!, date, patientModel!.specialist!.id!);
 
                       if (res.goal != null && context.mounted) {
                         final UICubit uiProvider = context.read<UICubit>();
@@ -43,12 +44,6 @@ Widget containerContentWidget(
                         }
                       }
                     } else {
-                      final patient = context
-                          .read<PattientsCubit>()
-                          .state
-                          .patients
-                          .firstWhere((element) => element.id == id);
-
                       await context.read<ScheduleCubit>().addDateBySpecialist(
                           especialistaModel!.id!, date, patient);
                     }

@@ -24,9 +24,11 @@ class _ScheduleControllerState extends State<ScheduleController> {
       if (widget.isPattient == false) {
         especialistaModel = getIt<BegginCubit>().state.specialistModel;
         patientModel = null;
-        context
-            .read<ScheduleCubit>()
-            .getDatesForSpecialist(especialistaModel!.id!);
+        if (context.read<ScheduleCubit>().state.dates.isEmpty) {
+          context
+              .read<ScheduleCubit>()
+              .getDatesForSpecialist(especialistaModel!.id!);
+        }
       } else {
         patientModel = getIt<BegginCubit>().state.patientModel;
         especialistaModel = null;
@@ -60,22 +62,67 @@ class _ScheduleControllerState extends State<ScheduleController> {
                   title: 'Agenda',
                   isForReturn: true,
                   context: context,
-                  action: IconButton(
-                    icon: const Icon(Icons.help),
-                    color: Colors.black,
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const AlertDialog(
-                            title: Text('Ayuda'),
-                            content: Text(
-                                'En esta pantalla podrá ver las citas que tiene programadas, si desea ver más detalles de una cita, solo debe dar clic en la cita que desea ver.'),
+                  actions: [
+                      IconButton(
+                          onPressed: () async {
+                            if (widget.isPattient == false) {
+                              especialistaModel =
+                                  getIt<BegginCubit>().state.specialistModel;
+                              patientModel = null;
+
+                              await showLoadingdialog("Cargando datos", context,
+                                  () async {
+                                await context
+                                    .read<ScheduleCubit>()
+                                    .getDatesForSpecialist(
+                                        especialistaModel!.id!,
+                                        reloading: true);
+
+                                if (context.mounted) {
+                                  setState(() {});
+                                  Navigator.of(context).pop();
+                                }
+                              });
+                            } else {
+                              patientModel =
+                                  getIt<BegginCubit>().state.patientModel;
+                              especialistaModel = null;
+
+                              await showLoadingdialog("Cargando datos", context,
+                                  () async {
+                                await context.read<ScheduleCubit>().getSchedule(
+                                    patientModel!.id!,
+                                    reloading: true);
+
+                                if (context.mounted) {
+                                  setState(() {});
+                                  Navigator.of(context).pop();
+                                }
+                              });
+                            }
+                          },
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Theme.of(context).colorScheme.primary,
+                          )),
+                      IconButton(
+                        icon: Icon(Icons.help,
+                            color: Theme.of(context).colorScheme.secondary),
+                        color: Colors.black,
+                        onPressed: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const AlertDialog(
+                                title: Text('Ayuda'),
+                                content: Text(
+                                    'En esta pantalla podrá ver las citas que tiene programadas, si desea ver más detalles de una cita, solo debe dar clic en la cita que desea ver.'),
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                  )),
+                      )
+                    ]),
           body: state.status == ScheduleStatus.loading
               ? Center(
                   child: Lottie.asset(Assets.brainLoading),

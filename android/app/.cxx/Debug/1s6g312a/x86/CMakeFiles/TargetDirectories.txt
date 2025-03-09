@@ -1,0 +1,2 @@
+/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/.cxx/Debug/1s6g312a/x86/CMakeFiles/edit_cache.dir
+/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/.cxx/Debug/1s6g312a/x86/CMakeFiles/rebuild_cache.dir

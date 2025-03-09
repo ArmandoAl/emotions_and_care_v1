@@ -4,13 +4,13 @@ class HeaderSpecialistWidget extends StatefulWidget
     implements PreferredSizeWidget {
   final String title;
   final bool isForReturn;
-  final Widget? action;
+  final List<Widget>? actions;
   final BuildContext context;
   const HeaderSpecialistWidget({
     super.key,
     required this.title,
     required this.isForReturn,
-    this.action,
+    this.actions,
     required this.context,
   });
 
@@ -54,7 +54,11 @@ class _HeaderSpecialistWidgetState extends State<HeaderSpecialistWidget>
                     )
                   : const SizedBox(),
               const Spacer(),
-              widget.action ?? const SizedBox(),
+              widget.actions != null
+                  ? Row(
+                      children: widget.actions!,
+                    )
+                  : const SizedBox(),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.02,
               ),

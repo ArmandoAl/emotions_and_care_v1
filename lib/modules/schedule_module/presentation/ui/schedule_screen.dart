@@ -47,9 +47,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   rightChevronVisible: true,
                   rightChevronIcon: const Icon(
                     Icons.chevron_right,
+                    size: 30,
                   ),
                   leftChevronIcon: const Icon(
                     Icons.chevron_left,
+                    size: 30,
                   ),
                   headerMargin: const EdgeInsets.only(bottom: 10, top: 10),
                   titleTextStyle: const TextStyle(

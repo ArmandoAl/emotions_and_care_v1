@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../../../helpers/paths.dart';
 
-enum ScheduleStatus { initial, loading, loaded, error }
+enum ScheduleStatus { initial, loading, loaded, error, reloading }
 
 class ScheduleState extends Equatable {
   final List<DateModel> dates;

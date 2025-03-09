@@ -16,7 +16,6 @@ Widget questionItems(
   Function(String result) setResultState,
   Function(GoalModel? goal) setGoal,
 ) {
-  final uiProvider = getIt<UICubit>();
   return Padding(
     padding: EdgeInsets.symmetric(
       horizontal: MediaQuery.of(context).size.width * 0.07,

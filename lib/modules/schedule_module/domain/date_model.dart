@@ -1,5 +1,7 @@
 import '../../../helpers/paths.dart';
 
+enum DateStatus { initial, confirmed, completed, notCompleted, pendingToMatch }
+
 class DateModel {
   final int? id;
   final DateTime? date;
@@ -9,6 +11,10 @@ class DateModel {
   bool? confirmByPatient;
   bool? confirmByEspetialist;
   PatientModel? patient;
+  bool? done;
+  String? specialistNotes;
+  DateStatus? status;
+  bool? sentBySpecialist;
 
   DateModel({
     this.id,
@@ -19,6 +25,10 @@ class DateModel {
     required this.confirmByPatient,
     required this.confirmByEspetialist,
     this.patient,
+    this.done = false,
+    this.specialistNotes = '',
+    this.status = DateStatus.initial,
+    this.sentBySpecialist = false,
   });
 
   DateModel copyWith({
@@ -30,6 +40,10 @@ class DateModel {
     bool? confirmByPatient,
     bool? confirmByEspetialist,
     PatientModel? patient,
+    bool? done,
+    String? specialistNotes,
+    DateStatus? status,
+    bool? sentBySpecialist,
   }) {
     return DateModel(
       id: id ?? this.id,
@@ -40,6 +54,10 @@ class DateModel {
       confirmByPatient: confirmByPatient ?? this.confirmByPatient,
       confirmByEspetialist: confirmByEspetialist ?? this.confirmByEspetialist,
       patient: patient ?? this.patient,
+      done: done ?? this.done,
+      specialistNotes: specialistNotes ?? this.specialistNotes,
+      status: status ?? this.status,
+      sentBySpecialist: sentBySpecialist ?? this.sentBySpecialist,
     );
   }
 
@@ -54,15 +72,25 @@ class DateModel {
       confirmByEspetialist: json['specialistConfirm'],
       patient:
           isPatient ? null : PatientModel.fromJson(json['patient'], isPatient),
+      done: json['done'],
+      specialistNotes: json['specialistNotes'],
+      status: DateStatus.values[json['status']],
+      sentBySpecialist: json['sentBySpecialist'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'date': date!.toIso8601String(),
-      'hour': hour,
-      'place': place,
-      'description': description,
+      "date": date!.toIso8601String(),
+      "hour": hour,
+      "place": place,
+      "description": description,
+      "specialistNotes": specialistNotes,
+      "patientConfirm": confirmByPatient,
+      "specialistConfirm": confirmByEspetialist,
+      "done": done,
+      "status": status!.index,
+      "sentBySpecialist": sentBySpecialist,
     };
   }
 }

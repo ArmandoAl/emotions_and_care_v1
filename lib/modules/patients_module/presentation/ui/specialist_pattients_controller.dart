@@ -18,7 +18,9 @@ class _SpecialistPattientsControllerState
     extends State<SpecialistPattientsController> {
   @override
   void initState() {
-    context.read<PattientsCubit>().getPattients(widget.idUser);
+    if (context.read<PattientsCubit>().state.patients.isEmpty) {
+      context.read<PattientsCubit>().getPattients(widget.idUser);
+    }
     super.initState();
   }
 

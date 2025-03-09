@@ -39,9 +39,7 @@ class _GlobalCommunityControllerState extends State<GlobalCommunityController> {
                             isPatient: widget.isPatient,
                           )));
             },
-            onPostsTap: () {
-              // context.read<CommunityCubit>().getPosts();
-            },
+            onPostsTap: () {},
             onCartFromUserTap: () {
               Navigator.push(
                   context,

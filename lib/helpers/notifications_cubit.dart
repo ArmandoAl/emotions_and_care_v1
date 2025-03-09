@@ -84,10 +84,24 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
     final String type = data['module'] ?? '{}';
     switch (type) {
       case 'schedule':
-        // final Map<String, dynamic> imageData = jsonData['data'] ?? {};
-        // final String url = imageData['url'] ?? '';
-        // final int position = imageData['position'] ?? 0;
-
+        final String action = data['event'] ?? '';
+        switch (action) {
+          case 'newRequest':
+            // patientsRequestCubit
+            //     .getPatientsRequestList(begginCubit.state.specialistModel!.id!);
+            break;
+          case "newDateBySpecialist":
+            // homeCubit
+            //     .getDatesForSpecialist(begginCubit.state.specialistModel!.id!);
+            break;
+          case "dateUpdated":
+            //var si es paciente o no
+            // homeCubit
+            //     .getDatesForSpecialist(begginCubit.state.specialistModel!.id!);
+            break;
+          default:
+            break;
+        }
         break;
       case 'patientRequest':
         final String action = data['event'] ?? '';

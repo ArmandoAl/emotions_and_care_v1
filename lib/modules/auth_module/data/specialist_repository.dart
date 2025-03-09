@@ -129,9 +129,6 @@ class SpecialistRepository implements ISpecialistRepository {
         },
       );
 
-      print(response.statusCode);
-      print(response.body);
-
       if (response.statusCode != 200) {
         return false;
       }
@@ -153,9 +150,6 @@ class SpecialistRepository implements ISpecialistRepository {
           'Content-Type': 'application/json'
         },
       );
-
-      print(response.statusCode);
-      print(response.body);
 
       if (response.statusCode != 200) {
         return false;

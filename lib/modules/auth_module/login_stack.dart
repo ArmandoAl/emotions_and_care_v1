@@ -720,7 +720,7 @@ class _SpecialistStackState extends State<SpecialistStack> {
               onPressed: () {},
               icon: Icon(
                 Icons.notifications,
-                color: Theme.of(context).colorScheme.surface,
+                color: Theme.of(context).colorScheme.primary,
               ))
         ],
       ),

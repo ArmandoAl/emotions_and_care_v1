@@ -12,7 +12,9 @@ class PattientsDatesController extends StatefulWidget {
 class _PattientsDatesControllerState extends State<PattientsDatesController> {
   @override
   void initState() {
-    context.read<PattientsDatesCubit>().getPattientsDates(widget.idUser);
+    if (context.read<PattientsDatesCubit>().state.dates.isEmpty) {
+      context.read<PattientsDatesCubit>().getPattientsDates(widget.idUser);
+    }
     super.initState();
   }
 

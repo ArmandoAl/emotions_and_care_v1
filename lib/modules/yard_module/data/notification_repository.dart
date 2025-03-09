@@ -123,8 +123,6 @@ class NotificationRepository implements INotificationRepository {
         },
       );
 
-      print(response.body);
-
       if (response.statusCode != 200) {
         throw Exception('Failed to grow stage');
       }

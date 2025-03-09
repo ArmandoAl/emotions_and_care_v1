@@ -6,11 +6,10 @@ import '../../../helpers/paths.dart';
 class ScheduleRepository implements IScheduleRepository {
   @override
   Future<GoalwithDate> addSchedule(
-      int id, DateModel date, int idSpecialist, bool isFirstTime) async {
+      int id, DateModel date, int idSpecialist) async {
     try {
       final response = await http.post(
-        Uri.parse(
-            '${Api.baseUrl}Cita/$id/AgregarCita/$idSpecialist/$isFirstTime'),
+        Uri.parse('${Api.baseUrl}Cita/$id/AgregarCita/$idSpecialist'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -19,11 +18,11 @@ class ScheduleRepository implements IScheduleRepository {
       );
 
       if (response.statusCode != 200) {
-        throw Exception('Failed to create specialist');
+        throw Exception('Failed to add schedule');
       }
       return GoalwithDate.fromJson(jsonDecode(response.body));
     } catch (e) {
-      throw Exception('Failed to create specialist');
+      throw Exception('Failed to add schedule');
     }
   }
 
@@ -162,10 +161,12 @@ class ScheduleRepository implements IScheduleRepository {
   }
 
   @override
-  Future<bool> updateSchedule(DateModel date) async {
+  Future<bool> updateSchedule(DateModel date, int patientId, int specialistId,
+      bool isFromSpecialist) async {
     try {
       final response = await http.put(
-        Uri.parse('${Api.baseUrl}Cita'),
+        Uri.parse(
+            '${Api.baseUrl}Cita/$patientId/actualizarCita/$isFromSpecialist/$specialistId'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

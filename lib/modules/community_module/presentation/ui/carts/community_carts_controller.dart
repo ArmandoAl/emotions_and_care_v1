@@ -21,10 +21,10 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
         );
 
     // //todo: remove after expo
-    context.read<CommunityCubit>().getCartFromUser(
-          widget.isPatient ? widget.patient!.id! : widget.specialist!.id!,
-          widget.isPatient,
-        );
+    // context.read<CommunityCubit>().getCartFromUser(
+    //       widget.isPatient ? widget.patient!.id! : widget.specialist!.id!,
+    //       widget.isPatient,
+    //     );
 
     super.initState();
   }
@@ -32,7 +32,6 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CommunityCubit, CommunityState>(
-      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         if (state.status == CommunityStatus.loading) {
           return Scaffold(

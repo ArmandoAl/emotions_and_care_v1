@@ -180,8 +180,7 @@ class UserRepository implements IUserRepository {
   Future<bool> syncByDirectCode(int id, String code) async {
     try {
       final response = await http.post(
-        Uri.parse(
-            '${Api.baseUrl}Paciente/$id/vincluarDirectamenteConCodigo/$code'),
+        Uri.parse('${Api.baseUrl}Paciente/$id/vincularDirecto/$code'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

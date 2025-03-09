@@ -6,7 +6,7 @@ class NewDateScreen extends StatefulWidget {
   final bool isPatient;
   final int? specialistId;
   final List<DateModel>? dates;
-  final Function(DateModel date, int idPatient)? onSave;
+  final Function(DateModel date, PatientModel idPatient)? onSave;
   const NewDateScreen({
     super.key,
     required this.isPatient,
@@ -52,8 +52,8 @@ class _NewDateScreenState extends State<NewDateScreen> {
           IconButton(
             icon: const Icon(Icons.info),
             onPressed: () async {
-              await showMessageDialog(context, "", '''
-                En esta pantalla puedes agendar una nueva cita, selecciona el paciente, la fecha y la hora de la cita, ademas de la descripcion y el lugar de la misma. Una vez que hayas llenado todos los campos, presiona el boton de guardar para agendar la cita''');
+              await showMessageDialog(context, "Agendar cita",
+                  "En esta pantalla puedes agendar una nueva cita, selecciona el paciente, la fecha y la hora de la cita, ademas de la descripcion y el lugar de la misma. Una vez que hayas llenado todos los campos, presiona el boton de guardar para agendar la cita");
             },
           ),
         ],
@@ -287,15 +287,19 @@ class _NewDateScreenState extends State<NewDateScreen> {
 
                     final date = DateModel(
                       date: _selectedDate,
-                      hour: "${_time.hour}:${_time.minute}",
+                      hour: "${_time.hour}:${getminute(_time.minute)}",
                       place: _placeController.text,
                       description: _descriptionController.text,
                       confirmByPatient: widget.isPatient,
                       confirmByEspetialist: !widget.isPatient,
+                      sentBySpecialist: !widget.isPatient,
+                      status: widget.isPatient
+                          ? DateStatus.initial
+                          : DateStatus.confirmed,
                     );
 
                     if (widget.isPatient) {
-                      await widget.onSave!(date, widget.patientModel!.id!);
+                      await widget.onSave!(date, widget.patientModel!);
                     } else {
                       if (pattient == null) {
                         ScaffoldMessenger.of(context)
@@ -303,7 +307,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
                           content: Text('Por favor, seleccione un paciente'),
                         ));
                       } else {
-                        await widget.onSave!(date, pattient!.id!);
+                        await widget.onSave!(date, pattient!);
                       }
                     }
 
@@ -339,6 +343,14 @@ class _NewDateScreenState extends State<NewDateScreen> {
   }
 }
 
+String getminute(int minute) {
+  if (minute < 10) {
+    return '0$minute';
+  } else {
+    return minute.toString();
+  }
+}
+
 Widget pattientPicker(
     {required BuildContext context,
     required Function(PatientModel) setPattientId,
@@ -358,49 +370,46 @@ Widget pattientPicker(
     ));
   }
 
-  return Padding(
-    padding: const EdgeInsets.symmetric(
-      horizontal: 10,
-    ),
-    child: SizedBox(
-      width: double.infinity,
-      child: Column(
-        children: [
-          Text(
-            "Cita para: ",
-            style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width * 0.04,
-              fontWeight: FontWeight.bold,
+  return SizedBox(
+    width: double.infinity,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Cita para: ",
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).size.width * 0.04,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color.fromARGB(255, 0, 0, 0),
+              width: 1,
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: const Color.fromARGB(255, 0, 0, 0),
-                width: 1,
-              ),
-            ),
-            child: DropdownButton<int>(
-              hint: Text(patient?.name ?? 'Selecciona un paciente'),
-              underline: Container(),
-              isExpanded: true,
-              items: pattients
-                  .map((e) => DropdownMenuItem<int>(
-                        value: e.id,
-                        child: Text(e.name!),
-                      ))
-                  .toList(),
-              onChanged: (int? value) {
-                final patient =
-                    pattients.firstWhere((element) => element.id == value);
-                setPattientId(patient);
-              },
-            ),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: DropdownButton<int>(
+            hint: Text(patient?.name ?? 'Selecciona un paciente'),
+            underline: Container(),
+            isExpanded: true,
+            items: pattients
+                .map((e) => DropdownMenuItem<int>(
+                      value: e.id,
+                      child: Text(e.name!),
+                    ))
+                .toList(),
+            onChanged: (int? value) {
+              final patient =
+                  pattients.firstWhere((element) => element.id == value);
+              setPattientId(patient);
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     ),
   );
 }

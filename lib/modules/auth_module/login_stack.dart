@@ -355,7 +355,9 @@ class SpecialistStack extends StatefulWidget {
   State<SpecialistStack> createState() => _SpecialistStackState();
 }
 
-class _SpecialistStackState extends State<SpecialistStack> {
+class _SpecialistStackState extends State<SpecialistStack>
+    with AutomaticKeepAliveClientMixin {
+  bool loading = true;
   late NavigationBloc navigationBloc;
   late BegginCubit begginCubit;
   late CommunityCubit communityCubit;
@@ -383,286 +385,345 @@ class _SpecialistStackState extends State<SpecialistStack> {
     homeCubit = getIt<HomeCubit>();
     testCubit = getIt<TestCubit>();
     pattientsDatesCubit = getIt<PattientsDatesCubit>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await context.read<PattientsCubit>().getPattients(
+            begginCubit.state.specialistModel!.id!,
+          );
+
+      if (mounted) {
+        await context.read<ScheduleCubit>().getDatesForSpecialist(
+              begginCubit.state.specialistModel!.id!,
+            );
+      }
+
+      setState(() {
+        loading = false;
+      });
+    });
+
     super.initState();
   }
 
+  // @override
+  // void dispose() {
+  //   navigationBloc.close();
+  //   super.dispose();
+  // }
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      body: SafeArea(
-        top: true,
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          padding: const EdgeInsets.all(30),
-          child: Column(children: [
-            headerSpecialistWidget(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            IntrinsicHeight(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return PattientsDatesController(
-                            idUser: begginCubit.state.specialistModel!.id!,
-                          );
-                        }));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
+      body: loading
+          ? const SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : SafeArea(
+              top: true,
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                padding: const EdgeInsets.all(30),
+                child: Column(children: [
+                  headerSpecialistWidget(),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return PattientsDatesController(
+                                  idUser:
+                                      begginCubit.state.specialistModel!.id!,
+                                );
+                              }));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(
+                                        0, 3), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.date_range,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.1,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary),
+                                  const SizedBox(width: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Solictudes de citas",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.045,
+                                            decoration: TextDecoration.none,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black)),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.date_range,
-                                size: MediaQuery.of(context).size.width * 0.1,
-                                color: Theme.of(context).colorScheme.secondary),
-                            const SizedBox(width: 10),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Solictudes de citas",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.045,
-                                      decoration: TextDecoration.none,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black)),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.05),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return PatientsRequestController(
+                                  idUser:
+                                      begginCubit.state.specialistModel!.id!,
+                                );
+                              }));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(
+                                        0, 3), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.person,
+                                      size: MediaQuery.of(context).size.width *
+                                          0.1,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary),
+                                  const SizedBox(width: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Vinulación de pacientes",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.045,
+                                            decoration: TextDecoration.none,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black)),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const ScheduleController(
+                          isPattient: false,
+                        );
+                      }));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.date_range,
+                              size: MediaQuery.of(context).size.width * 0.1,
+                              color: Theme.of(context).colorScheme.secondary),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text("Agenda",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.05,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black)),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return PatientsRequestController(
-                            idUser: begginCubit.state.specialistModel!.id!,
-                          );
-                        }));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: const Offset(
-                                  0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.person,
-                                size: MediaQuery.of(context).size.width * 0.1,
-                                color: Theme.of(context).colorScheme.secondary),
-                            const SizedBox(width: 10),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Vinulación de pacientes",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width *
-                                              0.045,
-                                      decoration: TextDecoration.none,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black)),
-                            ),
-                          ],
-                        ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return SpecialistPattientsController(
+                          idUser: begginCubit.state.specialistModel!.id!,
+                        );
+                      }));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.people,
+                              size: MediaQuery.of(context).size.width * 0.1,
+                              color: Theme.of(context).colorScheme.secondary),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text("Pacientes",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.05,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black)),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const ScheduleController(
-                    isPattient: false,
-                  );
-                }));
-              },
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.date_range,
-                        size: MediaQuery.of(context).size.width * 0.1,
-                        color: Theme.of(context).colorScheme.secondary),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text("Agenda",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.05,
-                              decoration: TextDecoration.none,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SpecialistPattientsController(
-                    idUser: begginCubit.state.specialistModel!.id!,
-                  );
-                }));
-              },
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.people,
-                        size: MediaQuery.of(context).size.width * 0.1,
-                        color: Theme.of(context).colorScheme.secondary),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text("Pacientes",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.05,
-                              decoration: TextDecoration.none,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GlobalCommunityController(
-                      specialistModel: begginCubit.state.specialistModel!,
-                      isPatient: false,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GlobalCommunityController(
+                            specialistModel: begginCubit.state.specialistModel!,
+                            isPatient: false,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(
+                                0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.people,
+                            color: Theme.of(context).colorScheme.secondary,
+                            size: MediaQuery.of(context).size.width * 0.1,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text("Comunidad",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.05,
+                                    decoration: TextDecoration.none,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black)),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.people,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: MediaQuery.of(context).size.width * 0.1,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text("Comunidad",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.05,
-                              decoration: TextDecoration.none,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black)),
-                    ),
-                  ],
-                ),
+                  Expanded(child: Container()),
+                ]),
               ),
             ),
-            Expanded(child: Container()),
-          ]),
-        ),
-      ),
     );
   }
 

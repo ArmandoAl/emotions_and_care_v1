@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../../../../helpers/paths.dart';
 
 class ScheduleCubit extends Cubit<ScheduleState> {
@@ -47,6 +45,24 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     }
   }
 
+  Future<bool> updateDateStatus(DateModel date) async {
+    emit(state.copyWith(status: ScheduleStatus.loading));
+    try {
+      await repository.updateStatusCita(date);
+      final List<DateModel> dates = state.dates;
+      final int index = dates.indexWhere((element) => element.id == date.id);
+      dates[index] = date;
+      emit(state.copyWith(
+        dates: dates,
+        status: ScheduleStatus.loaded,
+      ));
+      return true;
+    } catch (e) {
+      emit(state.copyWith(status: ScheduleStatus.error));
+      return false;
+    }
+  }
+
   //delete date from the list
   Future<void> deleteDate(int idDate) async {
     emit(state.copyWith(status: ScheduleStatus.loading));
@@ -64,13 +80,13 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   }
 
   //Confirm date by patient
-  Future<void> confirmDateByPatient(int idDate, int idPatient) async {
+  Future<void> confirmDateByPatient(DateModel date, int idPatient) async {
     emit(state.copyWith(status: ScheduleStatus.loading));
     try {
-      await repository.confirmDateByPatient(idDate, idPatient);
+      await repository.confirmDateByPatient(date.id!, idPatient);
       final List<DateModel> dates = state.dates;
-      final int index = dates.indexWhere((element) => element.id == idDate);
-      dates[index] = dates[index].copyWith(confirmByPatient: true);
+      final int index = dates.indexWhere((element) => element.id == date.id);
+      dates[index] = date;
       emit(state.copyWith(
         dates: dates,
         status: ScheduleStatus.loaded,

@@ -59,6 +59,8 @@ class _PattientsDatesControllerState extends State<PattientsDatesController> {
                       builder: (context) => DateDetail(
                             speciaistId: widget.idUser,
                             date: date,
+                            specialist:
+                                getIt<BegginCubit>().state.specialistModel!,
                           )));
             },
           );

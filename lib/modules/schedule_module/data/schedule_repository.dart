@@ -164,6 +164,8 @@ class ScheduleRepository implements IScheduleRepository {
   Future<bool> updateSchedule(DateModel date, int patientId, int specialistId,
       bool isFromSpecialist) async {
     try {
+      //imptime el json
+
       final response = await http.put(
         Uri.parse(
             '${Api.baseUrl}Cita/$patientId/actualizarCita/$isFromSpecialist/$specialistId'),
@@ -171,7 +173,7 @@ class ScheduleRepository implements IScheduleRepository {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: jsonEncode(date.toJson()),
+        body: jsonEncode(date.toPutJson()),
       );
 
       if (response.statusCode != 200) {
@@ -318,6 +320,28 @@ class ScheduleRepository implements IScheduleRepository {
       return true;
     } catch (e) {
       throw Exception('Failed to accept date');
+    }
+  }
+
+  @override
+  Future<bool> updateStatusCita(DateModel date) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${Api.baseUrl}Cita/${date.id}/marcarCitaComoCompletada'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(date.toJson()),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update status');
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to update status');
     }
   }
 }

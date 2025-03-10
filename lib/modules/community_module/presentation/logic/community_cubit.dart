@@ -38,13 +38,7 @@ class CommunityCubit extends Cubit<CommunityState> {
       CartModel cart, int idUser, bool isPatient) async {
     emit(state.copyWith(status: CommunityStatus.loading));
     try {
-      GoalWithCart result = await repository.addCart(
-          cart,
-          idUser,
-          isPatient,
-          state.cartFromUser
-              .where((element) => element.idEmisor == idUser)
-              .isEmpty);
+      GoalWithCart result = await repository.addCart(cart, idUser, isPatient);
 
       //encuentra la carta en la lista de cartas de la del usuario
       if (result.id != 0) {
@@ -69,8 +63,8 @@ class CommunityCubit extends Cubit<CommunityState> {
       int idCart, bool isPatient, int idPatient) async {
     emit(state.copyWith(status: CommunityStatus.loading));
     try {
-      GoalWithResponseCart result = await repository.addResponse(
-          cartResponse, idCart, haveAnswersInMyInbox(state, idPatient));
+      GoalWithResponseCart result =
+          await repository.addResponse(cartResponse, idCart);
 
       emit(state.copyWith(
           cartFromCommunity: state.cartFromCommunity

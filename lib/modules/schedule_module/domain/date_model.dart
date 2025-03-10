@@ -93,6 +93,22 @@ class DateModel {
       "sentBySpecialist": sentBySpecialist,
     };
   }
+
+  Map<String, dynamic> toPutJson() {
+    return {
+      'dateId': id,
+      "date": date!.toIso8601String(),
+      "hour": hour,
+      "place": place,
+      "description": description,
+      "specialistNotes": specialistNotes,
+      "patientConfirm": confirmByPatient,
+      "specialistConfirm": confirmByEspetialist,
+      "done": done,
+      "status": status!.index,
+      "sentBySpecialist": sentBySpecialist,
+    };
+  }
 }
 
 class GoalwithDate {

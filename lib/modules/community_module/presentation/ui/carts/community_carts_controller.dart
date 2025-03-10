@@ -21,10 +21,10 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
         );
 
     // //todo: remove after expo
-    // context.read<CommunityCubit>().getCartFromUser(
-    //       widget.isPatient ? widget.patient!.id! : widget.specialist!.id!,
-    //       widget.isPatient,
-    //     );
+    context.read<CommunityCubit>().getCartFromUser(
+          widget.isPatient ? widget.patient!.id! : widget.specialist!.id!,
+          widget.isPatient,
+        );
 
     super.initState();
   }
@@ -116,6 +116,7 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
               },
             ),
             floatingActionButton: FloatingActionButton(
+              heroTag: null,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50)),
               onPressed: () {

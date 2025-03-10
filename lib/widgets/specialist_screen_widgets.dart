@@ -41,7 +41,9 @@ Future<void> showTableCaledarBottomSheet(
           ),
           firstDay: DateTime.now(),
           lastDay: DateTime.now().add(const Duration(days: 90)),
-          focusedDay: initialDate,
+          focusedDay: (initialDate.isBefore(DateTime.now())
+              ? DateTime.now()
+              : initialDate),
           calendarFormat: CalendarFormat.month,
           onDaySelected: (selectedDay, focusedDay) {
             onDaySelected(selectedDay);

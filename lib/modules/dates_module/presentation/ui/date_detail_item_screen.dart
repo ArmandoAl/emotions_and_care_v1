@@ -3,7 +3,12 @@ import '../../../../helpers/paths.dart';
 class DateDetail extends StatefulWidget {
   final int speciaistId;
   final DateModel date;
-  const DateDetail({super.key, required this.date, required this.speciaistId});
+  final SpecialistModel specialist;
+  const DateDetail(
+      {super.key,
+      required this.date,
+      required this.speciaistId,
+      required this.specialist});
 
   @override
   State<DateDetail> createState() => _DateDetailState();
@@ -193,7 +198,17 @@ class _DateDetailState extends State<DateDetail> {
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DateDetailScreen(
+                                        dateModel: widget.date,
+                                        isPattient: false,
+                                        especialistaModel: widget.specialist,
+                                        patientModel: widget.date.patient!,
+                                        edit: true)));
+                          },
                           child: Text(
                             "Editar",
                             style: TextStyle(

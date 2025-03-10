@@ -218,113 +218,113 @@ class _PatientDetailState extends State<PatientDetail> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Text("Programar cita",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.005,
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.height *
-                                            0.015,
-                                  ),
-                                  child: const Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                          child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.calendar_month,
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text("Later",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold)),
-                                        ],
-                                      )),
-                                      Expanded(
-                                          child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Icon(Icons.schedule,
-                                              color: Colors.white),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text("Later",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold)),
-                                        ],
-                                      )),
-                                    ],
-                                  ),
-                                ),
-                                containerItem(
-                                    context, Colors.white, "Later", 'Later', "",
-                                    () {
-                                  //onTap(date);
-                                },
-                                    hasHeader: true,
-                                    icon: Icons.info_outline_rounded),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
+                    //     Column(
+                    //       crossAxisAlignment: CrossAxisAlignment.start,
+                    //       children: [
+                    //         Padding(
+                    //           padding: const EdgeInsets.symmetric(horizontal: 15),
+                    //           child: Text("Programar cita",
+                    //               textAlign: TextAlign.start,
+                    //               style: TextStyle(
+                    //                   color: Colors.black,
+                    //                   fontSize:
+                    //                       MediaQuery.of(context).size.width * 0.05,
+                    //                   fontWeight: FontWeight.bold)),
+                    //         ),
+                    //         SizedBox(
+                    //           height: MediaQuery.of(context).size.height * 0.005,
+                    //         ),
+                    //         GestureDetector(
+                    //           onTap: () {},
+                    //           child: Container(
+                    //             decoration: BoxDecoration(
+                    //               boxShadow: [
+                    //                 BoxShadow(
+                    //                   color: Colors.grey.withOpacity(0.3),
+                    //                   spreadRadius: 1,
+                    //                   blurRadius: 5,
+                    //                   offset: const Offset(
+                    //                       0, 3), // changes position of shadow
+                    //                 ),
+                    //               ],
+                    //             ),
+                    //             child: Column(
+                    //               children: [
+                    //                 Container(
+                    //                   decoration: BoxDecoration(
+                    //                     borderRadius: const BorderRadius.only(
+                    //                       topLeft: Radius.circular(10),
+                    //                       topRight: Radius.circular(10),
+                    //                     ),
+                    //                     color:
+                    //                         Theme.of(context).colorScheme.primary,
+                    //                   ),
+                    //                   width: double.infinity,
+                    //                   padding: const EdgeInsets.symmetric(
+                    //                       horizontal: 10, vertical: 10),
+                    //                   margin: EdgeInsets.symmetric(
+                    //                     horizontal:
+                    //                         MediaQuery.of(context).size.height *
+                    //                             0.015,
+                    //                   ),
+                    //                   child: const Row(
+                    //                     crossAxisAlignment:
+                    //                         CrossAxisAlignment.start,
+                    //                     mainAxisAlignment: MainAxisAlignment.start,
+                    //                     children: [
+                    //                       Expanded(
+                    //                           child: Row(
+                    //                         children: [
+                    //                           Icon(
+                    //                             Icons.calendar_month,
+                    //                             color: Colors.white,
+                    //                           ),
+                    //                           SizedBox(
+                    //                             width: 10,
+                    //                           ),
+                    //                           Text("Later",
+                    //                               style: TextStyle(
+                    //                                   color: Colors.white,
+                    //                                   fontWeight: FontWeight.bold)),
+                    //                         ],
+                    //                       )),
+                    //                       Expanded(
+                    //                           child: Row(
+                    //                         crossAxisAlignment:
+                    //                             CrossAxisAlignment.end,
+                    //                         mainAxisAlignment:
+                    //                             MainAxisAlignment.end,
+                    //                         children: [
+                    //                           Icon(Icons.schedule,
+                    //                               color: Colors.white),
+                    //                           SizedBox(
+                    //                             width: 10,
+                    //                           ),
+                    //                           Text("Later",
+                    //                               style: TextStyle(
+                    //                                   color: Colors.white,
+                    //                                   fontWeight: FontWeight.bold)),
+                    //                         ],
+                    //                       )),
+                    //                     ],
+                    //                   ),
+                    //                 ),
+                    //                 containerItem(
+                    //                     context, Colors.white, "Later", 'Later', "",
+                    //                     () {
+                    //                   //onTap(date);
+                    //                 },
+                    //                     hasHeader: true,
+                    //                     icon: Icons.info_outline_rounded),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     SizedBox(
+                    //       height: MediaQuery.of(context).size.height * 0.05,
+                    //     ),
                   ],
                 ),
               ),
@@ -353,7 +353,7 @@ class _PatientDetailState extends State<PatientDetail> {
                           side: BorderSide(
                             color: Theme.of(context).colorScheme.primary,
                           )),
-                      elevation: 3,
+                      elevation: 1,
                       padding: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.01,
                       ),
@@ -368,7 +368,7 @@ class _PatientDetailState extends State<PatientDetail> {
                         : Text(
                             'Diario',
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.surface,
+                              color: Colors.black,
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.04,
                               fontWeight: FontWeight.bold,
@@ -444,7 +444,7 @@ class _PatientDetailState extends State<PatientDetail> {
                       }));
                     },
                     style: ElevatedButton.styleFrom(
-                      elevation: 3,
+                      elevation: 1,
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),

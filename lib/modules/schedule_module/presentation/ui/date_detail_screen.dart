@@ -5,12 +5,15 @@ class DateDetailScreen extends StatefulWidget {
   final bool isPattient;
   final SpecialistModel? especialistaModel;
   final PatientModel? patientModel;
-  const DateDetailScreen(
-      {super.key,
-      required this.dateModel,
-      required this.isPattient,
-      required this.especialistaModel,
-      required this.patientModel});
+  final bool? edit;
+  const DateDetailScreen({
+    super.key,
+    required this.dateModel,
+    required this.isPattient,
+    required this.especialistaModel,
+    required this.patientModel,
+    this.edit = false,
+  });
 
   @override
   State<DateDetailScreen> createState() => _DateDetailScreenState();
@@ -23,14 +26,11 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
   TextEditingController specialistNotesController = TextEditingController();
   DateTime date = DateTime.now();
   String hour = "";
+  bool pendingToMatch = false;
   List<DropdownMenuItem<String>> items = [
     const DropdownMenuItem(
       value: "Inicial",
       child: Text("Inicial"),
-    ),
-    const DropdownMenuItem(
-      value: "Confirmada",
-      child: Text("Confirmada"),
     ),
     const DropdownMenuItem(
       value: "Completada",
@@ -38,11 +38,7 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
     ),
     const DropdownMenuItem(
       value: "No completada",
-      child: Text("No completada"),
-    ),
-    const DropdownMenuItem(
-      value: "Pendiente de confirmar",
-      child: Text("Pendiente de confirmar"),
+      child: Text("No asistió"),
     ),
   ];
   String statusValue = "Inicial";
@@ -55,6 +51,13 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
     placeController.text = widget.dateModel!.place ?? '';
     hour = widget.dateModel!.hour!;
     statusValue = getStatusFromDateValue(widget.dateModel!.status!, items);
+    if (widget.dateModel!.status == DateStatus.pendingToMatch) {
+      pendingToMatch = true;
+    }
+
+    if (widget.edit == true) {
+      isEditing = true;
+    }
   }
 
   String getStatusFromDateValue(
@@ -63,13 +66,13 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
       case DateStatus.initial:
         return items[0].value!;
       case DateStatus.confirmed:
-        return items[1].value!;
+        return items[0].value!;
       case DateStatus.completed:
         return items[2].value!;
       case DateStatus.notCompleted:
         return items[3].value!;
       case DateStatus.pendingToMatch:
-        return items[4].value!;
+        return items[0].value!;
     }
   }
 
@@ -607,6 +610,7 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
                           vertical: 3,
                         ),
                         child: DropdownButton(
+                            // enable: isEditing,
                             underline: const SizedBox.shrink(),
                             elevation: 1,
                             isExpanded: true,
@@ -622,73 +626,186 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                if (widget.isPattient == true &&
+                    widget.dateModel!.status == DateStatus.pendingToMatch &&
+                    isEditing == false)
+                  Column(
+                    children: [
+                      Text(
+                          "El especialista ha hecho cambios en la cita, por favor acepta la cita o da click en editar para proponer una nueva fecha",
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.035,
+                              color: Colors.black,
+                              decoration: TextDecoration.none)),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.02,
                       ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 50,
-                        vertical: 10,
-                      ),
-                    ),
-                    onPressed: () async {
-                      if (isEditing) {
-                        await showLoadingdialog("Guardando cita", context,
-                            () async {
-                          bool res =
-                              await context.read<ScheduleCubit>().updateDate(
-                                    widget.dateModel!.copyWith(
-                                      date: date,
-                                      hour: hour,
-                                      place: placeController.text,
-                                      description: descriptionController.text,
-                                      status: DateStatus.values.firstWhere(
-                                        (element) =>
-                                            element.toString() == statusValue,
+                    ],
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 50,
+                            vertical: 10,
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (isEditing) {
+                            await showLoadingdialog("Guardando cita", context,
+                                () async {
+                              if (statusValue == "Inicial") {
+                                bool res = await context
+                                    .read<ScheduleCubit>()
+                                    .updateDate(
+                                      widget.dateModel!.copyWith(
+                                        date: date,
+                                        hour: hour,
+                                        place: placeController.text,
+                                        description: descriptionController.text,
+                                        status: statusValue == "Inicial"
+                                            ? DateStatus.pendingToMatch
+                                            : statusValue == "Completada"
+                                                ? DateStatus.completed
+                                                : DateStatus.notCompleted,
+                                        specialistNotes:
+                                            specialistNotesController.text,
+                                        confirmByEspetialist:
+                                            !widget.isPattient,
+                                        confirmByPatient: widget.isPattient,
+                                        sentBySpecialist: !widget.isPattient,
                                       ),
-                                      specialistNotes:
-                                          specialistNotesController.text,
-                                      confirmByEspetialist: !widget.isPattient,
-                                      confirmByPatient: widget.isPattient,
-                                      sentBySpecialist: !widget.isPattient,
+                                      widget.patientModel!.id!,
+                                      widget.especialistaModel!.id!,
+                                      !widget.isPattient,
+                                    );
+
+                                if (res == true && context.mounted) {
+                                  showMessageDialog(context, "Cita actualizada",
+                                      "Tu cita ha sido actualizada correctamente");
+                                } else {
+                                  if (context.mounted) {
+                                    showMessageDialog(context, "Error",
+                                        "Hubo un error al actualizar la cita",
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text("Aceptar"),
+                                          ),
+                                        ]);
+                                  }
+                                }
+
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                }
+                              } else {
+                                bool res = await context
+                                    .read<ScheduleCubit>()
+                                    .updateDateStatus(
+                                      widget.dateModel!.copyWith(
+                                        date: date,
+                                        hour: hour,
+                                        place: placeController.text,
+                                        description: descriptionController.text,
+                                        status: statusValue == "Inicial"
+                                            ? DateStatus.pendingToMatch
+                                            : statusValue == "Completada"
+                                                ? DateStatus.completed
+                                                : DateStatus.notCompleted,
+                                        specialistNotes:
+                                            specialistNotesController.text,
+                                        sentBySpecialist: !widget.isPattient,
+                                      ),
+                                    );
+
+                                if (res == true && context.mounted) {
+                                  showMessageDialog(context, "Cita actualizada",
+                                      "Tu cita ha sido actualizada correctamente");
+                                } else {
+                                  if (context.mounted) {
+                                    showMessageDialog(context, "Error",
+                                        "Hubo un error al actualizar la cita",
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text("Aceptar"),
+                                          ),
+                                        ]);
+                                  }
+                                }
+
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                }
+                              }
+
+                              if (context.mounted) Navigator.of(context).pop();
+                              if (context.mounted) Navigator.of(context).pop();
+                            });
+                          } else {
+                            setState(() {
+                              isEditing = !isEditing;
+                            });
+                          }
+                        },
+                        child: Text(
+                          isEditing ? "Guardar" : "Editar",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        )),
+                    if (widget.isPattient == true &&
+                        widget.dateModel!.status == DateStatus.pendingToMatch &&
+                        isEditing == false)
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 50,
+                              vertical: 10,
+                            ),
+                          ),
+                          onPressed: () async {
+                            await showLoadingdialog("Guardando cita", context,
+                                () async {
+                              await context
+                                  .read<ScheduleCubit>()
+                                  .confirmDateByPatient(
+                                    widget.dateModel!.copyWith(
+                                      status: DateStatus.confirmed,
                                     ),
-                                    widget.patientModel!.id!,
-                                    widget.especialistaModel!.id!,
-                                    !widget.isPattient,
+                                    widget.dateModel!.patient!.id!,
                                   );
 
-                          if (res == true && context.mounted) {
-                            showMessageDialog(context, "Cita actualizada",
-                                "Tu cita ha sido actualizada correctamente");
-                          } else {
-                            if (context.mounted) {
-                              showMessageDialog(context, "Error",
-                                  "Hubo un error al actualizar la cita",
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text("Aceptar"),
-                                    ),
-                                  ]);
-                            }
-                          }
-                        });
-                      } else {
-                        setState(() {
-                          isEditing = !isEditing;
-                        });
-                      }
-                    },
-                    child: Text(
-                      isEditing ? "Guardar" : "Editar",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    )),
+                              if (context.mounted) Navigator.of(context).pop();
+                              if (context.mounted) Navigator.of(context).pop();
+                            });
+                          },
+                          child: const Text(
+                            "Aceptar",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          )),
+                  ],
+                ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),

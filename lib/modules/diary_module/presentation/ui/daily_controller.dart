@@ -61,7 +61,45 @@ class _DailyControllerState extends State<DailyController> {
                 ? null
                 : HeaderWidget(
                     title: "Diario de ${widget.patientModel.name}",
-                    isForReturn: true),
+                    isForReturn: true,
+                    actions: [
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              // backgroundColor: Theme.of(context).primaryColor,
+                              ),
+                          onPressed: () {
+                            if (dailyCubit.state.result ==
+                                DailyResult.loading) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text('Cargando notas, intente de nuevo'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                              return;
+                            }
+
+                            if (dailyCubit.state.notes.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('No hay notas para mostrar'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                              return;
+                            }
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => NotesProgressScreen(
+                                    notes: dailyCubit.state.notes,
+                                    patientModel: widget.patientModel)));
+                          },
+                          child: const Text('Progreso',
+                              style: TextStyle(color: Colors.white))),
+                      const SizedBox(width: 5),
+                    ],
+                  ),
             body: state.result == DailyResult.loading
                 ? Center(
                     child: Lottie.asset(Assets.brainLoading),

@@ -5,11 +5,10 @@ import '../../../helpers/paths.dart';
 class CartRepository extends ICartRepository {
   @override
   Future<GoalWithCart> addCart(
-      CartModel cart, int idUser, bool isPatient, bool isFirstTime) async {
+      CartModel cart, int idUser, bool isPatient) async {
     try {
       final response = await http.post(
-        Uri.parse(
-            '${Api.baseUrl}Carta/$idUser/AgregarCarta/$isPatient/$isFirstTime'),
+        Uri.parse('${Api.baseUrl}Carta/$idUser/AgregarCarta/$isPatient'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -116,10 +115,10 @@ class CartRepository extends ICartRepository {
 
   @override
   Future<GoalWithResponseCart> addResponse(
-      CartResponse cartResponse, int idCart, bool isFirstTime) async {
+      CartResponse cartResponse, int idCart) async {
     try {
       final response = await http.post(
-        Uri.parse('${Api.baseUrl}Carta/$idCart/AgregarRespuesta/$isFirstTime'),
+        Uri.parse('${Api.baseUrl}Carta/$idCart/AgregarRespuesta'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

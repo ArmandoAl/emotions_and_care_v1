@@ -7,6 +7,9 @@ abstract class IScheduleRepository {
 
   Future<bool> updateSchedule(
       DateModel date, int patientId, int specialistId, bool isFromSpecialist);
+
+  Future<bool> updateStatusCita(DateModel date);
+
   Future<bool> deleteSchedule(int dateId);
 
   Future<bool> confirmDateByPatient(int idDate, int idPatient);

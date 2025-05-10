@@ -6,10 +6,10 @@ class DailyCubit extends Cubit<DailyState> {
   DailyCubit({required this.repository}) : super(const DailyState());
 
   //addNote
-  Future<GoalWithNote> addNote(NoteModel note, int userId) async {
+  Future<NoteWithAchivement> addNote(NoteModel note, int userId) async {
     emit(state.copyWith(result: DailyResult.loading));
     try {
-      final GoalWithNote result = await repository.addNote(
+      final NoteWithAchivement result = await repository.addNote(
         note,
         userId,
         state.notes.isEmpty,

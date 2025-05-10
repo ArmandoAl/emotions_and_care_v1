@@ -49,7 +49,7 @@ class _SpecialistPattientsControllerState
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text(
-                      'Aun no tienes pacientes asignados, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes.',
+                      'Aún no tienes pacientes asignados, puedes dirigirte a la sección de configuración para ver tu código de vinculación y compartirlo con tus pacientes.',
                       textAlign: TextAlign.center,
                     ),
                   ),

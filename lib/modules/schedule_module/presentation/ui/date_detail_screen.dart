@@ -24,7 +24,7 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController placeController = TextEditingController();
   TextEditingController specialistNotesController = TextEditingController();
-  DateTime date = DateTime.now();
+  DateTime date = DateTime.now().toLocal();
   String hour = "";
   bool pendingToMatch = false;
   List<DropdownMenuItem<String>> items = [
@@ -681,7 +681,7 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
                                         confirmByPatient: widget.isPattient,
                                         sentBySpecialist: !widget.isPattient,
                                       ),
-                                      widget.patientModel!.id!,
+                                      widget.dateModel!.patient!.id!,
                                       widget.especialistaModel!.id!,
                                       !widget.isPattient,
                                     );

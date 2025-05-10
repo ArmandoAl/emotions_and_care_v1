@@ -14,7 +14,7 @@ Widget questionItems(
   QuestionModel item,
   Function(bool loading) setLoadingState,
   Function(String result) setResultState,
-  Function(GoalModel? goal) setGoal,
+  Function(Achievement? goal) setGoal,
 ) {
   return Padding(
     padding: EdgeInsets.symmetric(
@@ -52,7 +52,7 @@ Widget questionItems(
         LinearProgressIndicator(
           value: progress,
           valueColor: AlwaysStoppedAnimation<Color>(Color.lerp(
-              const Color(0xff1C8AAD),
+              Theme.of(context).colorScheme.primary,
               const Color.fromARGB(255, 21, 137, 19),
               progress)!),
         ),
@@ -67,17 +67,6 @@ Widget questionItems(
           ],
         ),
         const SizedBox(height: 5),
-        // Row(
-        //   children: [
-        //     Expanded(
-        //       child: Text(item.question,
-        //           style: TextStyle(
-        //               fontSize: MediaQuery.of(context).size.width * 0.07,
-        //               fontWeight: FontWeight.bold,
-        //               decoration: TextDecoration.none)),
-        //     ),
-        //   ],
-        // ),
         Text(item.question,
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -133,9 +122,6 @@ Widget questionItems(
                             ),
                             child: const Center(
                               child: Text(
-                                // item.answers.length == 4
-                                //     ? (index).toString()
-                                //     : numbersForMoreThanFourDigits[index + 1]!,
                                 "",
                                 style: TextStyle(
                                     fontSize: 20,
@@ -175,7 +161,7 @@ Widget questionItems(
         const SizedBox(height: 5),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color.lerp(const Color(0xff1C8AAD),
+              backgroundColor: Color.lerp(Theme.of(context).colorScheme.primary,
                   const Color.fromARGB(255, 21, 137, 19), progress)!,
             ),
             onPressed: () async {
@@ -185,19 +171,21 @@ Widget questionItems(
               if (index == state.testList[testId - 1].questions.length) {
                 setLoadingState(true);
 
-                GoalWithTestInfoModel result = await context
+                TestInfoModelWithAchivement result = await context
                     .read<TestCubit>()
                     .onCompleteTest(
                         userId, testId, registerFlow != "registerSuccess");
 
-                if (result.goalModel != null && context.mounted) {
+                if (result.achivementId != null && context.mounted) {
                   final UICubit uiProvider = getIt<UICubit>();
 
-                  await uiProvider.getSticker(result.goalModel!.idSticker!);
+                  final achivement =
+                      uiProvider.getAchivement(result.achivementId!);
+
+                  setGoal(achivement);
                 }
 
                 setResultState(result.testInfoModel!.resultado);
-                setGoal(result.goalModel);
               }
 
               if (item.answers.any((element) => element.isSelected)) {

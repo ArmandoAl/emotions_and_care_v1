@@ -185,6 +185,7 @@ Widget welcomeMessage(
             style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width * 0.1,
                 fontWeight: FontWeight.bold,
+                color: Colors.black,
                 decoration: TextDecoration.none)),
         SizedBox(height: MediaQuery.of(context).size.height * 0.1),
         ElevatedButton(
@@ -268,6 +269,7 @@ Widget registerForm(
             Text(
               "¡Listo para empezar!",
               style: TextStyle(
+                  fontFamily: 'Gilroy',
                   fontSize: MediaQuery.of(context).size.width * 0.075,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.none),
@@ -279,9 +281,10 @@ Widget registerForm(
               "Por favor, rellena los siguientes campos, para acceder a nuestros servicios.",
               textAlign: TextAlign.center,
               style: TextStyle(
+                  fontFamily: 'Gilroy',
                   fontSize: MediaQuery.of(context).size.width * 0.025,
                   color: Colors.grey,
-                  fontWeight: FontWeight.normal,
+                  fontWeight: FontWeight.w600,
                   decoration: TextDecoration.none),
             ),
             SizedBox(
@@ -327,7 +330,7 @@ Widget registerForm(
               _customTextFieldForRegister(
                   context,
                   licenseController!,
-                  "Cedula profesional",
+                  "Cédula profesional",
                   Icons.credit_card,
                   null,
                   null,
@@ -353,7 +356,7 @@ Widget registerForm(
               _customTextFieldForRegister(
                   context,
                   ubicationController,
-                  "Ubicacion (Opcional)",
+                  "Ubicación (Opcional)",
                   Icons.credit_card,
                   null,
                   null,
@@ -519,7 +522,7 @@ Widget registerForm(
                       token:
                           'jknbvibnrwevruibweqig4wufinj6hrveuheic4buwn4ivh2ug54ifwhvn6g354c8rytaejke7jrhaeg456k7el8kt7jrsteahrgef${passwordController.text}',
                       tokenForRelate: '',
-                      bornDate: DateTime.now(),
+                      bornDate: DateTime.now().toLocal(),
                       focus: focusController.text,
                       institution: institutionController.text,
                       ubication: ubicationController.text,
@@ -642,6 +645,7 @@ Widget terms(
           "Términos y condiciones",
           textAlign: TextAlign.center,
           style: TextStyle(
+              fontFamily: 'Gilroy',
               fontSize: MediaQuery.of(context).size.width * 0.075,
               color: const Color(0xff2CB5E0),
               fontWeight: FontWeight.bold,
@@ -658,6 +662,7 @@ Widget terms(
                   termsText != null ? termsText.replaceAll("|", "\n") : "",
                   textAlign: TextAlign.justify,
                   style: TextStyle(
+                      fontFamily: 'Gilroy',
                       fontSize: MediaQuery.of(context).size.width * 0.045,
                       color: Colors.grey,
                       fontWeight: FontWeight.normal,
@@ -687,27 +692,39 @@ Widget terms(
                   },
                   child: Text("Aceptar",
                       style: TextStyle(
+                          fontFamily: 'Gilroy',
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: MediaQuery.of(context).size.width * 0.05)),
                 ),
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-            GestureDetector(
-              onTap: () {
-                pageController.previousPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeIn);
-              },
-              child: Text(
-                "Rechazar",
-                style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.width * 0.05,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.red),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 80),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[300],
+                    elevation: 1,
+                  ),
+                  onPressed: () {
+                    pageController.previousPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn);
+                  },
+                  child: Text(
+                    "Rechazar",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      color: Colors.grey[700],
+                      fontWeight: FontWeight.w500,
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.015),
@@ -754,17 +771,20 @@ Widget choiseUserType(
                 Text("¡Hay que comenzar!",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.1,
+                      fontFamily: 'Gilroy', // Usa la fuente personalizada
                       fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.width * 0.1,
+                      color: Colors.black,
                       decoration: TextDecoration.none,
                     )),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                 Text("¿Eres un joven universitario/a, o un especialista?",
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                      fontFamily: 'Gilroy', // Usa la fuente personalizada
+                      fontWeight: FontWeight.w600,
                       fontSize: MediaQuery.of(context).size.width * 0.05,
                       color: Colors.grey,
-                      fontWeight: FontWeight.bold,
                       decoration: TextDecoration.none,
                     )),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.05),

@@ -84,7 +84,7 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                         builder: (context) => AlertDialog(
                           title: const Text('Proteger nota'),
                           content: const Text(
-                              'Cuando te vincules con una especialista, el/ella puede acceder a tu diario para ayudarte en tu progreso, sin embargo, con el seguro de nota activado, no podrá ver esta nota. Asi que si deseas que tu especialista no vea esta nota, activa el seguro de nota. La idea es que cuando tu especialista quiera que escribas algo sobre un tema, este pueda ver esa nota, pero no las demás.'),
+                              'Puedes activar o desactivar la opción para que tu especialista vinculado vea esta nota de tu diario. Ten en cuenta que una vez que hayas elegido esta opción, no podrás modificarla .'),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -137,12 +137,9 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                         },
                         icon: _selectedIcon != null
                             ? Text(_selectedIcon!.icon!,
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    foreground: Paint()
-                                      ..style = PaintingStyle.fill
-                                      ..color =
-                                          emotionColors[_selectedIcon!.name]!))
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                ))
                             : const Icon(Icons.emoji_emotions_outlined),
                       ),
                     ],
@@ -195,11 +192,11 @@ class _NewNoteScreenState extends State<NewNoteScreen> {
                 });
 
                 final note = NoteModel(
-                  id: DateTime.now().millisecondsSinceEpoch,
+                  id: DateTime.now().toLocal().millisecondsSinceEpoch,
                   title: titleController.text,
                   content: contentController.text,
                   emotion: _selectedIcon!,
-                  createdAt: DateTime.now(),
+                  createdAt: DateTime.now().toLocal(),
                   visible: state.visible,
                 );
 
@@ -249,35 +246,41 @@ void showEmotionsDialog({
                     child: CircularProgressIndicator(),
                   );
                 } else if (state.status == EmotionStatus.loaded) {
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                  return Scrollbar(
+                    thumbVisibility: true,
+                    thickness: 8,
+                    trackVisibility: true,
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: state.emotions.length,
+                      itemBuilder: (context, index) {
+                        final emotion = state.emotions[index];
+                        return InkWell(
+                          onTap: () {
+                            onEmotionSelected(emotion);
+                            Navigator.pop(context);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(emotion.icon!,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      foreground: Paint()
+                                        ..style = PaintingStyle.fill
+                                        ..color = Colors.black)),
+                              Text(emotion.name,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                    itemCount: state.emotions.length,
-                    itemBuilder: (context, index) {
-                      final emotion = state.emotions[index];
-                      return InkWell(
-                        onTap: () {
-                          onEmotionSelected(emotion);
-                          Navigator.pop(context);
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(emotion.icon!,
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    foreground: Paint()
-                                      ..style = PaintingStyle.fill
-                                      ..color = Colors.black)),
-                            Text(emotion.name,
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w500)),
-                          ],
-                        ),
-                      );
-                    },
                   );
                 } else {
                   return const Center(

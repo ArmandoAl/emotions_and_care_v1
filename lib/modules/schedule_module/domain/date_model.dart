@@ -144,3 +144,30 @@ class GoalwithDate {
     };
   }
 }
+
+class DateWithAchivement {
+  final int id;
+  final int? achivementId;
+
+  DateWithAchivement({
+    required this.id,
+    this.achivementId,
+  });
+
+  DateWithAchivement copyWith({
+    int? id,
+    int? achivementId,
+  }) {
+    return DateWithAchivement(
+      id: id ?? this.id,
+      achivementId: achivementId ?? this.achivementId,
+    );
+  }
+
+  factory DateWithAchivement.fromJson(Map<String, dynamic> json) {
+    return DateWithAchivement(
+      id: json['dateId'] ?? 0,
+      achivementId: json['achievementId'],
+    );
+  }
+}

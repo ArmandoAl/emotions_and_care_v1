@@ -12,4 +12,8 @@ abstract class INotificationRepository {
   Future<bool> growFlower(int idPatient, int idUserFlower);
 
   Future<bool> canGrowStage(int idPatient);
+
+  Future<bool> recomendationCompleted(int idRecomendacion, int idPatient);
+
+  Future<bool> posponeNote(int idNote);
 }

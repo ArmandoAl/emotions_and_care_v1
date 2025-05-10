@@ -19,7 +19,7 @@ class _CompleteTestState extends State<CompleteTest> {
   double progress = 0;
   String? resultado;
   bool isLoading = false;
-  GoalModel? goal;
+  Achievement? goal;
 
   @override
   void dispose() {
@@ -113,7 +113,7 @@ class _CompleteTestState extends State<CompleteTest> {
                       resultado = result;
                     });
                   },
-                  (GoalModel? goal) {
+                  (Achievement? goal) {
                     setState(() {
                       this.goal = goal;
                     });

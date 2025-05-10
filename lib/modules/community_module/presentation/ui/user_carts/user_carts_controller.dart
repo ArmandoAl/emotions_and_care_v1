@@ -36,7 +36,6 @@ class _UserCartsControllerState extends State<UserCartsController> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CommunityCubit, CommunityState>(
-      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         if (state.status == CommunityStatus.loading) {
           return const Scaffold(
@@ -56,8 +55,8 @@ class _UserCartsControllerState extends State<UserCartsController> {
         //cartas en las que el usuario es el autor
         final sentCarts = state.cartFromUser
             .where((element) =>
-                element.respuestas!.isNotEmpty &&
-                element.respuestas!
+                element.respuestas.isNotEmpty &&
+                element.respuestas
                     .any((element) => element.idReceptor == userId))
             .toList();
         //cambiar, se tiene que agregar en el CartaModel un idReceptor para poder hacer la comparacion

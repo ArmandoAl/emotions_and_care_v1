@@ -2,7 +2,9 @@ enum NotificationType {
   notificacionRecordatorio,
   notificacionRecomendacion,
   notificacionNota,
-  growNotifications
+  goal,
+  growNotifications,
+  sticker
 }
 
 enum RecomendationType { recomendacion, recordatorio }
@@ -18,6 +20,7 @@ class NotificationModel {
   final String? reference;
   final String? url;
   final bool? completed;
+  final int? idAchievement;
 
   NotificationModel({
     required this.id,
@@ -30,6 +33,7 @@ class NotificationModel {
     this.reference,
     this.url,
     this.completed = false,
+    this.idAchievement,
   });
 
   NotificationModel copyWith({
@@ -43,6 +47,7 @@ class NotificationModel {
     String? reference,
     String? url,
     bool? completed,
+    int? idAchievement,
   }) {
     return NotificationModel(
       id: id ?? this.id,
@@ -55,11 +60,11 @@ class NotificationModel {
       reference: reference ?? this.reference,
       url: url ?? this.url,
       completed: completed ?? this.completed,
+      idAchievement: idAchievement ?? this.idAchievement,
     );
   }
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
-    print(json);
     return NotificationModel(
       id: json['notificationId'],
       title: json['titulo'],
@@ -73,6 +78,15 @@ class NotificationModel {
           : RecomendationType.values[json['recomendationType']],
       reference: json['reference'],
       url: json['url'],
+      dateEmition: json['fechaEmision'] == null
+          ? null
+          : DateTime.tryParse(json['fechaEmision']),
+      completed: json['completed'] == null
+          ? false
+          : json['completed'] == 1
+              ? true
+              : false,
+      idAchievement: json['achievementId'],
     );
   }
 }

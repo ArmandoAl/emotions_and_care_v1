@@ -6,16 +6,13 @@ class ScheduleScreen extends StatefulWidget {
   static const String route = 'schedule';
   final List<DateModel> dates;
   final bool isPatient;
-  final PatientModel? patient;
-  final SpecialistModel? specialist;
+
   final Function? onDateTap;
   final Future<void> Function() onRefresh;
   const ScheduleScreen(
       {super.key,
       required this.dates,
       required this.isPatient,
-      this.patient,
-      this.specialist,
       this.onDateTap,
       required this.onRefresh});
 
@@ -25,6 +22,18 @@ class ScheduleScreen extends StatefulWidget {
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
   DateModel? _selectedDate;
+  PatientModel? patient;
+  SpecialistModel? specialist;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isPatient) {
+      patient = getIt<BegginCubit>().state.patientModel;
+    } else {
+      specialist = getIt<BegginCubit>().state.specialistModel;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +78,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                focusedDay: DateTime.now(),
-                firstDay: DateTime(1990),
-                lastDay: DateTime(2050),
+                focusedDay: DateTime.now().toLocal(),
+                firstDay: DateTime(1990).toLocal(),
+                lastDay: DateTime(2050).toLocal(),
                 eventLoader: (day) {
                   return widget.dates
                       .where((element) =>
@@ -118,7 +127,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: _selectedDate == null
-                      ? const Color.fromARGB(255, 86, 128, 140)
+                      ? Theme.of(context).colorScheme.secondary
                       : Colors.deepPurple[900]!,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(50),
@@ -126,13 +135,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                 ),
                 padding: const EdgeInsets.all(30),
-                child: containerContentWidget(
-                    context,
-                    _selectedDate,
-                    widget.isPatient,
-                    widget.patient,
-                    widget.specialist,
-                    widget.dates),
+                child: containerContentWidget(context, _selectedDate,
+                    widget.isPatient, patient, specialist, widget.dates),
               ),
             ))
           ],

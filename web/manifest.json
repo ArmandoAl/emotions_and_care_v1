@@ -1,6 +1,6 @@
 {
-    "name": "emotions_and_care_v1",
-    "short_name": "emotions_and_care_v1",
+    "name": "emotionsandcare",
+    "short_name": "emotionsandcare",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

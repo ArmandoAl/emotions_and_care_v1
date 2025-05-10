@@ -76,6 +76,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337730650555:android:7219ef3af2acb372bcc49e",
+        "android_client_info": {
+          "package_name": "com.example.emotionsandcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337730650555-r6vleke1rf2c8ghshgt142e77nn91cai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHKnCAcbYf0FRGGUAuZfmioP7d1WIp8Ag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337730650555-r6vleke1rf2c8ghshgt142e77nn91cai.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "337730650555-81r7jhq5fj6v6b32rl1meeme1jhpnm9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.emotionsAndCare"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -196,3 +196,5 @@ export 'package:flutter_bloc/flutter_bloc.dart';
 
 //export Assets
 export 'package:emotions_and_care_v1/config/assets/assets.dart';
+
+export 'package:emotions_and_care_v1/modules/auth_module/domain/achivement.dart';

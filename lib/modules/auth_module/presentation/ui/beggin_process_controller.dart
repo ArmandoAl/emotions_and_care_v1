@@ -30,127 +30,181 @@ class _BegginProcessControllerState extends State<BegginProcessController> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => LoginScreen(onLogin: (String email,
-                          String password, bool isRememberPassword) async {
-                        if (email.isEmpty || password.isEmpty) {
-                          showMessage(
-                              context, 'Por favor, rellene todos los campos');
-                          return;
-                        }
+                  builder: (context) => LoginScreen(
+                        onLogin: (String email, String password,
+                            bool isRememberPassword) async {
+                          if (email.isEmpty || password.isEmpty) {
+                            showMessage(
+                                context, 'Por favor, rellene todos los campos');
+                            return;
+                          }
 
-                        if (validateEmail(email) == false) {
-                          showMessage(
-                              context, 'Por favor, ingrese un correo válido');
-                          return;
-                        }
+                          if (validateEmail(email) == false) {
+                            showMessage(
+                                context, 'Por favor, ingrese un correo válido');
+                            return;
+                          }
 
-                        final result = await userProvider.multiLogin(
-                            email, password, isRememberPassword);
+                          final result = await userProvider.multiLogin(
+                              email, password, isRememberPassword);
 
-                        if (result == 'error' && context.mounted) {
-                          showMessage(context, 'Error al iniciar sesión');
+                          if (result == 'error' && context.mounted) {
+                            showMessage(context, 'Error al iniciar sesión');
 
-                          return;
-                        }
+                            return;
+                          }
 
-                        if (result != 'success' && context.mounted) {
-                          showMessage(context, result);
+                          if (result != 'success' && context.mounted) {
+                            showMessage(context, result);
 
-                          return;
-                        }
+                            return;
+                          }
 
-                        if (context.mounted) Navigator.pop(context);
-                      }, onRegister: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisterProcessScreen(
-                                      onPatientRegister: (PatientModel patient,
-                                          PageController pageController,
-                                          bool remember) async {
-                                        if (validatePhone(patient.phone!) ==
-                                            false) {
-                                          showMessage(context,
-                                              'Por favor, ingrese un número de teléfono válido');
-                                          return;
-                                        }
+                          if (context.mounted) Navigator.pop(context);
+                        },
+                        onRegister: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterProcessScreen(
+                                        onPatientRegister:
+                                            (PatientModel patient,
+                                                PageController pageController,
+                                                bool remember) async {
+                                          if (validatePhone(patient.phone!) ==
+                                              false) {
+                                            showMessage(context,
+                                                'Por favor, ingrese un número de teléfono válido');
+                                            return;
+                                          }
 
-                                        if (validateEmail(patient.email!) ==
-                                            false) {
-                                          showMessage(context,
-                                              'Por favor, ingrese un correo válido');
-                                          return;
-                                        }
+                                          if (validateEmail(patient.email!) ==
+                                              false) {
+                                            showMessage(context,
+                                                'Por favor, ingrese un correo válido');
+                                            return;
+                                          }
 
-                                        if (patient.bornDate!.year >
-                                            DateTime.now().year - 18) {
-                                          showMessage(context,
-                                              'Debes tener al menos 18 años para registrarte');
-                                          return;
-                                        }
+                                          if (patient.bornDate!.year >
+                                              DateTime.now().toLocal().year -
+                                                  18) {
+                                            showMessage(context,
+                                                'Debes tener al menos 18 años para registrarte');
+                                            return;
+                                          }
 
-                                        if (patient.password!.length < 6) {
-                                          showMessage(context,
-                                              'La contraseña debe tener al menos 6 caracteres');
-                                          return;
-                                        }
+                                          if (patient.password!.length < 6) {
+                                            showMessage(context,
+                                                'La contraseña debe tener al menos 6 caracteres');
+                                            return;
+                                          }
 
-                                        final result = await userProvider
-                                            .registerPatient(patient, remember);
+                                          final result = await userProvider
+                                              .registerPatient(
+                                                  patient, remember);
 
-                                        if (result != 'success' &&
-                                            context.mounted) {
-                                          showMessage(context, result);
-                                          return;
-                                        }
+                                          if (result != 'success' &&
+                                              context.mounted) {
+                                            showMessage(context, result);
+                                            return;
+                                          }
 
-                                        pageController.nextPage(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.easeInOut);
-                                      },
-                                      onSpecialistrRegister:
-                                          (SpecialistModel specialist,
-                                              PageController pageController,
-                                              bool remember) async {
-                                        if (validatePhone(specialist.phone!) ==
-                                            false) {
-                                          showMessage(context,
-                                              'Por favor, ingrese un número de teléfono válido');
-                                          return;
-                                        }
+                                          pageController.nextPage(
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeInOut);
+                                        },
+                                        onSpecialistrRegister:
+                                            (SpecialistModel specialist,
+                                                PageController pageController,
+                                                bool remember) async {
+                                          if (validatePhone(
+                                                  specialist.phone!) ==
+                                              false) {
+                                            showMessage(context,
+                                                'Por favor, ingrese un número de teléfono válido');
+                                            return;
+                                          }
 
-                                        if (validateEmail(specialist.email!) ==
-                                            false) {
-                                          showMessage(context,
-                                              'Por favor, ingrese un correo válido');
+                                          if (validateEmail(
+                                                  specialist.email!) ==
+                                              false) {
+                                            showMessage(context,
+                                                'Por favor, ingrese un correo válido');
 
-                                          return;
-                                        }
+                                            return;
+                                          }
 
-                                        if (specialist.password!.length < 6) {
-                                          showMessage(context,
-                                              'La contraseña debe tener al menos 6 caracteres');
-                                          return;
-                                        }
+                                          if (specialist.password!.length < 6) {
+                                            showMessage(context,
+                                                'La contraseña debe tener al menos 6 caracteres');
+                                            return;
+                                          }
 
-                                        final result = await userProvider
-                                            .registerSpecialist(
-                                                specialist, remember);
+                                          final result = await userProvider
+                                              .registerSpecialist(
+                                                  specialist, remember);
 
-                                        if (result != 'success' &&
-                                            context.mounted) {
-                                          showMessage(context, result);
-                                          return;
-                                        }
+                                          if (result != 'success' &&
+                                              context.mounted) {
+                                            showMessage(context, result);
+                                            return;
+                                          }
 
-                                        pageController.nextPage(
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.easeInOut);
-                                      },
-                                    )));
-                      })),
+                                          pageController.nextPage(
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeInOut);
+                                        },
+                                      )));
+                        },
+                        recoverPassword: (String email) async {
+                          if (email.isEmpty) {
+                            showMessage(context,
+                                'Por favor, ingrese un correo electrónico');
+                            return false;
+                          }
+
+                          if (validateEmail(email) == false) {
+                            showMessage(
+                                context, 'Por favor, ingrese un correo válido');
+                            return false;
+                          }
+
+                          return await userProvider.recoverPassword(email);
+                        },
+                        validateCode: (String mail, String code) async {
+                          if (code.isEmpty) {
+                            showMessage(context,
+                                'Por favor, ingrese el código de verificación');
+                            return false;
+                          }
+
+                          if (code.length != 6) {
+                            showMessage(context,
+                                'El código de verificación debe tener 6 dígitos');
+                            return false;
+                          }
+
+                          return await userProvider.validateCode(mail, code);
+                        },
+                        changePassword: (String mail, String pasword) async {
+                          if (pasword.isEmpty) {
+                            showMessage(context,
+                                'Por favor, ingrese una nueva contraseña');
+                            return false;
+                          }
+
+                          if (pasword.length < 6) {
+                            showMessage(context,
+                                'La contraseña debe tener al menos 6 caracteres');
+                            return false;
+                          }
+
+                          return await userProvider.changePassword(
+                              mail, pasword);
+                        },
+                      )),
             );
           },
         );

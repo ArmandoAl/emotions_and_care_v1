@@ -254,9 +254,10 @@ class _DateDetailState extends State<DateDetail> {
                           isloading = true;
                         });
 
-                        await context
-                            .read<PattientsDatesCubit>()
-                            .rejectDate(widget.speciaistId, widget.date.id!);
+                        await context.read<PattientsDatesCubit>().rejectDate(
+                              widget.speciaistId,
+                              widget.date.id!,
+                            );
 
                         setState(() {
                           isloading = false;

@@ -142,8 +142,6 @@ class _DrawerWidgetState extends State<DrawerWidget>
                       context.read<ScheduleCubit>().clean();
                       context.read<HomeCubit>().clean();
 
-                      // emotionCubit.clean();
-
                       context.read<CommunityCubit>().clean();
 
                       context.read<DailyCubit>().clean();
@@ -195,11 +193,13 @@ Widget _menuItem({
               title,
               style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width * 0.04,
+                color: animation.value,
               ),
             ),
             leading: Icon(
               size: MediaQuery.of(context).size.width * 0.05,
               icon,
+              color: animation.value,
             ),
             onTap: () {
               onTap();

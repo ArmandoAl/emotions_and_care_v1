@@ -42,6 +42,7 @@ class UserRepository implements IUserRepository {
         },
         body: jsonEncode(patient.toJson()),
       );
+
       if (response.statusCode != 200) {
         throw Exception('Failed to create patient');
       }
@@ -117,7 +118,7 @@ class UserRepository implements IUserRepository {
   Future<void> deletePatient(int patientiD) async {
     try {
       final response = await http.delete(
-        Uri.parse('${Api.baseUrl}Paciente/$patientiD'),
+        Uri.parse('${Api.baseUrl}Paciente/$patientiD/delete'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -191,7 +192,7 @@ class UserRepository implements IUserRepository {
         return false;
       }
 
-      return true;
+      return jsonDecode(response.body);
     } catch (e) {
       throw Exception('Failed to sync by direct code');
     }
@@ -242,6 +243,118 @@ class UserRepository implements IUserRepository {
       }
     } catch (e) {
       return null;
+    }
+  }
+
+  @override
+  Future<int> updateSpecialist(SpecialistModel specialist) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${Api.baseUrl}Especialista'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(specialist.toStore()),
+      );
+
+      final int intResponse = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        return 0;
+      }
+
+      return intResponse;
+    } catch (e) {
+      throw Exception('Failed to update specialist data');
+    }
+  }
+
+  @override
+  Future<int> updatePatient(PatientModel patient) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${Api.baseUrl}Paciente'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(patient.toStore()),
+      );
+
+      final int intResponse = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        return 0;
+      }
+
+      return intResponse;
+    } catch (e) {
+      throw Exception('Failed to update patient data');
+    }
+  }
+
+  @override
+  Future<bool> recoverPassword(String email) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${Api.baseUrl}Paciente/olvidarContraseña/$email'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to send email');
+    }
+  }
+
+  @override
+  Future<bool> changePassword(String email, String password) async {
+    try {
+      final response = await http.put(
+        Uri.parse(
+            '${Api.baseUrl}Paciente/modificarContraseña/$email/$password'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to change password');
+    }
+  }
+
+  @override
+  Future<bool> validateCode(String email, String code) async {
+    try {
+      final response = await http.put(
+        Uri.parse('${Api.baseUrl}Paciente/validarCodigo/$email/$code'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to validate code');
     }
   }
 }

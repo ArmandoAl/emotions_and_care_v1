@@ -72,7 +72,7 @@ class NotificationRepository implements INotificationRepository {
   @override
   Future<bool> growStage(int id) async {
     try {
-      final response = await http.put(
+      final response = await http.post(
         Uri.parse('${Api.baseUrl}/Paciente/$id/growStage'),
         headers: {
           'Accept': 'application/json',
@@ -93,9 +93,8 @@ class NotificationRepository implements INotificationRepository {
   @override
   Future<bool> growFlower(int idPatient, int idUserFlower) async {
     try {
-      final response = await http.put(
-        Uri.parse(
-            '${Api.baseUrl}/Paciente/$idPatient/growFlower/$idUserFlower'),
+      final response = await http.post(
+        Uri.parse('${Api.baseUrl}/Paciente/$idPatient/growStage'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -103,12 +102,12 @@ class NotificationRepository implements INotificationRepository {
       );
 
       if (response.statusCode != 200) {
-        throw Exception('Failed to grow flower');
+        return false;
       }
 
       return true;
     } catch (e) {
-      throw Exception('Failed to grow flower');
+      return false;
     }
   }
 
@@ -130,6 +129,50 @@ class NotificationRepository implements INotificationRepository {
       return true;
     } catch (e) {
       throw Exception('Failed to grow stage');
+    }
+  }
+
+  @override
+  Future<bool> recomendationCompleted(
+      int idRecomendacion, int pattientId) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            '${Api.baseUrl}Recomendacion/$idRecomendacion/recomendationCompleted/$pattientId'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to grow stage');
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to grow stage');
+    }
+  }
+
+  @override
+  Future<bool> posponeNote(int id) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${Api.baseUrl}Notificacion/$id/postpone'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update notification');
+      }
+
+      return true;
+    } catch (e) {
+      throw Exception('Failed to update notification');
     }
   }
 }

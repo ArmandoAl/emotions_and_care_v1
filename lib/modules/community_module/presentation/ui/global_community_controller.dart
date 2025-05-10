@@ -21,7 +21,6 @@ class _GlobalCommunityControllerState extends State<GlobalCommunityController> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CommunityCubit, CommunityState>(
-      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return Scaffold(
           appBar: widget.isPatient

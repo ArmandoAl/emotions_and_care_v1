@@ -6,7 +6,7 @@ import '../../../helpers/paths.dart';
 
 class TestRepository implements ITestRepository {
   @override
-  Future<GoalWithTestInfoModel> completeTest(int idPaciente, int isTest,
+  Future<TestInfoModelWithAchivement> completeTest(int idPaciente, int isTest,
       List<QuestionModel> questions, bool isFirtsTime) async {
     try {
       final response = await http.post(
@@ -30,9 +30,9 @@ class TestRepository implements ITestRepository {
 
       final data = jsonDecode(response.body);
 
-      return GoalWithTestInfoModel.fromJson(data);
+      return TestInfoModelWithAchivement.fromJson(data);
     } catch (e) {
-      throw Exception('Failed to create patient down here');
+      throw Exception(e);
     }
   }
 

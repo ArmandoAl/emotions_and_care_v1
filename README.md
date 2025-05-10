@@ -1,4 +1,4 @@
-# emotions_and_care_v1
+# emotionsandcare
 
 A new Flutter project.
 

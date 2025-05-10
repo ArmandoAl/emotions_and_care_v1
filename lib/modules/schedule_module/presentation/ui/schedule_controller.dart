@@ -31,10 +31,30 @@ class _ScheduleControllerState extends State<ScheduleController> {
         }
       } else {
         patientModel = getIt<BegginCubit>().state.patientModel;
-        especialistaModel = null;
+        especialistaModel = getIt<BegginCubit>().state.patientModel!.specialist;
         context.read<ScheduleCubit>().getSchedule(patientModel!.id!);
       }
     });
+  }
+
+  //didChangeDependencies
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (widget.isPattient == false) {
+      especialistaModel = getIt<BegginCubit>().state.specialistModel;
+      patientModel = null;
+      if (context.read<ScheduleCubit>().state.dates.isEmpty) {
+        context
+            .read<ScheduleCubit>()
+            .getDatesForSpecialist(especialistaModel!.id!);
+      }
+    } else {
+      patientModel = getIt<BegginCubit>().state.patientModel;
+      especialistaModel = null;
+      context.read<ScheduleCubit>().getSchedule(patientModel!.id!);
+    }
   }
 
   @override
@@ -68,7 +88,6 @@ class _ScheduleControllerState extends State<ScheduleController> {
                             if (widget.isPattient == false) {
                               especialistaModel =
                                   getIt<BegginCubit>().state.specialistModel;
-                              patientModel = null;
 
                               await showLoadingdialog("Cargando datos", context,
                                   () async {
@@ -86,7 +105,6 @@ class _ScheduleControllerState extends State<ScheduleController> {
                             } else {
                               patientModel =
                                   getIt<BegginCubit>().state.patientModel;
-                              especialistaModel = null;
 
                               await showLoadingdialog("Cargando datos", context,
                                   () async {
@@ -130,8 +148,6 @@ class _ScheduleControllerState extends State<ScheduleController> {
               : ScheduleScreen(
                   dates: state.dates,
                   isPatient: widget.isPattient,
-                  patient: patientModel,
-                  specialist: especialistaModel,
                   onDateTap: (DateModel date) {
                     Navigator.of(context).push(
                       MaterialPageRoute(

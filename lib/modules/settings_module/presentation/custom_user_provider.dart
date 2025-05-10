@@ -104,9 +104,7 @@ class _CustomMenuScreenState extends State<CustomMenuScreen>
                     itemType: ItemUiType.colores,
                     items: [
                       widget.uiProvider.state.themes[0],
-                      widget.uiProvider.state.themes[1],
-                      widget.uiProvider.state.themes[2],
-                      widget.uiProvider.state.themes[3],
+                      // widget.uiProvider.state.themes[1],
                     ],
                     blocks: const [false, false, true, false],
                   ),
@@ -124,10 +122,8 @@ class _CustomMenuScreenState extends State<CustomMenuScreen>
                     uiProvider: widget.uiProvider,
                     itemType: ItemUiType.fondo,
                     items: const [
-                      Assets.backgroundstatic_1,
-                      Assets.backgroundstatic_2,
-                      Assets.backgroundstatic_3,
-                      Assets.backgroundstatic_4
+                      Assets.yardBackgroundLottieAnimation,
+                      Assets.starBackgroundLottieAnimation,
                     ],
                     blocks: const [false, true, false, false],
                   ),
@@ -151,7 +147,7 @@ class _CustomMenuScreenState extends State<CustomMenuScreen>
 
                             if (uiProvider.state.currentFlower == null) {
                               await showMessageDialog(context, "",
-                                  'Debes colocar una for en la maceta para poder continuar, haz click en la maceta para elegir una de las flores disponibles');
+                                  'Por favor debes elegir una planta para poder continuar, haz clic en la maceta para elegir una.');
                             }
                           },
                           registerFlow: userProvider.state.registerPatientFlow,

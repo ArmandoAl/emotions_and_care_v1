@@ -5,7 +5,7 @@ import '../../../helpers/paths.dart';
 
 class NoteRepository implements INoteRepository {
   @override
-  Future<GoalWithNote> addNote(
+  Future<NoteWithAchivement> addNote(
       NoteModel note, int patientId, bool isFirstTine) async {
     try {
       final response = await http.post(
@@ -21,7 +21,7 @@ class NoteRepository implements INoteRepository {
         throw Exception('Failed to add note');
       }
 
-      return GoalWithNote.fromJson(jsonDecode(response.body));
+      return NoteWithAchivement.fromJson(jsonDecode(response.body));
     } catch (e) {
       throw Exception('Failed to add note');
     }

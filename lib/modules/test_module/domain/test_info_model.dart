@@ -32,7 +32,7 @@ class TestInfoModel {
     return TestInfoModel(
       id: json['testInfoModelId'],
       resultado: json['result'],
-      date: DateTime.parse(json['date']),
+      date: (DateTime.tryParse(json['date']) ?? DateTime.now()).toLocal(),
       testQuestionWithAnswerList: List<TestQuestionWithAnswer>.from(
           json['testQuestionWithAnswers']
               .map((x) => TestQuestionWithAnswer.fromJson(x))),

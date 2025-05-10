@@ -75,3 +75,39 @@ class GoalWithTestInfoModel {
     );
   }
 }
+
+class TestInfoModelWithAchivement {
+  final TestInfoModel? testInfoModel;
+  final int? achivementId;
+
+  TestInfoModelWithAchivement({
+    this.testInfoModel,
+    this.achivementId,
+  });
+
+  TestInfoModelWithAchivement copyWith({
+    TestInfoModel? testInfoModel,
+    int? achivementId,
+  }) {
+    return TestInfoModelWithAchivement(
+      testInfoModel: testInfoModel ?? this.testInfoModel,
+      achivementId: achivementId ?? this.achivementId,
+    );
+  }
+
+  factory TestInfoModelWithAchivement.fromJson(Map<String, dynamic> json) {
+    return TestInfoModelWithAchivement(
+      testInfoModel: json['testInfoModel'] != null
+          ? TestInfoModel.fromJson(json['testInfoModel'])
+          : null,
+      achivementId: json['achievementId'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'testInfoModel': testInfoModel?.toJson(),
+      'achievementId': achivementId,
+    };
+  }
+}

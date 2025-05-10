@@ -8,17 +8,19 @@ class CartModel {
   String letraEmisor;
   String contenido;
   EstadoCarta estado;
-  List<CartResponse>? respuestas;
-  bool visible = false;
+  List<CartResponse> respuestas;
+  bool visible;
+  DateTime? fechaCreacion = DateTime.now();
 
-  CartModel({
-    this.id,
-    required this.idEmisor,
-    required this.letraEmisor,
-    required this.contenido,
-    this.estado = EstadoCarta.enviada,
-    this.respuestas,
-  });
+  CartModel(
+      {this.id,
+      required this.idEmisor,
+      required this.letraEmisor,
+      required this.contenido,
+      this.estado = EstadoCarta.enviada,
+      this.respuestas = const [],
+      this.visible = false,
+      this.fechaCreacion});
 
   CartModel copyWith({
     int? id,
@@ -27,6 +29,8 @@ class CartModel {
     String? contenido,
     EstadoCarta? estado,
     List<CartResponse>? respuestas,
+    bool? visible,
+    DateTime? fechaCreacion,
   }) {
     return CartModel(
       id: id ?? this.id,
@@ -35,6 +39,8 @@ class CartModel {
       contenido: contenido ?? this.contenido,
       estado: estado ?? this.estado,
       respuestas: respuestas ?? this.respuestas,
+      visible: visible ?? this.visible,
+      fechaCreacion: fechaCreacion ?? this.fechaCreacion,
     );
   }
 
@@ -55,6 +61,8 @@ class CartModel {
       estado: EstadoCarta.values[json['state']],
       respuestas: List<CartResponse>.from(
           json['cartAnswers']?.map((x) => CartResponse.fromJson(x))),
+      fechaCreacion:
+          (DateTime.tryParse(json['dateCreated']) ?? DateTime.now()).toLocal(),
     );
   }
 }
@@ -83,5 +91,39 @@ class GoalWithCart {
       id: json['cartId'],
       goalModel: json['goal'] != null ? GoalModel.fromJson(json['goal']) : null,
     );
+  }
+}
+
+class CartWithAchivement {
+  final int id;
+  final int? achivementId;
+
+  CartWithAchivement({
+    required this.id,
+    required this.achivementId,
+  });
+
+  CartWithAchivement copyWith({
+    int? id,
+    int? achivementId,
+  }) {
+    return CartWithAchivement(
+      id: id ?? this.id,
+      achivementId: achivementId ?? this.achivementId,
+    );
+  }
+
+  factory CartWithAchivement.fromJson(Map<String, dynamic> json) {
+    return CartWithAchivement(
+      id: json['cartId'] ?? 0,
+      achivementId: json['achievementId'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'cartId': id,
+      'achievementId': achivementId,
+    };
   }
 }

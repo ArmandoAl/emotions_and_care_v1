@@ -76,7 +76,6 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UICubit>().setUpUI();
       context.read<BegginCubit>().getUser();
@@ -89,22 +88,28 @@ class _AppState extends State<App> {
 
     if (uiCubit.state.themes.isEmpty) {
       return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Emotions and Care',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: Scaffold(
-          body: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(Assets.logo),
-                fit: BoxFit.cover,
+          debugShowCheckedModeBanner: false,
+          title: 'Emotions and Care',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const Scaffold(
+            backgroundColor: Colors.white,
+            body: SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 10),
+                    CircularProgressIndicator(),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-      );
+          ));
     }
 
     return MaterialApp(
@@ -112,7 +117,7 @@ class _AppState extends State<App> {
       title: 'Emotions and Care',
       theme: uiCubit.state.themes[uiCubit.state.selectedTheme],
       home: BlocBuilder<BegginCubit, BegginState>(
-        bloc: getIt<BegginCubit>(), // No llamamos a getUser aquí
+        bloc: getIt<BegginCubit>(),
         builder: (context, state) {
           return AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
@@ -135,7 +140,8 @@ class _AppState extends State<App> {
                         ),
                       ),
                     )
-                  : state.status == BegginStatus.notLoged
+                  : state.status == BegginStatus.notLoged ||
+                          state.status == BegginStatus.errorInRegister
                       ? const BegginProcessController()
                       : const LoginStack() // Aquí muestra la pantalla de login cuando está logeado
 

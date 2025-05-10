@@ -5,7 +5,7 @@ import '../../../helpers/paths.dart';
 
 class ScheduleRepository implements IScheduleRepository {
   @override
-  Future<GoalwithDate> addSchedule(
+  Future<DateWithAchivement> addSchedule(
       int id, DateModel date, int idSpecialist) async {
     try {
       final response = await http.post(
@@ -20,7 +20,7 @@ class ScheduleRepository implements IScheduleRepository {
       if (response.statusCode != 200) {
         throw Exception('Failed to add schedule');
       }
-      return GoalwithDate.fromJson(jsonDecode(response.body));
+      return DateWithAchivement.fromJson(jsonDecode(response.body));
     } catch (e) {
       throw Exception('Failed to add schedule');
     }
@@ -292,7 +292,7 @@ class ScheduleRepository implements IScheduleRepository {
       );
 
       if (response.statusCode != 200) {
-        throw Exception('Failed to reject date');
+        return false;
       }
 
       return true;

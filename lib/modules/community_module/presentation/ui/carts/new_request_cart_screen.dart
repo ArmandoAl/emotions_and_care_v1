@@ -45,61 +45,74 @@ class _NewRequestCartScreenState extends State<NewRequestCartScreen> {
                       context,
                       "- ${widget.userLetter.toUpperCase()}",
                       controller,
-                      "Escribe una nota corta para pedir consejos de la comunidad"),
+                      null,
+                      "Escribe una nota corta para pedir consejos de la comunidad",
+                      sticker: false),
                 )),
             SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-            Row(
-              children: [
-                const Spacer(),
-                !isloading
-                    ? ElevatedButton(
-                        onPressed: () async {
-                          //validaciones
-                          if (controller.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    'El contenido de la carta no puede estar vacío'),
-                              ),
-                            );
-                            return;
-                          }
+            InkWell(
+              onTap: () async {
+                if (isloading) return;
 
-                          setState(() {
-                            isloading = true;
-                          });
+                if (controller.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content:
+                          Text('El contenido de la carta no puede estar vacío'),
+                    ),
+                  );
+                  return;
+                }
 
-                          final cart = CartModel(
-                              idEmisor: widget.userId,
-                              letraEmisor: widget.userLetter.toUpperCase(),
-                              contenido: controller.text);
+                setState(() {
+                  isloading = true;
+                });
 
-                          await widget.onSend(cart);
+                final cart = CartModel(
+                    idEmisor: widget.userId,
+                    letraEmisor: widget.userLetter.toUpperCase(),
+                    contenido: controller.text);
 
-                          setState(() {
-                            isloading = false;
-                          });
+                await widget.onSend(cart);
 
-                          if (context.mounted) Navigator.of(context).pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                setState(() {
+                  isloading = false;
+                });
+
+                if (context.mounted) Navigator.of(context).pop();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.06),
+                child: Center(
+                  child: isloading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : Text(
+                          "Enviar",
+                          style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.025,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
                           ),
-                          minimumSize: Size(
-                            MediaQuery.of(context).size.width * 0.2,
-                            MediaQuery.of(context).size.height * 0.04,
-                          ),
-                          elevation: 5,
                         ),
-                        child: const Text('Enviar'),
-                      )
-                    : const CircularProgressIndicator(),
-                SizedBox(width: MediaQuery.of(context).size.width * 0.06),
-              ],
+                ),
+              ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.005),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.06),
           ],
         ),
       ),

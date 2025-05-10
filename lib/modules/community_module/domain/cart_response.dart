@@ -40,6 +40,7 @@ class CartResponse {
       'receiverId': idReceptor,
       'receiverInitial': letraReceptor,
       'content': contenido,
+      'stickerId': idSticker,
     };
   }
 
@@ -78,6 +79,33 @@ class GoalWithResponseCart {
     return GoalWithResponseCart(
       id: json['cartAnswerId'] ?? 0,
       goalModel: json['goal'] != null ? GoalModel.fromJson(json['goal']) : null,
+    );
+  }
+}
+
+class ResponseWithAchivement {
+  final int id;
+  final int? achivementId;
+
+  ResponseWithAchivement({
+    required this.id,
+    this.achivementId,
+  });
+
+  ResponseWithAchivement copyWith({
+    int? id,
+    int? achivementId,
+  }) {
+    return ResponseWithAchivement(
+      id: id ?? this.id,
+      achivementId: achivementId ?? this.achivementId,
+    );
+  }
+
+  factory ResponseWithAchivement.fromJson(Map<String, dynamic> json) {
+    return ResponseWithAchivement(
+      id: json['cartAnswerId'] ?? 0,
+      achivementId: json['achievementId'],
     );
   }
 }

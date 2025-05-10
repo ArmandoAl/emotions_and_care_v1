@@ -34,14 +34,27 @@ class _PattientsDatesControllerState extends State<PattientsDatesController> {
           final dates = state.dates;
 
           if (dates.isEmpty) {
-            return const Scaffold(
+            return Scaffold(
                 appBar: HeaderWidget(
-                    title: "Solicitudes de citas", isForReturn: true),
-                body: Center(
+                  title: "Solicitudes de citas",
+                  isForReturn: true,
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.replay,
+                          color: Theme.of(context).colorScheme.primary),
+                      onPressed: () {
+                        context
+                            .read<PattientsDatesCubit>()
+                            .getPattientsDates(widget.idUser);
+                      },
+                    )
+                  ],
+                ),
+                body: const Center(
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text(
-                      'No tienes solicitudes de citas pendientes, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes',
+                      'No tienes solicitudes de citas pendientes, puedes dirigirte a la sección de configuración para ver tu código de vinculación y compartirlo con tus pacientes',
                       textAlign: TextAlign.center,
                     ),
                   ),

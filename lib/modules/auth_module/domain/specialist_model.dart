@@ -30,6 +30,23 @@ class SpecialistModel extends UserModel {
     this.presentation,
   });
 
+  bool isEqual(SpecialistModel other) {
+    if (identical(this, other)) return true;
+    if (id != other.id) return false;
+    if (name != other.name) return false;
+    if (email != other.email) return false;
+    if (password != other.password) return false;
+    if (phone != other.phone) return false;
+    if (age != other.age) return false;
+    if (professionalLicense != other.professionalLicense) return false;
+    if (focus != other.focus) return false;
+    if (institution != other.institution) return false;
+    if (ubication != other.ubication) return false;
+    if (presentation != other.presentation) return false;
+
+    return true;
+  }
+
   @override
   SpecialistModel copyWith({
     String? professionalLicense,
@@ -83,7 +100,8 @@ class SpecialistModel extends UserModel {
       password: json['password'],
       phone: json['phone'],
       age: json['age'],
-      bornDate: DateTime.parse(json['bornDate']),
+      bornDate:
+          (DateTime.tryParse(json['bornDate']) ?? DateTime.now()).toLocal(),
       sex: json['sex'],
       token: json['token'],
       tokenForRelate: json['relationalToken'],
@@ -127,7 +145,7 @@ class SpecialistModel extends UserModel {
       'age': age,
       'sex': sex,
       'token': phone! + token!,
-      'termsiD': 2,
+      'termsiD': 3,
       'license  ': professionalLicense,
       'focus': focus ?? '',
       'institution': institution ?? '',
@@ -182,7 +200,7 @@ class SyncDates {
   factory SyncDates.fromJson(Map<String, dynamic> json) {
     return SyncDates(
       patientId: json['patientId'],
-      date: DateTime.parse(json['date']),
+      date: (DateTime.tryParse(json['date']) ?? DateTime.now()).toLocal(),
     );
   }
 }

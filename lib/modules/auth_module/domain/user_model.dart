@@ -73,7 +73,8 @@ class UserModel {
       token: json['token'],
       tokenForRelate: json['relationalToken'],
       termsClass: TermAndConditions.fromJson(json['termsAndConditions']),
-      bornDate: DateTime.parse(json['bornDate']),
+      bornDate:
+          (DateTime.tryParse(json['bornDate']) ?? DateTime.now()).toLocal(),
     );
   }
 

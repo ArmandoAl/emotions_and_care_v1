@@ -90,8 +90,13 @@ class _PattientStackState extends State<PattientStack> {
     );
 
     uiCubit.setBackAssets(
-        begginCubit.state.patientModel!.userInterface!.userStickers,
-        begginCubit.state.patientModel!.userInterface!.userFlowers);
+      begginCubit.state.patientModel!.userInterface!.userStickers,
+      begginCubit.state.patientModel!.userInterface!.userFlowers,
+      begginCubit.state.patientModel!.achivementCollection?.userAchievements ??
+          [],
+      begginCubit.state.patientModel!.userInterface!.themeId ?? 0,
+      begginCubit.state.patientModel!.userInterface!.backgroundUrl ?? 0,
+    );
 
     homeCubit.canGrowStage(begginCubit.state.patientModel!.id!);
 
@@ -272,7 +277,18 @@ PreferredSizeWidget? _getAppBarFromState(
         const SizedBox(width: 10),
       ]);
     case NavigationItem.community:
-      return const HeaderWidget(title: 'Comunidad', isForReturn: false);
+      return HeaderWidget(
+        title: 'Comunidad',
+        isForReturn: false,
+        actions: [
+          IconButton(
+              onPressed: () {
+                showMessageDialog(context, "Comunidad",
+                    "Emotions&Care cuenta con una comunidad constituida por todos los usuarios, en ella puedes escribir cartas anónimas para compartir tus sentimientos y recibir apoyo. |De igual forma, puedes responder a las cartas de otros para brindar aliento y comprensión.");
+              },
+              icon: const Icon(Icons.info)),
+        ],
+      );
     case NavigationItem.schedule:
       return const HeaderWidget(title: 'Agenda', isForReturn: false);
     case NavigationItem.settings:
@@ -387,11 +403,13 @@ class _SpecialistStackState extends State<SpecialistStack>
     pattientsDatesCubit = getIt<PattientsDatesCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await context.read<PattientsCubit>().getPattients(
-            begginCubit.state.specialistModel!.id!,
-          );
+      if (begginCubit.state.specialistModel != null) {
+        await context.read<PattientsCubit>().getPattients(
+              begginCubit.state.specialistModel!.id!,
+            );
+      }
 
-      if (mounted) {
+      if (mounted && begginCubit.state.specialistModel != null) {
         await context.read<ScheduleCubit>().getDatesForSpecialist(
               begginCubit.state.specialistModel!.id!,
             );
@@ -481,7 +499,7 @@ class _SpecialistStackState extends State<SpecialistStack>
                                   const SizedBox(width: 10),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text("Solictudes de citas",
+                                    child: Text("Solicitudes de citas",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: MediaQuery.of(context)
@@ -540,7 +558,7 @@ class _SpecialistStackState extends State<SpecialistStack>
                                   const SizedBox(width: 10),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text("Vinulación de pacientes",
+                                    child: Text("Vinculación de pacientes",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: MediaQuery.of(context)
@@ -736,7 +754,7 @@ class _SpecialistStackState extends State<SpecialistStack>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Hola ${begginCubit.state.specialistModel!.name!}!",
+                Text("¡Hola ${begginCubit.state.specialistModel!.name!}!",
                     style: TextStyle(
                         fontSize: MediaQuery.of(context).size.width * 0.04,
                         decoration: TextDecoration.none,
@@ -791,7 +809,7 @@ class _SpecialistStackState extends State<SpecialistStack>
 
 String getDate(BuildContext context) {
 //formato: Miércoles 15 de septiembre de 2021
-  final DateTime now = DateTime.now();
+  final DateTime now = DateTime.now().toLocal();
   final String day = now.day.toString();
   final String month = now.month.toString();
   // final String year = now.year.toString();

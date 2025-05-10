@@ -66,6 +66,68 @@ class BegginCubit extends Cubit<BegginState> {
     }
   }
 
+  Future<String> updatePatientData(PatientModel patientModel) async {
+    emit(state.copyWith(status: BegginStatus.updating));
+
+    final response = await userRepoitory.updatePatient(patientModel);
+
+    if (response == 0) {
+      emit(state.copyWith(status: BegginStatus.error));
+      return "Hubo un error al actualizar los datos";
+    }
+
+    if (response == -1) {
+      emit(state.copyWith(status: BegginStatus.error));
+      return "El correo ya está registrado";
+    }
+
+    if (response == -2) {
+      return "El teléfono ya está registrado";
+    }
+
+    storageRepository.savePatient(patientModel);
+
+    emit(state.copyWith(
+      status: BegginStatus.success,
+      patientModel: patientModel,
+    ));
+
+    return 'success';
+  }
+
+  Future<String> updateSpecialistData(SpecialistModel specialistModel) async {
+    emit(state.copyWith(status: BegginStatus.updating));
+
+    final response = await userRepoitory.updateSpecialist(specialistModel);
+
+    if (response == 0) {
+      emit(state.copyWith(status: BegginStatus.error));
+      return "Hubo un error al actualizar los datos";
+    }
+
+    if (response == -1) {
+      emit(state.copyWith(status: BegginStatus.error));
+      return "El correo ya está registrado";
+    }
+
+    if (response == -2) {
+      return "El teléfono ya está registrado";
+    }
+
+    if (response == -3) {
+      return "La licencia ya está registrada";
+    }
+
+    storageRepository.saveSpecialist(specialistModel);
+
+    emit(state.copyWith(
+      status: BegginStatus.success,
+      specialistModel: specialistModel,
+    ));
+
+    return 'success';
+  }
+
   Future<bool> reloginPatient(PatientModel patient) async {
     emit(state.copyWith(status: BegginStatus.relogin));
 
@@ -101,10 +163,52 @@ class BegginCubit extends Cubit<BegginState> {
   //   return true;
   // }
 
-  Future<void> getUser() async {
-    // emit(state.copyWith(status: BegginStatus.notLoged));
-    // return;
+  Future<bool> recoverPassword(String email) async {
+    emit(state.copyWith(status: BegginStatus.loading));
 
+    final response = await userRepoitory.recoverPassword(email);
+
+    if (response == false) {
+      emit(state.copyWith(status: BegginStatus.errorInRegister));
+      return false;
+    }
+
+    if (response is String) {
+      emit(state.copyWith(status: BegginStatus.errorInRegister));
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<bool> changePassword(String email, String newPassword) async {
+    emit(state.copyWith(status: BegginStatus.loading));
+
+    final response = await userRepoitory.changePassword(email, newPassword);
+
+    if (response == false) {
+      emit(state.copyWith(status: BegginStatus.errorInRegister));
+      return false;
+    }
+
+    return true;
+  }
+
+  //validateCode
+  Future<bool> validateCode(String email, String code) async {
+    emit(state.copyWith(status: BegginStatus.loading));
+
+    final response = await userRepoitory.validateCode(email, code);
+
+    if (response == false) {
+      emit(state.copyWith(status: BegginStatus.errorInRegister));
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> getUser() async {
     emit(state.copyWith(status: BegginStatus.loading));
 
     final userData = await storageRepository.getUser();

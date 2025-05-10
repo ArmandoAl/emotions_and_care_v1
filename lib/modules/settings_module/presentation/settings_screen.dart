@@ -67,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen>
       _dialogShown = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showMessageDialog(context, "¡Hora de personalizar tu espacio!",
-            "Personaliza la app para que refleje tu esencia y te inspire en cada paso del camino para tu crecimiento personal. |Por favor, dirígete a personalización.");
+            "A continuación podrás personalizar tu jardín, tal será tu pantalla principal por ello debe inspirarte y reflejar tu esencia e identidad.");
       });
     }
   }
@@ -206,7 +206,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               context,
               "Cerrar Sesión",
               Icon(
-                Icons.logout,
+                Icons.exit_to_app,
                 color: const Color.fromARGB(255, 0, 0, 0),
                 size: MediaQuery.of(context).size.width * 0.1,
               ), () {

@@ -90,7 +90,7 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
                           ? widget.patient!.name!
                           : widget.specialist!.name!,
                       onSend: (CartResponse cartResponse) async {
-                        GoalWithResponseCart res =
+                        ResponseWithAchivement res =
                             await context.read<CommunityCubit>().addResponse(
                                   cartResponse,
                                   cart.id!,
@@ -99,65 +99,72 @@ class _CommunityCartsControolerState extends State<CommunityCartsControoler> {
                                       ? widget.patient!.id!
                                       : widget.specialist!.id!,
                                 );
-                        if (res.goalModel != null) {
+                        if (res.achivementId != null) {
                           final UICubit uiProvider = getIt<UICubit>();
 
-                          await uiProvider
-                              .getSticker(res.goalModel!.idSticker!);
+                          final achivement =
+                              uiProvider.getAchivement(res.achivementId!);
 
-                          if (context.mounted) {
-                            await showStickerDialog(context, res.goalModel!);
+                          if (context.mounted && achivement != null) {
+                            await showStickerDialog(context, achivement);
                           }
                         }
                       },
+                      //animation
                     ),
                   ),
                 );
               },
             ),
-            floatingActionButton: FloatingActionButton(
-              heroTag: null,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NewRequestCartScreen(
-                          userId: widget.isPatient
-                              ? widget.patient!.id!
-                              : widget.specialist!.id!,
-                          userLetter: widget.isPatient
-                              ? widget.patient!.name![0]
-                              : widget.specialist!.name![0],
-                          isPatient: widget.isPatient,
-                          onSend: (CartModel cart) async {
-                            GoalWithCart res =
-                                await context.read<CommunityCubit>().addCart(
-                                      cart,
-                                      widget.isPatient
-                                          ? widget.patient!.id!
-                                          : widget.specialist!.id!,
-                                      widget.isPatient,
-                                    );
+            floatingActionButton: widget.isPatient == false
+                ? null
+                : FloatingActionButton(
+                    heroTag: null,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewRequestCartScreen(
+                                userId: widget.isPatient
+                                    ? widget.patient!.id!
+                                    : widget.specialist!.id!,
+                                userLetter: widget.isPatient
+                                    ? widget.patient!.name![0]
+                                    : widget.specialist!.name![0],
+                                isPatient: widget.isPatient,
+                                onSend: (CartModel cart) async {
+                                  CartWithAchivement res = await context
+                                      .read<CommunityCubit>()
+                                      .addCart(
+                                        cart,
+                                        widget.isPatient
+                                            ? widget.patient!.id!
+                                            : widget.specialist!.id!,
+                                        widget.isPatient,
+                                      );
 
-                            if (res.goalModel != null && context.mounted) {
-                              final UICubit uiProvider = getIt<UICubit>();
+                                  if (res.achivementId != null &&
+                                      context.mounted) {
+                                    final UICubit uiProvider = getIt<UICubit>();
 
-                              await uiProvider
-                                  .getSticker(res.goalModel!.idSticker!);
+                                    final achivement = uiProvider
+                                        .getAchivement(res.achivementId!);
 
-                              if (context.mounted) {
-                                await showStickerDialog(
-                                    context, res.goalModel!);
-                              }
-                            }
-                          })),
-                );
-              },
-              child:
-                  const Icon(Icons.border_color_outlined, color: Colors.white),
-            ));
+                                    if (achivement == null) return;
+
+                                    if (context.mounted) {
+                                      await showStickerDialog(
+                                          context, achivement);
+                                    }
+                                  }
+                                })),
+                      );
+                    },
+                    child: const Icon(Icons.border_color_outlined,
+                        color: Colors.white),
+                  ));
       },
     );
   }

@@ -1,8 +1,6 @@
 import '../../../../helpers/paths.dart';
 
 class NewDateScreen extends StatefulWidget {
-  final SpecialistModel? specialistModel;
-  final PatientModel? patientModel;
   final bool isPatient;
   final int? specialistId;
   final List<DateModel>? dates;
@@ -13,8 +11,6 @@ class NewDateScreen extends StatefulWidget {
     this.specialistId,
     this.dates,
     this.onSave,
-    this.specialistModel,
-    this.patientModel,
   });
 
   @override
@@ -29,11 +25,19 @@ class _NewDateScreenState extends State<NewDateScreen> {
   DateTime _time = DateTime.now();
   PatientModel? pattient;
   late UICubit uiProvider;
+  SpecialistModel? specialistModel;
+  PatientModel? patientModel;
+  DateTime actualDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     uiProvider = getIt<UICubit>();
+    if (widget.isPatient == false) {
+      specialistModel = getIt<BegginCubit>().state.specialistModel;
+    } else {
+      patientModel = getIt<BegginCubit>().state.patientModel;
+    }
   }
 
   @override
@@ -53,7 +57,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
             icon: const Icon(Icons.info),
             onPressed: () async {
               await showMessageDialog(context, "Agendar cita",
-                  "En esta pantalla puedes agendar una nueva cita, selecciona el paciente, la fecha y la hora de la cita, ademas de la descripcion y el lugar de la misma. Una vez que hayas llenado todos los campos, presiona el boton de guardar para agendar la cita");
+                  "Para agendar una cita con un especialista selecciona al de tu preferencia y rellena los campos con la información necesaria. |Recibirás una confirmación por parte del especialista");
             },
           ),
         ],
@@ -70,8 +74,8 @@ class _NewDateScreenState extends State<NewDateScreen> {
               widget.isPatient
                   ? specialistWidget(
                       context: context,
-                      specialist: widget.specialistModel,
-                      patientModel: widget.patientModel,
+                      specialist: specialistModel,
+                      patientModel: patientModel,
                       isPatient: widget.isPatient,
                     )
                   : pattientPicker(
@@ -87,6 +91,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -113,7 +118,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
                           style: TextStyle(
                             color: uiProvider.state.themes[
                                         uiProvider.state.selectedTheme] ==
-                                    uiProvider.state.themes[3]
+                                    uiProvider.state.themes[1]
                                 ? Colors.white
                                 : Colors.black,
                             fontSize: MediaQuery.of(context).size.width * 0.03,
@@ -126,6 +131,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
                   const Spacer(),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -164,7 +170,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
                             style: TextStyle(
                               color: uiProvider.state.themes[
                                           uiProvider.state.selectedTheme] ==
-                                      uiProvider.state.themes[3]
+                                      uiProvider.state.themes[1]
                                   ? Colors.white
                                   : Colors.black,
                               fontSize:
@@ -222,7 +228,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
               ElevatedButton(
                   onPressed: () async {
                     if (widget.isPatient == true &&
-                        widget.patientModel!.specialist == null) {
+                        patientModel!.specialist == null) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
                             'No tienes un especialista asignado, por favor selecciona uno en la opcioo "Buscar especialista" en el menu de Agenda'),
@@ -246,12 +252,22 @@ class _NewDateScreenState extends State<NewDateScreen> {
                     }
 
                     //la cita no debe ser antes del dia actual, si es el dia actual la hora no debe ser antes de la hora actual
-                    if (_selectedDate.day < DateTime.now().day ||
-                        _selectedDate.month < DateTime.now().month ||
-                        _selectedDate.year < DateTime.now().year) {
+
+                    //validar que la fecha seleccionada no sea menor a la fecha actual, pero solo toma el dia, mes y año, ya que si tomas toda la fecha puede dar error ya que la hora actual puede ser diferente a la hora seleccionada por milisegundos
+                    setState(() {
+                      _selectedDate = DateTime(
+                        _selectedDate.year,
+                        _selectedDate.month,
+                        _selectedDate.day,
+                        _time.hour,
+                        _time.minute,
+                      );
+                    });
+
+                    if (_selectedDate.isBefore(actualDate)) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
-                            'No puede seleccionar una fecha anterior a la actual'),
+                            'La fecha seleccionada no es valida, por favor selecciona una fecha futura, o una hora futura si es el dia actual'),
                       ));
                       return;
                     }
@@ -262,7 +278,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: Text(
-                              'No puede seleccionar una hora anterior a la actual'),
+                              'La cita debe ser al menos con 1 hora de anticipacion'),
                         ));
                         return;
                       }
@@ -299,7 +315,7 @@ class _NewDateScreenState extends State<NewDateScreen> {
                     );
 
                     if (widget.isPatient) {
-                      await widget.onSave!(date, widget.patientModel!);
+                      await widget.onSave!(date, patientModel!);
                     } else {
                       if (pattient == null) {
                         ScaffoldMessenger.of(context)
@@ -318,9 +334,8 @@ class _NewDateScreenState extends State<NewDateScreen> {
                     if (context.mounted) Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 100, vertical: 5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -363,7 +378,7 @@ Widget pattientPicker(
       child: Padding(
         padding: EdgeInsets.all(20.0),
         child: Text(
-          'Aun no tienes pacientes asignados, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes.',
+          'Aún no tienes pacientes asignados, puedes dirigirte a la sección de configuración para ver tu código de vinculación y compartirlo con tus pacientes.',
           textAlign: TextAlign.center,
         ),
       ),

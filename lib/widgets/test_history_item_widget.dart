@@ -7,16 +7,6 @@ Widget testItem(BuildContext context, HistoryTestModel test,
     padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
     width: double.infinity,
     height: MediaQuery.of(context).size.height * 0.25,
-    // decoration: BoxDecoration(
-    //   borderRadius: BorderRadius.circular(15),
-    //   boxShadow: const [
-    //     BoxShadow(
-    //       color: Color.fromARGB(31, 104, 104, 104),
-    //       blurRadius: 5,
-    //       offset: Offset(0, 5),
-    //     ),
-    //   ],
-    // ),
     child: Column(
       children: [
         Column(
@@ -33,7 +23,7 @@ Widget testItem(BuildContext context, HistoryTestModel test,
                 ),
                 const Spacer(),
                 Text(
-                  "Ultimos resultados",
+                  "Últimos resultados",
                   style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width * 0.03,
                   ),

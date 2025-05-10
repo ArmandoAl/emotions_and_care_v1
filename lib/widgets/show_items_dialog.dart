@@ -1,8 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../helpers/paths.dart';
 
-Future<void> showItemsDialog(BuildContext context, String title, int position,
-    UICubit uiCubit, UIState uiState) async {
+Future<void> showItemsDialog(
+  BuildContext context,
+  String title,
+  int position,
+  UICubit uiCubit,
+  UIState uiState, {
+  bool isEmply = false,
+}) async {
   await showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -33,8 +39,34 @@ Future<void> showItemsDialog(BuildContext context, String title, int position,
 
                     if (authCubit.state.registerPatientFlow! ==
                         "firstTestCompleted") {
-                      await showMessageDialog(context, "",
-                          "Selecciona la palomita azul superior para continuar. ");
+                      await showMessageDialog(
+                          dimiss: false,
+                          context,
+                          "",
+                          "¡Registro completado! |Ya formas parte de Emotions&Care. Ahora puedes explorar la aplicación y descubrir todas sus funcionalidades, haz de Emotions&Care tu espacio personal de bienestar emocional. |Y recuerda que: ¡Estamos aquí para apoyarte en cada paso del camino! |-Emotions&Care ",
+                          actions: [
+                            TextButton(
+                              onPressed: () async {
+                                final authCubit = getIt<BegginCubit>();
+
+                                if (authCubit.state.registerPatientFlow !=
+                                    "registerSuccess") {
+                                  final userProvider =
+                                      context.read<BegginCubit>();
+                                  userProvider.setRegisterFlow(
+                                      userProvider.state.patientModel!.id!,
+                                      "registerSuccess");
+                                }
+
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+
+                                  Navigator.of(context).pop();
+                                }
+                              },
+                              child: const Text("Aceptar"),
+                            ),
+                          ]);
                     }
 
                     if (context.mounted) {
@@ -51,7 +83,7 @@ Future<void> showItemsDialog(BuildContext context, String title, int position,
                       await showMessageDialog(
                         context,
                         "Añade stickers a tu jardín",
-                        "¡Decora tu jardín con stickers! |Añade un toque personal a tu espacio eligiendo diversos stickers. |Cada sticker que elijas será un recordatorio de la importancia de celebrar cada pequeño logro en tu camino hacia el bienestar. |Selecciona uno de los espacios en tu jardín y añade los stickers que has conseguido.",
+                        "Puedes decorar tu jardín con stickers, el verlos será un recordatorio de la importancia de celebrar cada pequeño logro.",
                       );
                     }
 
@@ -61,34 +93,50 @@ Future<void> showItemsDialog(BuildContext context, String title, int position,
                   }
                 },
                 child: title == "Tus stickers"
-                    ? CachedNetworkImage(
-                        imageUrl: uiState.stickers![index].url ?? "",
-                        placeholder: (context, url) =>
+                    ? SvgPicture.network(
+                        uiState.stickers![index].url ?? "",
+                        placeholderBuilder: (context) =>
                             const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.sticky_note_2),
+                        fit: BoxFit.fill,
                       )
-                    : CachedNetworkImage(
-                        imageUrl: uiState.flowers[index].flower
+                    : SvgPicture.network(
+                        uiState.flowers[index].flower
                             .urls![uiState.flowers[index].state].url,
-                        placeholder: (context, url) =>
+                        placeholderBuilder: (context) =>
                             const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        fit: BoxFit.fill,
                       ),
               );
             },
           ),
         ),
+        actions: [
+          //solo si hay un sitcker en esta posicion
+
+          if (isEmply == false && title == "Tus stickers")
+            TextButton(
+              onPressed: () {
+                if (title == "Tus stickers") {
+                  final authcubit = context.read<BegginCubit>();
+
+                  uiCubit.removeSticker(
+                      authcubit.state.patientModel!.id!, position + 1);
+                } else {
+                  // uiCubit.removeFlower(uiState.flowers[position]);
+                }
+
+                Navigator.of(context).pop();
+              },
+              child: const Text("Quitar del jardín", style: TextStyle()),
+            ),
+        ],
       );
     },
   );
 }
 
 Future<void> showCustomDialog(
-  BuildContext context,
-  UICubit uiCubit,
-) async {
+    BuildContext context, UICubit uiCubit, int pattientId) async {
   //l want that the dialog has a background image
 
   AnimationController animationController = AnimationController(
@@ -147,7 +195,7 @@ Future<void> showCustomDialog(
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: Text(
-                        notificationModel!.title,
+                        notificationModel?.title ?? "",
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -161,19 +209,39 @@ Future<void> showCustomDialog(
                       child: Padding(
                         padding: const EdgeInsets.all(28.0),
                         child: SingleChildScrollView(
-                          child: Text(
-                            notificationModel.description,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.045,
-                            ),
+                          child: Column(
+                            children: [
+                              Text(
+                                notificationModel?.description ?? "",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.045,
+                                ),
+                              ),
+                              notificationModel?.type ==
+                                      NotificationType.sticker
+                                  ? Container(
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.25,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: SvgPicture.network(
+                                        notificationModel?.url ?? "",
+                                        placeholderBuilder: (context) =>
+                                            const CircularProgressIndicator(),
+                                        fit: BoxFit.contain,
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    notificationModel.type ==
+                    notificationModel?.type ==
                             NotificationType.notificacionRecomendacion
                         ? Row(
                             children: [
@@ -181,20 +249,25 @@ Future<void> showCustomDialog(
                               const Text("Completado: ",
                                   style: TextStyle(color: Colors.black)),
                               Checkbox(
-                                  value: notificationModel.completed,
+                                  value: notificationModel?.completed,
                                   onChanged: (value) {
                                     context
                                         .read<HomeCubit>()
                                         .changeNotificationCompleteStatud(
-                                            notificationModel.id);
-
-                                    //TODO: Poner en back
-                                    //tenemos que cambiar la liogica, en el back, la funcion de delete notification va modificar la variable nueva de later y eso servira para determinar si se puede mostar o no en las notificaciones
+                                          notificationModel?.idRecomendation ??
+                                              0,
+                                          pattientId,
+                                        );
 
                                     //haz pop despues de 2 segundos
                                     Future.delayed(const Duration(seconds: 1),
                                         () {
                                       if (context.mounted) {
+                                        context
+                                            .read<HomeCubit>()
+                                            .deleteNotification(
+                                                notificationModel?.id ?? 0);
+
                                         Navigator.of(context).pop();
                                       }
                                     });
@@ -206,34 +279,64 @@ Future<void> showCustomDialog(
                             ],
                           )
                         : const SizedBox(),
-                    // notificationModel.type ==
-                    //         NotificationType.notificacionRecomendacion
-                    //     ? Row(
-                    //         children: [
-                    //           GestureDetector(
-                    //             onTap: () {
-                    //               Navigator.of(context).pop();
-                    //             },
-                    //             child: const Padding(
-                    //               padding: EdgeInsets.only(left: 15.0),
-                    //               child: Text("Mas tarde",
-                    //                   style: TextStyle(
-                    //                       color: Colors.brown,
-                    //                       fontSize: 16,
-                    //                       fontWeight: FontWeight.bold)),
-                    //             ),
-                    //           )
-                    //         ],
-                    //       )
-                    //     : const SizedBox(),
-                    notificationModel.type ==
+                    notificationModel?.type ==
+                            NotificationType.notificacionRecomendacion
+                        ? Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  final homeCubit = context.read<HomeCubit>();
+                                  homeCubit.posone(notificationModel?.id ?? 0);
+
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.only(left: 15.0),
+                                  child: Text("Mas tarde",
+                                      style: TextStyle(
+                                          color: Colors.brown,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              )
+                            ],
+                          )
+                        : const SizedBox(),
+                    notificationModel?.type == NotificationType.sticker
+                        ? Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  final uiCubit = getIt<UICubit>();
+
+                                  uiCubit.addSticker(StickerModel(
+                                    id: notificationModel?.id,
+                                    url: notificationModel?.url,
+                                  ));
+
+                                  Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(),
+                                child: const Text(
+                                  "Recoger sticker",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox(),
+                    notificationModel?.type ==
                             NotificationType.notificacionRecomendacion
                         ? SizedBox(
                             height: MediaQuery.of(context).size.height * 0.015)
                         : const SizedBox(),
                     if (userFlower != null &&
                         userFlower.state < 5 &&
-                        notificationModel.type ==
+                        notificationModel?.type ==
                             NotificationType.growNotifications)
                       Row(
                         children: [

@@ -10,6 +10,7 @@ class ScheduleState extends Equatable {
   final List<SpecialistModel> auxiliar;
   final int offset;
   final bool isTheTotal;
+  final Map<String, dynamic> filters;
 
   const ScheduleState(
       {this.dates = const <DateModel>[],
@@ -17,7 +18,8 @@ class ScheduleState extends Equatable {
       this.specialists = const <SpecialistModel>[],
       this.auxiliar = const <SpecialistModel>[],
       this.offset = 0,
-      this.isTheTotal = false});
+      this.isTheTotal = false,
+      this.filters = const <String, dynamic>{}});
 
   ScheduleState copyWith({
     List<DateModel>? dates,
@@ -26,6 +28,7 @@ class ScheduleState extends Equatable {
     List<SpecialistModel>? auxiliar,
     int? offset,
     bool? isTheTotal,
+    Map<String, dynamic>? filters,
   }) {
     return ScheduleState(
       dates: dates ?? this.dates,
@@ -34,6 +37,7 @@ class ScheduleState extends Equatable {
       auxiliar: auxiliar ?? this.auxiliar,
       offset: offset ?? this.offset,
       isTheTotal: isTheTotal ?? this.isTheTotal,
+      filters: filters ?? this.filters,
     );
   }
 
@@ -45,5 +49,6 @@ class ScheduleState extends Equatable {
         auxiliar,
         offset,
         isTheTotal,
+        filters,
       ];
 }

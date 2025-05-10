@@ -23,4 +23,26 @@ abstract class IUserRepository {
   Future<dynamic> refreshToken(int id, String token);
 
   Future<bool> vincularPaciente(int specialistId, int patientId);
+
+  Future<int> updatePatient(
+    PatientModel patient,
+  );
+
+  Future<int> updateSpecialist(
+    SpecialistModel specialist,
+  );
+
+  Future<bool> recoverPassword(
+    String email,
+  );
+
+  Future<bool> validateCode(
+    String email,
+    String code,
+  );
+
+  Future<bool> changePassword(
+    String email,
+    String password,
+  );
 }

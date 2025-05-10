@@ -33,16 +33,11 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
 
     if (res.authorizationStatus == AuthorizationStatus.authorized) {
       _firebaseMessaging.onTokenRefresh.listen((token) {
-        // print('FirebaseMessaging token refreshed: $token');
-        print("token refreshed: $token");
         begginCubit.setToken(token);
         emit(state.copyWith(token: token));
       });
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        // print('Got a message while in the foreground!');
-        print('Message data: ${message.data}');
-
         mapNotification(message.data);
         emit(state.copyWith(message: message.data));
       });
@@ -61,10 +56,10 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
         if (os == 'android') {
           token = await _firebaseMessaging.getToken() ?? "";
         } else {
-          token = await _firebaseMessaging.getToken(
-                  vapidKey:
-                      'BFNqfSXGTG1S09jgTrnKezuMoeIm4YKTmGpj-pSJ3I_bdJmwMjukbbo9y0DZ-LhU29hdKi1DWMhR4R8GDNTLlVA') ??
-              "";
+          // token = await _firebaseMessaging.getToken(
+          //         vapidKey:
+          //             'BFNqfSXGTG1S09jgTrnKezuMoeIm4YKTmGpj-pSJ3I_bdJmwMjukbbo9y0DZ-LhU29hdKi1DWMhR4R8GDNTLlVA') ??
+          //     "";
 
           print('Token: $token');
         }

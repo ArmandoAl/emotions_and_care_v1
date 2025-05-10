@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../../../helpers/paths.dart';
@@ -64,9 +64,7 @@ class _DailyControllerState extends State<DailyController> {
                     isForReturn: true,
                     actions: [
                       ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              // backgroundColor: Theme.of(context).primaryColor,
-                              ),
+                          style: ElevatedButton.styleFrom(),
                           onPressed: () {
                             if (dailyCubit.state.result ==
                                 DailyResult.loading) {
@@ -113,10 +111,12 @@ class _DailyControllerState extends State<DailyController> {
                               textAlign: TextAlign.center,
                               'Este es tu diario personal, aquí podrás escribir tus pensamientos y emociones. \n\n ¡Comienza a escribir!',
                               style: TextStyle(
+                                fontFamily:
+                                    'Gilroy', // Usa la fuente personalizada
+                                fontWeight: FontWeight.bold, // Gilroy-Medium
                                 color: Colors.black,
                                 fontSize:
                                     MediaQuery.of(context).size.width * 0.05,
-                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -149,21 +149,22 @@ class _DailyControllerState extends State<DailyController> {
                               id: widget.patientModel.id!,
                               patientModel: widget.patientModel,
                               onNoteCreated: (NoteModel note, id) async {
-                                GoalWithNote res = await context
+                                NoteWithAchivement res = await context
                                     .read<DailyCubit>()
                                     .addNote(note, id);
 
-                                if (res.goalModel != null && context.mounted) {
+                                if (res.achivementId != null &&
+                                    context.mounted) {
                                   final UICubit uiProvider =
                                       Provider.of<UICubit>(context,
                                           listen: false);
 
-                                  await uiProvider
-                                      .getSticker(res.goalModel!.idSticker!);
+                                  final Achievement? achievement = uiProvider
+                                      .getAchivement(res.achivementId!);
 
-                                  if (context.mounted) {
+                                  if (achievement != null && context.mounted) {
                                     await showStickerDialog(
-                                        context, res.goalModel!);
+                                        context, achievement);
                                   }
                                 }
                               },
@@ -185,70 +186,75 @@ class _DailyControllerState extends State<DailyController> {
   }
 }
 
-Future<void> showStickerDialog(BuildContext context, GoalModel goal) async {
-  final uiProvider = getIt<UICubit>();
-  final sticker = uiProvider.state.stickers!.last;
+Future<void> showStickerDialog(
+    BuildContext context, Achievement achivement) async {
   return showDialog(
     context: context,
     barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: Colors.transparent,
-        content: Container(
-          decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(20)),
+        scrollable: true,
+        backgroundColor: Colors.grey.withOpacity(0.85),
+        content: SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,
           height: MediaQuery.of(context).size.height * 0.6,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(goal.title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
-                      fontWeight: FontWeight.bold)),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(goal.description,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(achivement.name!,
                     textAlign: TextAlign.center,
                     style: TextStyle(
+                        fontFamily: 'Gilroy',
                         color: Colors.white,
-                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
                         fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text('¡Nuevo sticker desbloqueado!',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: MediaQuery.of(context).size.width * 0.028,
-                        fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              CachedNetworkImage(
-                imageUrl: sticker.url!,
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                fit: BoxFit.cover,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff1C8AAD),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(achivement.description!,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width * 0.035,
+                          fontWeight: FontWeight.bold)),
                 ),
-                onPressed: () async {
-                  if (context.mounted) Navigator.of(context).pop();
-                },
-                child: const Text('Recoger sticker',
-                    style: TextStyle(color: Colors.white)),
-              ),
-            ],
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text('¡Nuevo logro desbloqueado!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width * 0.028,
+                          fontWeight: FontWeight.bold)),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                SvgPicture.network(
+                  achivement.imageUrl!,
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  fit: BoxFit.cover,
+                  placeholderBuilder: (context) =>
+                      const CircularProgressIndicator(),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff1C8AAD),
+                  ),
+                  onPressed: () async {
+                    final UICubit uiProvider = getIt<UICubit>();
+
+                    uiProvider.addAchivementToUser(achivement);
+
+                    if (context.mounted) Navigator.of(context).pop();
+                  },
+                  child: const Text('Recoger logro',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
           ),
         ),
       );

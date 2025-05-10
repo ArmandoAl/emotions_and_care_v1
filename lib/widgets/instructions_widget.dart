@@ -43,7 +43,7 @@ Widget intructionsWidget(
         ),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
-              //   backgroundColor: const Color(0xff1C8AAD),
+              backgroundColor: Theme.of(context).colorScheme.primary,
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.1,
                   vertical: MediaQuery.of(context).size.height * 0.015),
@@ -60,6 +60,7 @@ Widget intructionsWidget(
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.05,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   decoration: TextDecoration.none),
             )),
         SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -75,7 +76,7 @@ Widget testResultWidget(
   int userId,
   String? result,
   BegginCubit userProvider,
-  GoalModel? goal,
+  Achievement? goal,
 ) {
   return Column(
     children: [
@@ -98,57 +99,66 @@ Widget testResultWidget(
             horizontal: MediaQuery.of(context).size.width * 0.07,
             vertical: MediaQuery.of(context).size.height * 0.01,
           ),
-          child: Column(
-            children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              Text(testResult1String,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.045,
-                      fontWeight: FontWeight.normal,
-                      decoration: TextDecoration.none)),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.005),
-              Text(result!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.09,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none)),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-              Text(testResult2String,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.035,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none)),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff1C8AAD),
-                  ),
-                  onPressed: () async {
-                    if (goal != null) {
-                      await showStickerDialog(context, goal);
-                    }
-
-                    if (userProvider.state.registerPatientFlow == "register") {
-                      userProvider.setRegisterFlow(
-                          userProvider.state.patientModel!.id!,
-                          "firstTestCompleted");
-                    }
-
-                    if (context.mounted) Navigator.of(context).pop();
-                  },
-                  child: Text('Continuar',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.width * 0.05,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.none))),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                Text(testResult1String,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.045,
+                        fontWeight: FontWeight.normal,
+                        decoration: TextDecoration.none)),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                Text(result!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.09,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none)),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                Text(dynamicResulTest[result] ?? "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none)),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                Text(testResult2String,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.03,
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none)),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              ],
+            ),
           ),
         ),
-      ))
+      )),
+      ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary),
+          onPressed: () async {
+            if (goal != null) {
+              await showStickerDialog(context, goal);
+            }
+
+            if (userProvider.state.registerPatientFlow == "register") {
+              userProvider.setRegisterFlow(
+                  userProvider.state.patientModel!.id!, "firstTestCompleted");
+            }
+
+            if (context.mounted) Navigator.of(context).pop();
+          },
+          child: Text('Continuar',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width * 0.05,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none))),
+      SizedBox(height: MediaQuery.of(context).size.height * 0.05),
     ],
   );
 }

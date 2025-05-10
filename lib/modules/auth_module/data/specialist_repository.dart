@@ -98,7 +98,7 @@ class SpecialistRepository implements ISpecialistRepository {
     try {
       final response = await http.get(
         Uri.parse(
-            '${Api.baseUrl}Especialista/$idSpecialist/getPatientsRequest'),
+            '${Api.baseUrl}Especialista/$idSpecialist/solicitudesPacientes'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -118,11 +118,12 @@ class SpecialistRepository implements ISpecialistRepository {
   }
 
   @override
-  Future<bool> acceptPatientRequest(int idSpecialist, int idPatient) async {
+  Future<bool> acceptPatientRequest(
+      int idSpecialist, int idPatient, int idRequest) async {
     try {
       final response = await http.post(
         Uri.parse(
-            '${Api.baseUrl}Especialista/$idSpecialist/aceptarSolicitud/$idPatient'),
+            '${Api.baseUrl}Especialista/$idSpecialist/aceptarSolicitud/$idPatient/$idRequest'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -140,11 +141,12 @@ class SpecialistRepository implements ISpecialistRepository {
   }
 
   @override
-  Future<bool> rejectPatientRequest(int idSpecialist, int idPatient) async {
+  Future<bool> rejectPatientRequest(
+      int idSpecialist, int idPatient, int idRequest) async {
     try {
       final response = await http.post(
         Uri.parse(
-            '${Api.baseUrl}Especialista/$idSpecialist/rechazarSolicitud/$idPatient'),
+            '${Api.baseUrl}Especialista/$idSpecialist/rechazarSolicitud/$idPatient/$idRequest'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

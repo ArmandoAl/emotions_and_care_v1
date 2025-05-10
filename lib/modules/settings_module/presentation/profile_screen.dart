@@ -20,11 +20,21 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController controller = TextEditingController();
   TextEditingController controllerSecondPassword = TextEditingController();
+  late PatientModel? patientModel;
+  late SpecialistModel? specialistModel;
+
+  @override
+  void initState() {
+    super.initState();
+    patientModel = widget.patientModel;
+    specialistModel = widget.specialistModel;
+  }
 
   @override
   void dispose() {
     controller.dispose();
     controllerSecondPassword.dispose();
+
     super.dispose();
   }
 
@@ -33,6 +43,93 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Información personal'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () async {
+            if (widget.isPatient) {
+              if (patientModel!.isEqual(widget.patientModel!)) {
+                Navigator.pop(context);
+
+                return;
+              }
+            } else {
+              if (specialistModel!.isEqual(widget.specialistModel!)) {
+                Navigator.pop(context);
+
+                return;
+              }
+            }
+
+            String res = "success";
+
+            await showLoadingdialog("Cargando datos", context, () async {
+              if (widget.isPatient) {
+                res = await widget.userProvider.updatePatientData(
+                  patientModel!,
+                );
+              } else {
+                res = await widget.userProvider.updateSpecialistData(
+                  specialistModel!,
+                );
+              }
+
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
+            });
+
+            if (res == "success" && context.mounted) {
+              await showMessageDialog(context, "", "Datos actualizados",
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const Text("Aceptar"),
+                    ),
+                  ]);
+            } else {
+              if (context.mounted) {
+                await showMessageDialog(context, "Error", res, actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Aceptar"),
+                  ),
+                ]);
+              }
+            }
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text("Información"),
+                    content: const Text(
+                        "Para editar tu información, haz clic en el dato que deseas modificar, realiza los cambios y confirma para guardarlos."),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Ok'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         height: double.infinity,
@@ -52,18 +149,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontSize: MediaQuery.of(context).size.width * 0.04,
                         color: Colors.black),
                   ),
-                  Text(
-                    widget.isPatient
-                        ? textToUpperCateFirstLetter(
-                            widget.userProvider.state.patientModel!.name!)
-                        : textToUpperCateFirstLetter(
-                            widget.userProvider.state.specialistModel!.name!),
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                  GestureDetector(
+                    onTap: () {
+                      showChangeDataDialog(
+                          context,
+                          widget.isPatient
+                              ? patientModel!.name!
+                              : specialistModel!.name!,
+                          "Nombre de usuario",
+                          widget.isPatient ? patientModel! : specialistModel!,
+                          controller, () {
+                        setState(() {
+                          if (widget.isPatient) {
+                            patientModel = patientModel!.copyWith(
+                              name: controller.text,
+                            );
+                          } else {
+                            specialistModel = specialistModel!.copyWith(
+                              name: controller.text,
+                            );
+                          }
+                        });
+
+                        return "success";
+                      });
+                    },
+                    child: Text(
+                      widget.isPatient
+                          ? textToUpperCateFirstLetter(patientModel!.name!)
+                          : textToUpperCateFirstLetter(specialistModel!.name!),
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                      ),
                     ),
                   ),
                   !widget.isPatient
-                      ? const Text("Codigo de vinculación: ")
+                      ? const Text("Código de vinculación: ")
                       : Container(),
                   !widget.isPatient
                       ? Text(
@@ -79,9 +200,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             profileItem(
               context,
-              widget.isPatient
-                  ? widget.userProvider.state.patientModel!.email!
-                  : widget.userProvider.state.specialistModel!.email!,
+              widget.isPatient ? patientModel!.email! : specialistModel!.email!,
               "Correo electrónico",
               Icon(
                 Icons.email,
@@ -92,12 +211,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await showChangeDataDialog(
                     context,
                     widget.isPatient
-                        ? widget.userProvider.state.patientModel!.email!
-                        : widget.userProvider.state.specialistModel!.email!,
+                        ? patientModel!.email!
+                        : specialistModel!.email!,
                     "Correo electrónico",
-                    widget.isPatient
-                        ? widget.userProvider.state.patientModel!
-                        : widget.userProvider.state.specialistModel!,
+                    widget.isPatient ? patientModel! : specialistModel!,
                     controller, () {
                   if (validateEmail(controller.text) == false) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -108,6 +225,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return "error";
                   }
 
+                  setState(() {
+                    if (widget.isPatient) {
+                      patientModel = patientModel!.copyWith(
+                        email: controller.text,
+                      );
+                    } else {
+                      specialistModel = specialistModel!.copyWith(
+                        email: controller.text,
+                      );
+                    }
+                  });
+
                   return "success";
                 });
               },
@@ -115,9 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             profileItem(
               context,
-              widget.isPatient
-                  ? widget.userProvider.state.patientModel!.phone!
-                  : widget.userProvider.state.specialistModel!.phone!,
+              widget.isPatient ? patientModel!.phone! : specialistModel!.phone!,
               "Teléfono",
               Icon(
                 Icons.phone,
@@ -128,12 +255,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await showChangeDataDialog(
                     context,
                     widget.isPatient
-                        ? widget.userProvider.state.patientModel!.phone!
-                        : widget.userProvider.state.specialistModel!.phone!,
+                        ? patientModel!.phone!
+                        : specialistModel!.phone!,
                     "Teléfono",
-                    widget.isPatient
-                        ? widget.userProvider.state.patientModel!
-                        : widget.userProvider.state.specialistModel!,
+                    widget.isPatient ? patientModel! : specialistModel!,
                     controller, () {
                   if (controller.text.length != 10 ||
                       validatePhone(controller.text) == false) {
@@ -145,6 +270,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return "error";
                   }
 
+                  setState(() {
+                    if (widget.isPatient) {
+                      patientModel = patientModel!.copyWith(
+                        phone: controller.text,
+                      );
+                    } else {
+                      specialistModel = specialistModel!.copyWith(
+                        phone: controller.text,
+                      );
+                    }
+                  });
+
                   return "success";
                 });
               },
@@ -153,8 +290,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             profileItem(
               context,
               widget.isPatient
-                  ? widget.userProvider.state.patientModel!.age.toString()
-                  : widget.userProvider.state.specialistModel!.age.toString(),
+                  ? patientModel!.age.toString()
+                  : specialistModel!.age.toString(),
               "Edad",
               Icon(
                 Icons.person,
@@ -165,13 +302,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await showChangeDataDialog(
                     context,
                     widget.isPatient
-                        ? widget.userProvider.state.patientModel!.age.toString()
-                        : widget.userProvider.state.specialistModel!.age
-                            .toString(),
+                        ? patientModel!.age.toString()
+                        : specialistModel!.age.toString(),
                     "Edad",
-                    widget.isPatient
-                        ? widget.userProvider.state.patientModel!
-                        : widget.userProvider.state.specialistModel!,
+                    widget.isPatient ? patientModel! : specialistModel!,
                     controller, () {
                   if (int.parse(controller.text) < 17 ||
                       int.parse(controller.text) > 100) {
@@ -183,6 +317,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return "error";
                   }
 
+                  setState(() {
+                    if (widget.isPatient) {
+                      patientModel = patientModel!.copyWith(
+                        age: int.parse(controller.text),
+                      );
+                    } else {
+                      specialistModel = specialistModel!.copyWith(
+                        age: int.parse(controller.text),
+                      );
+                    }
+                  });
+
                   return "success";
                 });
               },
@@ -191,8 +337,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             profileItem(
               context,
               widget.isPatient
-                  ? widget.userProvider.state.patientModel!.password!
-                  : widget.userProvider.state.specialistModel!.password!,
+                  ? patientModel!.password!
+                  : specialistModel!.password!,
               "Contraseña",
               Icon(
                 Icons.lock,
@@ -203,12 +349,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await showChangePasswordDialog(
                     context,
                     widget.isPatient
-                        ? widget.userProvider.state.patientModel!.password!
-                        : widget.userProvider.state.specialistModel!.password!,
+                        ? patientModel!.password!
+                        : specialistModel!.password!,
                     "Contraseña",
-                    widget.isPatient
-                        ? widget.userProvider.state.patientModel!
-                        : widget.userProvider.state.specialistModel!,
+                    widget.isPatient ? patientModel! : specialistModel!,
                     widget.isPatient,
                     widget.userProvider,
                     controller,
@@ -221,16 +365,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
             !widget.isPatient
                 ? profileItem(
                     context,
-                    widget.specialistModel!.ubication == ""
+                    specialistModel!.ubication == ""
                         ? "No especificado"
-                        : widget.specialistModel!.ubication!,
+                        : specialistModel!.ubication!,
                     "Ubicación",
                     Icon(
                       Icons.lock,
                       color: const Color(0xff1C8AAD),
                       size: MediaQuery.of(context).size.width * 0.065,
-                    ),
-                    () async {})
+                    ), () async {
+                    await showChangeDataDialog(
+                        context,
+                        widget.specialistModel!.ubication!,
+                        "Ubicación",
+                        specialistModel!,
+                        controller, () {
+                      setState(() {
+                        specialistModel = specialistModel!.copyWith(
+                          ubication: controller.text,
+                        );
+                      });
+
+                      return "success";
+                    });
+                  })
                 : Container(),
             !widget.isPatient
                 ? SizedBox(height: MediaQuery.of(context).size.height * 0.05)
@@ -238,16 +396,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
             !widget.isPatient
                 ? profileItem(
                     context,
-                    widget.specialistModel!.presentation == ""
+                    specialistModel!.presentation == ""
                         ? "No especificado"
-                        : widget.specialistModel!.presentation!,
+                        : specialistModel!.presentation!,
                     "Institución",
                     Icon(
                       Icons.lock,
                       color: const Color(0xff1C8AAD),
                       size: MediaQuery.of(context).size.width * 0.065,
                     ),
-                    () async {},
+                    () async {
+                      await showChangeDataDialog(
+                          context,
+                          specialistModel!.presentation!,
+                          "Institución",
+                          specialistModel!,
+                          controller, () {
+                        setState(() {
+                          specialistModel = specialistModel!.copyWith(
+                            presentation: controller.text,
+                          );
+                        });
+
+                        return "success";
+                      });
+                    },
                   )
                 : Container(),
             !widget.isPatient
@@ -256,14 +429,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
             !widget.isPatient
                 ? profileItem(
                     context,
-                    widget.specialistModel!.focus!,
+                    specialistModel!.focus!,
                     "Enfoque",
                     Icon(
                       Icons.lock,
                       color: const Color(0xff1C8AAD),
                       size: MediaQuery.of(context).size.width * 0.065,
                     ),
-                    () async {},
+                    () async {
+                      await showChangeDataDialog(
+                          context,
+                          specialistModel!.focus!,
+                          "Enfoque",
+                          specialistModel!,
+                          controller, () {
+                        setState(() {
+                          specialistModel = specialistModel!.copyWith(
+                            focus: controller.text,
+                          );
+                        });
+
+                        return "success";
+                      });
+                    },
                   )
                 : Container(),
             !widget.isPatient
@@ -272,13 +460,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
             !widget.isPatient
                 ? profileItem(
                     context,
-                    widget.userProvider.state.specialistModel!.institution == ""
+                    specialistModel!.institution == ""
                         ? "No especificado"
-                        : widget
-                            .userProvider.state.specialistModel!.institution!,
+                        : specialistModel!.institution!,
                     "Carta de presentación",
                     null,
-                    () async {},
+                    () async {
+                      await showChangeDataDialog(
+                          context,
+                          specialistModel!.institution!,
+                          "Carta de presentación",
+                          specialistModel!,
+                          controller, () {
+                        setState(() {
+                          specialistModel = specialistModel!.copyWith(
+                            institution: controller.text,
+                          );
+                        });
+
+                        return "success";
+                      });
+                    },
                   )
                 : Container(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.05),
@@ -478,15 +680,6 @@ Future<void> showDeleteUserDialog(
             onPressed: () async {
               await userProvider
                   .deletePatient(userProvider.state.patientModel!.id!);
-
-              // if (context.mounted) {
-              //   Navigator.of(context).pushAndRemoveUntil(
-              //     MaterialPageRoute(
-              //       builder: (context) => const GuideFlowController(),
-              //     ),
-              //     (route) => false,
-              //   );
-              // }
             },
           ),
         ],

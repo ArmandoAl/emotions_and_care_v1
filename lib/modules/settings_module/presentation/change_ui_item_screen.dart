@@ -1,4 +1,4 @@
-import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import '../../../helpers/paths.dart';
 
 class ChangeUiItemScreen extends StatefulWidget {
@@ -22,6 +22,19 @@ class ChangeUiItemScreen extends StatefulWidget {
 class _ChangeUiItemScreenState extends State<ChangeUiItemScreen> {
   dynamic selectedItem;
   int selectedTheme = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.itemType == ItemUiType.colores) {
+      selectedItem = widget.items[widget.uiProvider.state.selectedTheme];
+      selectedTheme = widget.uiProvider.state.selectedTheme;
+    } else {
+      if (widget.itemType == ItemUiType.fondo) {
+        selectedItem = widget.uiProvider.state.selectedBackground;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +68,6 @@ class _ChangeUiItemScreenState extends State<ChangeUiItemScreen> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () async {
-                              // if (widget.blocks[index]) {
-                              //   showDialogForAds(context);
-                              //   return;
-                              // }
                               setState(() {
                                 selectedItem = widget.items[index];
                                 selectedTheme = index;
@@ -69,14 +78,14 @@ class _ChangeUiItemScreenState extends State<ChangeUiItemScreen> {
                                 margin: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: selectedItem == widget.items[index]
+                                    color: selectedTheme == index
                                         ? const Color(0xFFD80DB6)
                                         : Colors.transparent,
                                     width: 2,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: selectedItem == widget.items[index]
+                                      color: selectedTheme == index
                                           ? const Color(0xFFD80DB6)
                                               .withOpacity(0.5)
                                           : Colors.transparent,
@@ -193,9 +202,12 @@ class _ChangeUiItemScreenState extends State<ChangeUiItemScreen> {
                                   ),
                                 ],
                               ),
-                              child: SvgPicture.asset(
+                              child: Lottie.asset(
                                 widget.items[index],
-                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.65,
+                                fit: BoxFit.fill,
                               ),
                             ),
                           );
@@ -209,13 +221,19 @@ class _ChangeUiItemScreenState extends State<ChangeUiItemScreen> {
             ? FloatingActionButton(
                 onPressed: () {
                   if (widget.itemType == ItemUiType.colores) {
-                    widget.uiProvider.setTheme(selectedTheme);
+                    widget.uiProvider.setTheme(
+                        widget.userProvider.state.patientModel!.id!,
+                        selectedTheme);
+
                     Navigator.pop(context);
                   } else if (widget.itemType == ItemUiType.fondo) {
-                    widget.uiProvider.setSelectedBackground(selectedItem);
+                    final index = widget.items.indexOf(selectedItem);
+                    widget.uiProvider.setSelectedBackground(
+                      widget.userProvider.state.patientModel!.id!,
+                      selectedItem,
+                      index,
+                    );
                     Navigator.pop(context);
-                  } else if (widget.itemType == ItemUiType.jardin) {
-                    //  widget.uiProvider.changeGarden(selectedItem);
                   } else {
                     // widget.uiProvider.changeFlower(selectedItem);
                   }

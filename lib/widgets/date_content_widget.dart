@@ -22,25 +22,23 @@ Widget containerContentWidget(
               context,
               MaterialPageRoute(
                 builder: (context) => NewDateScreen(
-                  patientModel:
-                      isPatient && patientModel != null ? patientModel : null,
-                  specialistModel: isPatient ? null : especialistaModel,
                   isPatient: isPatient,
                   dates: dates,
                   onSave: (DateModel date, PatientModel patient) async {
                     if (isPatient) {
-                      GoalwithDate? res = await context
+                      DateWithAchivement? res = await context
                           .read<ScheduleCubit>()
                           .addDate(
                               patient.id!, date, patientModel!.specialist!.id!);
 
-                      if (res.goal != null && context.mounted) {
+                      if (res.achivementId != null && context.mounted) {
                         final UICubit uiProvider = context.read<UICubit>();
 
-                        await uiProvider.getSticker(res.goal!.idSticker!);
+                        final achivement =
+                            uiProvider.getAchivement(res.achivementId!);
 
                         if (context.mounted) {
-                          await showStickerDialog(context, res.goal!);
+                          await showStickerDialog(context, achivement!);
                         }
                       }
                     } else {

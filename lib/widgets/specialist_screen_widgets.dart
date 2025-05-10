@@ -16,7 +16,7 @@ Future<void> showTableCaledarBottomSheet(
         decoration: BoxDecoration(
           //si el tema es oscuro el color de fondo sera gris oscuro
           color: uiCubit.state.themes[uiCubit.state.selectedTheme] ==
-                  uiCubit.state.themes[3]
+                  uiCubit.state.themes[1]
               ? Colors.black
               : Theme.of(context).scaffoldBackgroundColor,
 
@@ -39,10 +39,10 @@ Future<void> showTableCaledarBottomSheet(
             titleTextFormatter: (date, locale) =>
                 '${Utils.getMonthName(date.month)} ${date.year}',
           ),
-          firstDay: DateTime.now(),
-          lastDay: DateTime.now().add(const Duration(days: 90)),
-          focusedDay: (initialDate.isBefore(DateTime.now())
-              ? DateTime.now()
+          firstDay: DateTime.now().toLocal(),
+          lastDay: DateTime.now().toLocal().add(const Duration(days: 90)),
+          focusedDay: (initialDate.isBefore(DateTime.now().toLocal())
+              ? DateTime.now().toLocal()
               : initialDate),
           calendarFormat: CalendarFormat.month,
           onDaySelected: (selectedDay, focusedDay) {
@@ -64,7 +64,18 @@ Widget specialistWidget(
     required bool isPatient}) {
   if (patientModel!.specialist == null) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pop(context);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SearchSpecialistController(
+              patientModel: getIt<BegginCubit>().state.patientModel!,
+            ),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.blue[100],
@@ -85,7 +96,7 @@ Widget specialistWidget(
             const SizedBox(width: 20),
             Expanded(
               child: Text(
-                'No hay un especialista asignado, has click para encontrar uno',
+                'No hay un especialista asignado, has clic para encontrar uno',
                 style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.035,
                   fontWeight: FontWeight.bold,

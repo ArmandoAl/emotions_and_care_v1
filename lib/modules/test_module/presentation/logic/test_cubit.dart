@@ -5,12 +5,15 @@ class TestCubit extends Cubit<TestState> {
   TestCubit({required this.repository}) : super(const TestState());
 
   //complete test
-  Future<GoalWithTestInfoModel> onCompleteTest(
+  Future<TestInfoModelWithAchivement> onCompleteTest(
       int patientId, int testId, bool isFirtsTime) async {
     final test = state.testList.firstWhere((element) => element.id == testId);
 
-    GoalWithTestInfoModel result = await repository.completeTest(patientId,
-        testId, test.questions, state.completedTestList.isEmpty ? true : false);
+    TestInfoModelWithAchivement result = await repository.completeTest(
+        patientId,
+        testId,
+        test.questions,
+        state.completedTestList.isEmpty ? true : false);
 
     final List<CompletedTestModel> updatedCompletedTestList;
 
@@ -20,15 +23,13 @@ class TestCubit extends Cubit<TestState> {
         CompletedTestModel(
           userId: patientId,
           testId: testId,
-          date: DateTime.now(),
+          date: DateTime.now().toLocal(),
         ),
       ];
     } else {
       updatedCompletedTestList = state.completedTestList
           .map((e) => e.testId == testId
-              ? e.copyWith(
-                  date: DateTime.now(),
-                )
+              ? e.copyWith(date: DateTime.now().toLocal())
               : e)
           .toList();
     }

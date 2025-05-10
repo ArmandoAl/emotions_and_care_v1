@@ -6,7 +6,7 @@ void showDialogForCompletedTest(BuildContext context, DateTime date) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Ya has completado este test'),
-        content: Text('Podras realizarlo nuevamente el ${_getNextDate(date)}'),
+        content: Text('Podrás realizarlo nuevamente el ${_getNextDate(date)}'),
         actions: <Widget>[
           TextButton(
             onPressed: () {

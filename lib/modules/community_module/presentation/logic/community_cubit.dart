@@ -34,18 +34,18 @@ class CommunityCubit extends Cubit<CommunityState> {
     }
   }
 
-  Future<GoalWithCart> addCart(
+  Future<CartWithAchivement> addCart(
       CartModel cart, int idUser, bool isPatient) async {
     emit(state.copyWith(status: CommunityStatus.loading));
     try {
-      GoalWithCart result = await repository.addCart(cart, idUser, isPatient);
+      CartWithAchivement result =
+          await repository.addCart(cart, idUser, isPatient);
 
       //encuentra la carta en la lista de cartas de la del usuario
       if (result.id != 0) {
         cart = cart.copyWith(id: result.id);
         emit(state.copyWith(
             cartFromUser: [...state.cartFromUser, cart],
-            //elimina la carta de la lista de cartas de la comunidad
             status: CommunityStatus.success));
 
         return result;
@@ -59,11 +59,11 @@ class CommunityCubit extends Cubit<CommunityState> {
     }
   }
 
-  Future<GoalWithResponseCart> addResponse(CartResponse cartResponse,
+  Future<ResponseWithAchivement> addResponse(CartResponse cartResponse,
       int idCart, bool isPatient, int idPatient) async {
     emit(state.copyWith(status: CommunityStatus.loading));
     try {
-      GoalWithResponseCart result =
+      ResponseWithAchivement result =
           await repository.addResponse(cartResponse, idCart);
 
       emit(state.copyWith(
@@ -87,5 +87,5 @@ class CommunityCubit extends Cubit<CommunityState> {
 bool haveAnswersInMyInbox(CommunityState state, int userId) {
   //busca si el user id existe en alguna respuesta de la comunidad, cualquier carta que tenga una respuesta con el id del usuario retorna true
   return state.cartFromCommunity.any((element) =>
-      element.respuestas!.any((response) => response.idReceptor == userId));
+      element.respuestas.any((response) => response.idReceptor == userId));
 }

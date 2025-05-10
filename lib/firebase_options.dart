@@ -25,9 +25,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -51,8 +57,8 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDRGlfxdeR22WX4gPF2Im7YLiH9k9QskwA',
-    appId: '1:337730650555:android:0223342204b1cf2ebcc49e',
+    apiKey: 'AIzaSyCHKnCAcbYf0FRGGUAuZfmioP7d1WIp8Ag',
+    appId: '1:337730650555:android:7219ef3af2acb372bcc49e',
     messagingSenderId: '337730650555',
     projectId: 'emotionsandcareal',
     storageBucket: 'emotionsandcareal.appspot.com',
@@ -60,33 +66,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAvJL1Hkd2DEScTP6TFPpnpjo24MDJrLw8',
-    appId: '1:337730650555:ios:94bbde6931b348cebcc49e',
+    appId: '1:337730650555:ios:5705cc499b2040cbbcc49e',
     messagingSenderId: '337730650555',
     projectId: 'emotionsandcareal',
     storageBucket: 'emotionsandcareal.appspot.com',
-    iosClientId:
-        '337730650555-ni26o23adgai1gf6udgkqka9tm3fnuv1.apps.googleusercontent.com',
-    iosBundleId: 'com.example.emotionsAndCareV1',
+    iosClientId: '337730650555-dgac5q7gc4sa6nqm742jrntdo2bhd0jq.apps.googleusercontent.com',
+    iosBundleId: 'com.example.emotionsandcare',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAvJL1Hkd2DEScTP6TFPpnpjo24MDJrLw8',
-    appId: '1:337730650555:ios:94bbde6931b348cebcc49e',
-    messagingSenderId: '337730650555',
-    projectId: 'emotionsandcareal',
-    storageBucket: 'emotionsandcareal.appspot.com',
-    iosClientId:
-        '337730650555-ni26o23adgai1gf6udgkqka9tm3fnuv1.apps.googleusercontent.com',
-    iosBundleId: 'com.example.emotionsAndCareV1',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDrllJWzrXapWzpBvX6dJc4PTfExt3DvfE',
-    appId: '1:337730650555:web:f4c4ba52c57c2070bcc49e',
-    messagingSenderId: '337730650555',
-    projectId: 'emotionsandcareal',
-    authDomain: 'emotionsandcareal.firebaseapp.com',
-    storageBucket: 'emotionsandcareal.appspot.com',
-    measurementId: 'G-JBDSEDSCFK',
-  );
 }

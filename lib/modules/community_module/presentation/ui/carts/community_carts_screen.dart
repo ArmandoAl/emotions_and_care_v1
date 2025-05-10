@@ -12,6 +12,16 @@ class CommunityCartsScreen extends StatefulWidget {
 }
 
 class _CommunityCartsScreenState extends State<CommunityCartsScreen> {
+  final SwiperController controller = SwiperController();
+
+  void moveToNextCard() {
+    controller.previous();
+  }
+
+  void moveToPreviousCard() {
+    controller.next();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,22 +30,18 @@ class _CommunityCartsScreenState extends State<CommunityCartsScreen> {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          Text("Selecciona una carta para brindar apoyo",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: MediaQuery.of(context).size.height * 0.02,
-                decoration: TextDecoration.none,
-              )),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.055),
           Swiper(
             onTap: (index) {
               widget.onCartTap(widget.carts[index]);
             },
             itemCount: widget.carts.length,
-            itemWidth: MediaQuery.of(context).size.width * 0.85,
-            itemHeight: MediaQuery.of(context).size.height * 0.675,
+            itemWidth: MediaQuery.of(context).size.width * 0.8,
+            itemHeight: MediaQuery.of(context).size.height * 0.6,
+            scale: 0.9,
             layout: SwiperLayout.STACK,
-            //I just need the cards more rounded, thts it
+            curve: Curves.easeInOut,
+            controller: controller,
             itemBuilder: (context, index) {
               return Container(
                 decoration: BoxDecoration(
@@ -44,7 +50,7 @@ class _CommunityCartsScreenState extends State<CommunityCartsScreen> {
                     colorFilter: ColorFilter.mode(
                         Theme.of(context)
                             .colorScheme
-                            .secondary
+                            .onPrimaryContainer
                             .withOpacity(0.99),
                         BlendMode.src),
                     image: const AssetImage(
@@ -85,7 +91,7 @@ class _CommunityCartsScreenState extends State<CommunityCartsScreen> {
                         SizedBox(
                             width: MediaQuery.of(context).size.width * 0.05),
                         Text(
-                          "${widget.carts[index].respuestas!.length} respuestas",
+                          "${widget.carts[index].respuestas.length} respuestas",
                           style: TextStyle(
                             fontSize:
                                 MediaQuery.of(context).size.height * 0.018,
@@ -113,6 +119,30 @@ class _CommunityCartsScreenState extends State<CommunityCartsScreen> {
               );
             },
           ),
+          const Spacer(),
+          Row(
+            children: [
+              IconButton(
+                onPressed: moveToPreviousCard,
+                icon: const Icon(Icons.arrow_back_ios, size: 30),
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+              Text(
+                "Navegar",
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.height * 0.025,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+              IconButton(
+                onPressed: moveToNextCard,
+                icon: const Icon(Icons.arrow_forward_ios, size: 30),
+                color: Theme.of(context).colorScheme.onSecondary,
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
         ],
       ),
     );

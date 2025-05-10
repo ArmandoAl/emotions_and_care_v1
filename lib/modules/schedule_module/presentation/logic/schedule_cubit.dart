@@ -4,11 +4,11 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   final ScheduleRepository repository;
   ScheduleCubit({required this.repository}) : super(const ScheduleState());
   //Add date to the list
-  Future<GoalwithDate> addDate(
+  Future<DateWithAchivement> addDate(
       int idPatient, DateModel date, int idSpecialist) async {
     emit(state.copyWith(status: ScheduleStatus.loading));
     try {
-      final GoalwithDate res =
+      final DateWithAchivement res =
           await repository.addSchedule(idPatient, date, idSpecialist);
 
       date = date.copyWith(id: res.id);
@@ -223,5 +223,92 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   void clean() {
     emit(const ScheduleState());
+  }
+
+  void addFilter(String key, dynamic value) {
+    // Create a new map by copying all entries from the current filters
+    final Map<String, dynamic> newFilters =
+        Map<String, dynamic>.from(state.filters);
+
+    // Now you can safely modify the new map
+    if (value == null) {
+      newFilters.remove(key);
+    } else {
+      newFilters[key] = value;
+    }
+
+    // Emit the state with the new filters map
+    emit(state.copyWith(filters: newFilters, status: ScheduleStatus.loaded));
+  }
+
+  void clearFilters() {
+    emit(state.copyWith(
+        specialists: state.auxiliar,
+        filters: {},
+        status: ScheduleStatus.loaded));
+  }
+
+  void filterSpecialist(Map<String, dynamic> filters) {
+    // Start with all specialists
+    final List<SpecialistModel> specialists = state.auxiliar;
+    final List<SpecialistModel> result = [];
+
+    // Process each specialist
+    for (final SpecialistModel specialist in specialists) {
+      bool matchesAllFilters = true;
+
+      // Apply sex filter if present
+      if (filters.containsKey("sexo") && filters["sexo"] != null) {
+        if (specialist.sex != filters["sexo"]) {
+          matchesAllFilters = false;
+        }
+      }
+
+      // Apply age filter if present
+      if (filters.containsKey("edad") && filters["edad"] != null) {
+        String ageRange = filters["edad"];
+        int? specialistAge = specialist.age;
+
+        if (specialistAge != null) {
+          if (ageRange == "20-30" &&
+              (specialistAge < 20 || specialistAge > 30)) {
+            matchesAllFilters = false;
+          } else if (ageRange == "30-45" &&
+              (specialistAge < 30 || specialistAge > 45)) {
+            matchesAllFilters = false;
+          } else if (ageRange == "45-100" && specialistAge < 45) {
+            matchesAllFilters = false;
+          }
+        }
+      }
+
+      // Apply specialty filter if present
+      if (filters.containsKey("especialidad") &&
+          filters["especialidad"] != null) {
+        // Assuming the focus field of SpecialistModel contains the specialty
+        if (specialist.focus != filters["especialidad"]) {
+          matchesAllFilters = false;
+        }
+      }
+
+      // Apply name filter if present
+      if (filters.containsKey("name") &&
+          filters["name"] != null &&
+          filters["name"].toString().isNotEmpty) {
+        if (!specialist.name!
+            .toLowerCase()
+            .contains(filters["name"].toString().toLowerCase())) {
+          matchesAllFilters = false;
+        }
+      }
+
+      // If all filters match, add to result
+      if (matchesAllFilters) {
+        result.add(specialist);
+      }
+    }
+
+    // Update state with filtered specialists
+    emit(state.copyWith(specialists: result));
   }
 }

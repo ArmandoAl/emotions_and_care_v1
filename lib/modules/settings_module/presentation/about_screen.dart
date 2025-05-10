@@ -36,17 +36,17 @@ String aboutText = '''
 Emotions&Care es una aplicación desarrollada por Tech4Good Research Lab, dirigida por la Dra. Karina Caro åCorrales.
 
 Equipo de Desarrollo
-- Lider de proyecto: Karina Caro Corrales
+- Líder de proyecto: Karina Caro Corrales
 - Analistas de Business Intelligence: Pedro David Guevara Rodriguez, Karen Lucía García Ramírez
 - Desarrollador Principal: José Armando Alvarado Loaiza
 - Desarrollador de Backend: Martin Ortiz Gerardo
 - Desarrollador de Frontend: Hazael Gonzalo Espinoza Lara
 - Diseño de Interfaz: Martin Ortiz Gerardo, Diego Alberto Pimentel López
-- Consultora de temas de salud mental: Sherlyn Haydee Hernández Chávez
-- Retroalimentacion de proyecto (Documentacion, codigo, flujo): Héctor Zatarain Aceves
+- Consultora de Temas de Salud Mental: Sherlyn Haydee Hernández Chávez
+- Retroalimentación de Proyecto (documentación, código, flujo): Héctor Zatarain Aceves
 - Logo: Mayra Selene Aviña Morales
 - Diseño: David Garibay
-- Iconos: Diego Alberto Pimentel López
+- Íconos: Diego Alberto Pimentel López
 
 Agradecimientos Especiales a
 - Brenda Janeth Ramirez Flores

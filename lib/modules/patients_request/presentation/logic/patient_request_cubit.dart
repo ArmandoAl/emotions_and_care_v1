@@ -24,7 +24,7 @@ class PatientsRequestCubit extends Cubit<PatientsRequestsState> {
   Future<bool> acceptPatientRequest(
       int idSpecialist, int idPatient, int idPatientRequest) async {
     bool result = await specialistRepository.acceptPatientRequest(
-        idSpecialist, idPatient);
+        idSpecialist, idPatient, idPatientRequest);
 
     if (result) {
       List<PatientRequest> list = state.patientsRequest
@@ -40,11 +40,11 @@ class PatientsRequestCubit extends Cubit<PatientsRequestsState> {
   Future<bool> rejectPatientRequest(
       int idSpecialist, int idPatient, int idPatientRequest) async {
     bool result = await specialistRepository.rejectPatientRequest(
-        idSpecialist, idPatient);
+        idSpecialist, idPatient, idPatientRequest);
 
     if (result) {
       List<PatientRequest> list = state.patientsRequest
-          .where((element) => element.id != idPatientRequest)
+          .where((element) => element.patient.id != idPatient)
           .toList();
 
       emit(state.copyWith(patientsRequest: list));

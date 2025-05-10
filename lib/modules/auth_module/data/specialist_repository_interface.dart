@@ -12,9 +12,11 @@ abstract class ISpecialistRepository {
 
   Future<List<PatientRequest>> getPatientRequest(int idSpecialist);
 
-  Future<bool> acceptPatientRequest(int idSpecialist, int idPatient);
+  Future<bool> acceptPatientRequest(
+      int idSpecialist, int idPatient, int idRequest);
 
-  Future<bool> rejectPatientRequest(int idSpecialist, int idPatient);
+  Future<bool> rejectPatientRequest(
+      int idSpecialist, int idPatient, int idRequest);
 }
 
 class PatientRequest {
@@ -42,9 +44,8 @@ class PatientRequest {
 
   factory PatientRequest.fromMap(Map<String, dynamic> map) {
     return PatientRequest(
-      id: map['patientRequestId'],
-      patient: PatientModel.fromJson(map['patient'], false),
-      date: DateTime.tryParse(map['date']) ?? DateTime.now(),
-    );
+        id: map['patientRequestId'],
+        patient: PatientModel.fromJson(map['patient'], false),
+        date: (DateTime.tryParse(map['date']) ?? DateTime.now()).toLocal());
   }
 }

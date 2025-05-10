@@ -59,7 +59,7 @@ class _SearchSpecialistScreenState extends State<SearchSpecialistScreen> {
                   onPressed: () {
                     widget.onFilterTap();
                   },
-                  icon: const Icon(Icons.filter_alt),
+                  icon: const Icon(Icons.filter_list),
                 ),
               ],
             ),
@@ -133,7 +133,8 @@ class _SearchSpecialistScreenState extends State<SearchSpecialistScreen> {
           )),
           const Divider(),
           requestByCodeWidget(
-              context, widget.controller, widget.syncByCode, isLoading, () {
+              context, widget.controller, widget.syncDirectByCode, isLoading,
+              () {
             setState(() {
               isLoading = !isLoading;
             });
@@ -157,7 +158,7 @@ Widget requestByCodeWidget(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-          Text("Vincular con codigo",
+          Text("Vincular con código",
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.05)),
           SizedBox(height: MediaQuery.of(context).size.height * 0.013),
@@ -166,8 +167,9 @@ Widget requestByCodeWidget(
                 horizontal: MediaQuery.of(context).size.width * 0.1),
             child: TextField(
               controller: controller,
+              maxLength: 6,
               decoration: const InputDecoration(
-                hintText: "Codigo",
+                hintText: "Código",
               ),
             ),
           ),
@@ -181,8 +183,13 @@ Widget requestByCodeWidget(
                 showConfirmialog(
                     context,
                     result
-                        ? "Vinculacion exitosa"
-                        : "Hubo un error al vincular, por favor revisa el codigo e intenta de nuevo");
+                        ? "Vinculación exitosa"
+                        : "Código no existente encontrado");
+              } else {
+                if (context.mounted) {
+                  showMessageDialog(context, "Error al vincular especialista",
+                      "Por favor, verifica el código e intenta nuevamente");
+                }
               }
 
               controller.clear();

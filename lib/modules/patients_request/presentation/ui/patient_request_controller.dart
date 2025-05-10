@@ -25,6 +25,7 @@ class _PatientsRequestControllerState extends State<PatientsRequestController> {
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         if (state.status == PatientsRequestsStatus.loading) {
+          // state.status == PatientsRequestsStatus.loading
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
@@ -35,14 +36,27 @@ class _PatientsRequestControllerState extends State<PatientsRequestController> {
         final patientsRequest = state.patientsRequest;
 
         if (patientsRequest.isEmpty) {
-          return const Scaffold(
+          return Scaffold(
               appBar: HeaderWidget(
-                  title: "Solicitudes de pacientes", isForReturn: true),
-              body: Center(
+                title: "Solicitudes de pacientes",
+                isForReturn: true,
+                actions: [
+                  IconButton(
+                    icon: Icon(Icons.replay,
+                        color: Theme.of(context).colorScheme.primary),
+                    onPressed: () {
+                      context
+                          .read<PatientsRequestCubit>()
+                          .getPatientsRequestList(widget.idUser);
+                    },
+                  )
+                ],
+              ),
+              body: const Center(
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
                   child: Text(
-                    'No tienes solicitudes de pacientes pendientes, puedes dirigirte a la seccion de configuracion para ver tu codigo de vinculacion y compartirlo con tus pacientes',
+                    "No tienes solicitudes de pacientes pendientes. Puedes dirigirte a la sección de configuración para ver tu código de vinculación y compartirlo con tus pacientes.",
                     textAlign: TextAlign.center,
                   ),
                 ),

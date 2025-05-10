@@ -53,7 +53,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(const HomeState());
   }
 
-  void changeNotificationCompleteStatud(int id) {
+  void changeNotificationCompleteStatud(int id, int pattientId) {
     final notifications = state.items.map((e) {
       if (e.id == id) {
         return e.copyWith(completed: !e.completed!);
@@ -62,6 +62,40 @@ class HomeCubit extends Cubit<HomeState> {
     }).toList();
 
     emit(state.copyWith(items: notifications));
+
+    repository.recomendationCompleted(id, pattientId);
+  }
+
+  void deleteNotificationLocally(int idNotification) {
+    emit(state.copyWith(status: HomeStatus.loading));
+    try {
+      final List<NotificationModel> notifications =
+          state.items.where((element) => element.id != idNotification).toList();
+
+      emit(state.copyWith(
+        items: notifications,
+        status: HomeStatus.loaded,
+      ));
+    } catch (e) {
+      emit(state.copyWith(status: HomeStatus.error));
+    }
+  }
+
+  void posone(int idNotification) {
+    emit(state.copyWith(status: HomeStatus.loading));
+    try {
+      repository.posponeNote(idNotification);
+
+      final List<NotificationModel> notifications =
+          state.items.where((element) => element.id != idNotification).toList();
+
+      emit(state.copyWith(
+        items: notifications,
+        status: HomeStatus.loaded,
+      ));
+    } catch (e) {
+      emit(state.copyWith(status: HomeStatus.error));
+    }
   }
 
   void growStage(int id) async {

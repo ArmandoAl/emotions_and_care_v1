@@ -100,7 +100,7 @@ Widget testHistoryQuestion(
             style: TextStyle(
               fontSize: MediaQuery.of(context).size.width * 0.04,
               color: uiProvider.state.themes[uiProvider.state.selectedTheme] ==
-                      uiProvider.state.themes[3]
+                      uiProvider.state.themes[1]
                   ? Colors.black
                   : Colors.white,
             ),

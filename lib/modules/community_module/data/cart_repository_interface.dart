@@ -1,7 +1,8 @@
 import '../../../helpers/paths.dart';
 
 abstract class ICartRepository {
-  Future<GoalWithCart> addCart(CartModel cart, int idUser, bool isPatient);
+  Future<CartWithAchivement> addCart(
+      CartModel cart, int idUser, bool isPatient);
 
   Future<bool> deleteCart(int idCart);
 
@@ -11,7 +12,7 @@ abstract class ICartRepository {
 
   Future<CartModel> getCart(int idCart);
 
-  Future<GoalWithResponseCart> addResponse(
+  Future<ResponseWithAchivement> addResponse(
       CartResponse cartResponse, int idCart);
 
   Future<List<CartModel>> initCommunity(int userId);

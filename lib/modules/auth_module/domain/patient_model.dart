@@ -5,6 +5,7 @@ class PatientModel extends UserModel {
   PattientSettings? settings;
   String registerStatus = "";
   UserInterface? userInterface;
+  AchivementCollection? achivementCollection;
 
   PatientModel(
       {this.specialist,
@@ -22,7 +23,23 @@ class PatientModel extends UserModel {
       this.settings,
       super.type,
       this.registerStatus = "",
-      this.userInterface});
+      this.userInterface,
+      this.achivementCollection});
+
+  bool isEqual(
+    PatientModel other,
+  ) {
+    if (identical(this, other)) return true;
+    if (id != other.id) return false;
+    if (name != other.name) return false;
+    if (email != other.email) return false;
+    if (password != other.password) return false;
+    if (phone != other.phone) return false;
+    if (age != other.age) return false;
+    if (bornDate != other.bornDate) return false;
+
+    return true;
+  }
 
   @override
   PatientModel copyWith({
@@ -42,6 +59,7 @@ class PatientModel extends UserModel {
     String? registerStatus,
     DateTime? bornDate,
     UserInterface? userInterface,
+    AchivementCollection? achivementCollection,
   }) {
     return PatientModel(
       specialist: specialist ?? this.specialist,
@@ -60,6 +78,7 @@ class PatientModel extends UserModel {
       type: type ?? this.type,
       registerStatus: registerStatus ?? this.registerStatus,
       userInterface: userInterface ?? this.userInterface,
+      achivementCollection: achivementCollection ?? this.achivementCollection,
     );
   }
 
@@ -76,7 +95,8 @@ class PatientModel extends UserModel {
       password: isPatient ? json['password'] : '',
       phone: json['phone'],
       age: json['age'],
-      bornDate: DateTime.tryParse(json['bornDate'] ?? ""),
+      bornDate: (DateTime.tryParse(json['bornDate'] ?? "") ?? DateTime.now())
+          .toLocal(),
       sex: json['sex'],
       token: json['token'],
       tokenForRelate: json['relationalToken'],
@@ -93,6 +113,9 @@ class PatientModel extends UserModel {
       userInterface: json['userInterface'] == null
           ? null
           : UserInterface.fromJson(json['userInterface']),
+      achivementCollection: json['achievementCollection'] == null
+          ? null
+          : AchivementCollection.fromJson(json['achievementCollection']),
     );
   }
 
@@ -113,6 +136,7 @@ class PatientModel extends UserModel {
       "specialist": specialist?.toStore(),
       "registerStatus": registerStatus,
       "userInterface": userInterface?.toJson(),
+      "achivementCollection": achivementCollection?.toJson(),
     };
   }
 
@@ -126,7 +150,7 @@ class PatientModel extends UserModel {
       'bornDate': bornDate!.toIso8601String(),
       'sex': sex,
       'token': token,
-      "termsiD": 1,
+      "termsiD": 2,
     };
   }
 }
@@ -196,12 +220,14 @@ class UserFlower {
   final FlowerModel flower;
   final int state;
   final int? position;
+  final DateTime? createdAt;
 
   UserFlower({
     required this.userFlowerId,
     required this.flower,
     required this.state,
     this.position,
+    this.createdAt,
   });
 
   UserFlower copyWith({
@@ -209,12 +235,14 @@ class UserFlower {
     FlowerModel? flower,
     int? state,
     int? position,
+    DateTime? createdAt,
   }) {
     return UserFlower(
       userFlowerId: userFlowerId ?? this.userFlowerId,
       flower: flower ?? this.flower,
       state: state ?? this.state,
       position: position ?? this.position,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -224,6 +252,7 @@ class UserFlower {
       'flower': flower.toJson(),
       'state': state,
       'position': position,
+      'createdAt': createdAt?.toIso8601String(),
     };
   }
 
@@ -233,6 +262,9 @@ class UserFlower {
       flower: FlowerModel.fromJson(json['flower']),
       state: json['state'] ?? 0,
       position: json['position'] ?? 0,
+      createdAt: json['createdAt'] != null
+          ? DateTime.tryParse(json['createdAt'])
+          : null,
     );
   }
 }
@@ -241,22 +273,25 @@ class UserSticker {
   final int userStickerId;
   final StickerModel sticker;
   final int? position;
+  final DateTime? createdAt;
 
-  UserSticker({
-    required this.userStickerId,
-    required this.sticker,
-    this.position,
-  });
+  UserSticker(
+      {required this.userStickerId,
+      required this.sticker,
+      this.position,
+      this.createdAt});
 
   UserSticker copyWith({
     int? userStickerId,
     StickerModel? sticker,
     int? position,
+    DateTime? createdAt,
   }) {
     return UserSticker(
       userStickerId: userStickerId ?? this.userStickerId,
       sticker: sticker ?? this.sticker,
       position: position ?? this.position,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -265,6 +300,7 @@ class UserSticker {
       userStickerId: -1,
       sticker: StickerModel.empty(),
       position: 0,
+      createdAt: DateTime.now(),
     );
   }
 
@@ -273,6 +309,7 @@ class UserSticker {
       'userStickerId': userStickerId,
       'sticker': sticker.toJson(),
       'position': position,
+      'createdAt': createdAt?.toIso8601String(),
     };
   }
 
@@ -281,6 +318,9 @@ class UserSticker {
       userStickerId: json['userStickerId'],
       sticker: StickerModel.fromJson(json['sticker']),
       position: json['position'],
+      createdAt: json['createdAt'] != null
+          ? DateTime.tryParse(json['createdAt'])
+          : null,
     );
   }
 }

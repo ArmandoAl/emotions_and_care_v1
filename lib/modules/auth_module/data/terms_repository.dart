@@ -8,7 +8,7 @@ class TermsRepository implements ITermsRepository {
   Future<String> getTerms(int id) async {
     try {
       final response = await http.get(
-        Uri.parse('${Api.baseUrl}Terminos/$id'),
+        Uri.parse('${Api.baseUrl}Terminos/${id + 1}'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'

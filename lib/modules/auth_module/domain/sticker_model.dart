@@ -21,4 +21,15 @@ class StickerModel {
     id = null;
     url = null;
   }
+
+  //copy with
+  StickerModel copyWith({
+    int? id,
+    String? url,
+  }) {
+    return StickerModel(
+      id: id ?? this.id,
+      url: url ?? this.url,
+    );
+  }
 }

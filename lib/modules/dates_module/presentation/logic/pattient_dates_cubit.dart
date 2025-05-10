@@ -24,8 +24,10 @@ class PattientsDatesCubit extends Cubit<PattientsDatesState> {
       bool res = await _repository.rejectDate(idSpecialist, idDate);
 
       if (res) {
-        final List<DateRequestModel> dates = state.dates;
-        dates.removeWhere((element) => element.id == idDate);
+        List<DateRequestModel> dates = state.dates
+            .where((element) => element.date!.id! != idDate)
+            .toList();
+
         emit(state.copyWith(
           dates: dates,
           status: PattientsDatesStatus.loaded,
@@ -44,8 +46,10 @@ class PattientsDatesCubit extends Cubit<PattientsDatesState> {
       bool res = await _repository.aceptDateBySpecialist(idSpecialist, idDate);
 
       if (res) {
-        final List<DateRequestModel> dates = state.dates;
-        dates.removeWhere((element) => element.id == idDate);
+        final List<DateRequestModel> dates = state.dates
+            .where((element) => element.date!.id! != idDate)
+            .toList();
+
         emit(state.copyWith(
           dates: dates,
           status: PattientsDatesStatus.loaded,

@@ -145,6 +145,6 @@ class _HeaderWidgetState extends State<HeaderWidget>
 
 const Map<String, bool> animatedMenuBools = {
   "registerSuccess": false,
-  "register": true,
+  "register": false,
   'firstTestCompleted': true,
 };

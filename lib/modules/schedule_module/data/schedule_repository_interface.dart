@@ -3,7 +3,8 @@ import '../../../helpers/paths.dart';
 abstract class IScheduleRepository {
   Future<List<DateModel>> getSchedules(int isPatient);
 
-  Future<GoalwithDate> addSchedule(int id, DateModel date, int idSpecialist);
+  Future<DateWithAchivement> addSchedule(
+      int id, DateModel date, int idSpecialist);
 
   Future<bool> updateSchedule(
       DateModel date, int patientId, int specialistId, bool isFromSpecialist);

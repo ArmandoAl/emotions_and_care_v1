@@ -1,5 +1,5 @@
 // ignore_for_file: deprecated_member_use
-
+import 'package:emotions_and_care_v1/modules/auth_module/domain/progress.dart';
 import 'package:equatable/equatable.dart';
 import '../../helpers/paths.dart';
 
@@ -22,12 +22,17 @@ class UICubit extends Cubit<UIState> {
         useMaterial3: true,
         primaryColor: Colors.blue[50]!,
         colorScheme: const ColorScheme.light(
-            primary: Colors.blue,
-            secondary: Colors.blueGrey,
-            surface: Color(0xFFE3EDF3),
-            onSecondary: Colors.black,
-            onPrimary: Colors.white,
-            onSurface: Colors.black),
+          primary: Colors.blue,
+          secondary: Color(0xFF2CB5E0),
+          surface: Color(0xFFE3EDF3),
+          onSecondary: Colors.black,
+          onPrimary: Colors.white,
+          onSurface: Colors.black,
+          //this color C5F1FF
+          onPrimaryContainer: Color(0xFFB7E1FF),
+          //THIS COLOR F3E7D6
+          onSecondaryContainer: Color(0xFFF3E7D6),
+        ),
         scaffoldBackgroundColor: const Color(0xFFE3EDF3),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFFE3EDF3),
@@ -44,12 +49,16 @@ class UICubit extends Cubit<UIState> {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(
-              Colors.blueGrey,
+              const Color(0xFF2CB5E0),
             ),
             surfaceTintColor: MaterialStateProperty.all(
               Colors.black,
             ),
           ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF2CB5E0),
+          foregroundColor: Colors.black,
         ),
         dropdownMenuTheme: const DropdownMenuThemeData(
           menuStyle: MenuStyle(
@@ -58,118 +67,6 @@ class UICubit extends Cubit<UIState> {
           ),
         ),
         drawerTheme: const DrawerThemeData(backgroundColor: Colors.blueGrey),
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            color: Colors.black,
-            fontSize: 16,
-            fontFamily: 'Gilroy',
-          ),
-          bodyLarge: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontFamily: 'Gilroy',
-          ),
-          titleLarge: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontFamily: 'Gilroy',
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-
-      // 🌿 Tema Verde Agua
-      ThemeData(
-        useMaterial3: true,
-        primaryColor: const Color(0xff005954),
-        colorScheme: const ColorScheme.light(
-          primary: Color(0xff005954),
-          secondary: Color(0xff9ce0db),
-          surface: Color(0xff338b85),
-        ),
-        scaffoldBackgroundColor: const Color(0xffd5ffff),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xffd5ffff),
-        ),
-        dialogTheme: const DialogTheme(
-          backgroundColor: Color(0xffd5ffff),
-          iconColor: Colors.black,
-          surfaceTintColor: Colors.black,
-        ),
-        bottomSheetTheme: const BottomSheetThemeData(
-          backgroundColor: Color(0xffd5ffff),
-          surfaceTintColor: Colors.black,
-        ),
-        dropdownMenuTheme: const DropdownMenuThemeData(
-          menuStyle: MenuStyle(
-            backgroundColor: WidgetStatePropertyAll(Color(0xffd5ffff)),
-            surfaceTintColor: WidgetStatePropertyAll(Colors.black),
-          ),
-        ),
-        drawerTheme: const DrawerThemeData(
-          backgroundColor: Color(0xff9ce0db),
-        ),
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontFamily: 'Gilroy',
-          ),
-          bodyLarge: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontFamily: 'Gilroy',
-          ),
-          titleLarge: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontFamily: 'Gilroy',
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-
-      // 💜 Tema Morado
-      ThemeData(
-        useMaterial3: true,
-        primaryColor: Colors.purple,
-        colorScheme: const ColorScheme.light(
-          primary: Colors.purple,
-          secondary: Colors.purpleAccent,
-          surface: Colors.purpleAccent,
-        ),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 242, 211, 247),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color.fromARGB(255, 242, 211, 247),
-        ),
-        dialogTheme: const DialogTheme(
-          backgroundColor: Color.fromARGB(255, 242, 211, 247),
-          iconColor: Colors.black,
-          surfaceTintColor: Colors.black,
-        ),
-        drawerTheme:
-            const DrawerThemeData(backgroundColor: Colors.purpleAccent),
-        bottomSheetTheme: const BottomSheetThemeData(
-          backgroundColor: Color.fromARGB(255, 242, 211, 247),
-          surfaceTintColor: Colors.black,
-        ),
-        dropdownMenuTheme: const DropdownMenuThemeData(
-          menuStyle: MenuStyle(
-            backgroundColor:
-                WidgetStatePropertyAll(Color.fromARGB(255, 242, 211, 247)),
-            surfaceTintColor: WidgetStatePropertyAll(Colors.black),
-          ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-              Colors.blueGrey,
-            ),
-            surfaceTintColor: MaterialStateProperty.all(
-              Colors.black,
-            ),
-          ),
-        ),
         textTheme: const TextTheme(
           bodyMedium: TextStyle(
             color: Colors.black,
@@ -247,7 +144,11 @@ class UICubit extends Cubit<UIState> {
     String? selectedBackground =
         await storageRepository.getSelectedBackground();
 
-    selectedBackground ??= "null";
+    selectedBackground ??= Assets.backgroundstatic_1;
+
+    final List<AppText> texts = await uiRepoitory.getTexts();
+
+    setTextFromBack(texts);
 
     emit(state.copyWith(
       isDarkMode: false,
@@ -261,33 +162,42 @@ class UICubit extends Cubit<UIState> {
     ));
   }
 
+  List<StickerModel> getStickersForUI(List<UserSticker> userStickers) {
+    // Lista de 4 espacios para los stickers en la UI, inicializados como vacíos
+    List<StickerModel?> stickerSlots = List.filled(4, null);
+
+    // Colocar los stickers en sus posiciones correspondientes
+    for (var userSticker in userStickers) {
+      if (userSticker.position != null) {
+        int index = userSticker.position! -
+            1; // Convertir posición a índice de UI (0-based)
+        if (index >= 0 && index < 4) {
+          stickerSlots[index] = userSticker.sticker;
+        }
+      }
+    }
+
+    // Reemplazar los espacios vacíos con stickers vacíos
+    return stickerSlots.map((e) => e ?? StickerModel.empty()).toList();
+  }
+
+  void setTextFromBack(List<AppText> texts) {
+    final List<AppText> textsFromApi = texts;
+    final Map<String, AppText> textsMap = convertListToMap(textsFromApi);
+
+    emit(state.copyWith(texts: textsMap));
+  }
+
   void setBackAssets(
-      List<UserSticker>? userStickers, List<UserFlower>? userFlowers) {
+      List<UserSticker>? userStickers,
+      List<UserFlower>? userFlowers,
+      List<UserAchievement>? userAchievements,
+      int selectedTheme,
+      int selectedBackgroundIndex) {
     emit(state.copyWith(
       status: UIStatus.loading,
     ));
     if (userStickers == null) return;
-
-    //crea una nueva lista de userSticerks con los stickers que si tienen posicion
-
-    List<UserSticker> newStickersInUse =
-        userStickers.where((element) => element.position != null).toList();
-
-    //odena los userStickers por la posicion de menor a mayor
-    newStickersInUse.sort((a, b) => a.position!.compareTo(b.position!));
-
-    List<StickerModel> newStickerInUse = newStickersInUse
-        .where((element) => element.position != null)
-        .map((e) => e.sticker)
-        .toList();
-
-    //ordenalos por la posicion
-
-    //si los nuevos estickers son menos de 4 , se rellenan con stickers vacios
-    if (newStickerInUse.length < 4) {
-      newStickerInUse.addAll(List.generate(
-          4 - newStickerInUse.length, (index) => StickerModel.empty()));
-    }
 
     //si las nuevas flores son menos de 4 , se rellenan con flores vacias
 
@@ -297,12 +207,71 @@ class UICubit extends Cubit<UIState> {
       return UserFlower(userFlowerId: -1, flower: FlowerModel(), state: 0);
     });
 
+    final List<String> backgrounds = [
+      Assets.yardBackgroundLottieAnimation,
+      Assets.starBackgroundLottieAnimation,
+    ];
+
+    int newSelectedBackgroundIndex =
+        selectedBackgroundIndex > 1 ? selectedBackgroundIndex : 1;
+
+    final String selectedBackground =
+        backgrounds[newSelectedBackgroundIndex - 1];
+
     emit(state.copyWith(
         stickers: userStickers.map((e) => e.sticker).toList(),
-        stickersInUse: newStickerInUse,
+        stickersInUse: getStickersForUI(userStickers),
         flowers: userFlowers,
         currentFlower: currentFlower.userFlowerId == -1 ? null : currentFlower,
+        selectedTheme: selectedTheme,
+        selectedBackground: selectedBackground,
+        achievements: userAchievements,
         status: UIStatus.success));
+  }
+
+  Future<void> getFlowerProgress(int idpatient) async {
+    final List<ProgressInfo> flowerProgress =
+        await uiRepoitory.getStagesProgress(idpatient);
+    emit(state.copyWith(flowerProgress: flowerProgress));
+  }
+
+  Achievement? getAchivement(int achivementId) {
+    UserAchievement? userAchievement = state.achievements.firstWhere(
+        (element) => element.achievementId == achivementId,
+        orElse: () => UserAchievement());
+
+    if (userAchievement.userAchievementId == null) {
+      return null;
+    }
+
+    if (userAchievement.achievement == null) {
+      return null;
+    }
+
+    Achievement achievement = userAchievement.achievement!;
+
+    if (userAchievement.dateEarned != null) {
+      return null;
+    }
+    if (userAchievement.progress == null) {
+      return null;
+    }
+
+    return achievement;
+  }
+
+  void addAchivementToUser(Achievement achivement) {
+    List<UserAchievement> achievements = state.achievements.map((e) {
+      if (e.achievementId == achivement.achievementId) {
+        return e.copyWith(
+          // progress: e.progress! + 1,
+          dateEarned: DateTime.now(),
+        );
+      }
+      return e;
+    }).toList();
+
+    emit(state.copyWith(achievements: achievements, status: UIStatus.success));
   }
 
   void growFlowerStage() {
@@ -333,13 +302,22 @@ class UICubit extends Cubit<UIState> {
     emit(state.copyWith(isDarkMode: isDarkMode));
   }
 
-  void setTheme(int index) {
+  void setTheme(int idpatient, int index) {
     storageRepository.saveSelectedTheme(index);
+
+    uiRepoitory.setTheme(idpatient, index);
+
     emit(state.copyWith(selectedTheme: index));
   }
 
-  void setSelectedBackground(String background) {
+  void setSelectedBackground(
+    int idpatient,
+    String background,
+    int index,
+  ) {
     storageRepository.saveSelectedBackground(background);
+    uiRepoitory.setSelectedBackground(idpatient, index);
+
     emit(state.copyWith(selectedBackground: background));
   }
 
@@ -375,6 +353,43 @@ class UICubit extends Cubit<UIState> {
     uiRepoitory.setFlowerInInterface(idpatient, flower, position + 1);
   }
 
+  void removeSticker(int idPatient, int position) async {
+    if (position < 1 || position > 4) {
+      return;
+    }
+
+    try {
+      // Find the index in the stickersInUse list (0-based)
+      int index = position - 1;
+
+      // Create a copy of the current stickersInUse list
+      List<StickerModel> updatedStickers = List.from(state.stickersInUse);
+
+      // Replace the sticker at the specified position with an empty one
+      updatedStickers[index] = StickerModel.empty();
+
+      // Update the database if needed
+      uiRepoitory.removeSticker(
+        idPatient,
+        state.stickersInUse[index],
+        position,
+      );
+
+      // Emit the updated state
+      emit(state.copyWith(
+        stickersInUse: updatedStickers,
+        status: UIStatus.success,
+      ));
+    } catch (e) {
+      // Handle any errors
+
+      emit(state.copyWith(
+        status: UIStatus.error,
+        //errorMessage: "Failed to remove sticker: ${e.toString()}",
+      ));
+    }
+  }
+
   void setStickerInUse(int idpatient, StickerModel sticker, int index) {
     // Primero emitimos el estado loading
     emit(state.copyWith(status: UIStatus.loading));
@@ -400,6 +415,12 @@ class UICubit extends Cubit<UIState> {
 
   void addSticker(StickerModel sticker) {
     final List<StickerModel> stickers = state.stickers!;
+
+    //revisa si el sticker ya esta en la lista de stickers
+    if (stickers.contains(sticker)) {
+      return;
+    }
+
     stickers.add(sticker);
     emit(state.copyWith(stickers: stickers));
   }
@@ -434,11 +455,14 @@ class UIState extends Equatable {
   final bool isDarkMode;
   final UserFlower? currentFlower;
   final List<UserFlower> flowers;
+  final List<UserAchievement> achievements;
   final List<StickerModel>? stickers;
   final String selectedBackground;
   final int selectedTheme;
   final List<ThemeData> themes;
-  final List<StickerModel> stickersInUse; // Cambia para que no sea nullable
+  final List<StickerModel> stickersInUse;
+  final Map<String, AppText> texts;
+  final List<ProgressInfo> flowerProgress;
 
   const UIState({
     this.status = UIStatus.start,
@@ -446,10 +470,13 @@ class UIState extends Equatable {
     this.currentFlower,
     this.flowers = const [],
     this.stickers = const [],
-    this.selectedBackground = "null",
+    this.achievements = const [],
+    this.selectedBackground = Assets.backgroundstatic_1,
     this.selectedTheme = 0,
     this.themes = const [],
-    this.stickersInUse = const [], // Inicialización por defecto
+    this.stickersInUse = const [],
+    this.texts = const {},
+    this.flowerProgress = const [],
   });
 
   UIState copyWith({
@@ -458,10 +485,13 @@ class UIState extends Equatable {
     UserFlower? currentFlower,
     List<UserFlower>? flowers,
     List<StickerModel>? stickers,
+    List<UserAchievement>? achievements,
     String? selectedBackground,
     int? selectedTheme,
     List<ThemeData>? themes,
     List<StickerModel>? stickersInUse,
+    Map<String, AppText>? texts,
+    List<ProgressInfo>? flowerProgress,
   }) {
     return UIState(
       status: status ?? this.status,
@@ -469,11 +499,13 @@ class UIState extends Equatable {
       currentFlower: currentFlower ?? this.currentFlower,
       flowers: flowers ?? this.flowers,
       stickers: stickers ?? this.stickers,
+      achievements: achievements ?? this.achievements,
       selectedBackground: selectedBackground ?? this.selectedBackground,
       selectedTheme: selectedTheme ?? this.selectedTheme,
       themes: themes ?? this.themes,
-      stickersInUse:
-          stickersInUse ?? this.stickersInUse, // Siempre inicializado
+      stickersInUse: stickersInUse ?? this.stickersInUse,
+      texts: texts ?? this.texts,
+      flowerProgress: flowerProgress ?? this.flowerProgress,
     );
   }
 
@@ -484,9 +516,54 @@ class UIState extends Equatable {
         currentFlower ?? FlowerModel(),
         flowers,
         stickers ?? [],
+        achievements,
         selectedBackground,
         selectedTheme,
         themes,
-        stickersInUse, // No es nullable
+        stickersInUse,
+        texts,
+        flowerProgress,
       ];
+}
+
+class AppText {
+  final int textId;
+  final String text;
+  final int textType;
+  final DateTime dateCreated;
+  final DateTime modifiedDate;
+
+  AppText({
+    required this.textId,
+    required this.text,
+    required this.textType,
+    required this.dateCreated,
+    required this.modifiedDate,
+  });
+
+  factory AppText.fromJson(Map<String, dynamic> json) {
+    return AppText(
+      textId: json['textId'] as int,
+      text: json['text'] as String,
+      textType: json['textType'] as int,
+      dateCreated: DateTime.parse(json['dateCreated'] as String),
+      modifiedDate: DateTime.parse(json['modifiedDate'] as String),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'textId': textId,
+      'text': text,
+      'textType': textType,
+      'dateCreated': dateCreated.toIso8601String(),
+      'modifiedDate': modifiedDate.toIso8601String(),
+    };
+  }
+
+  List<String> get paragraphs => text.split('||');
+}
+
+Map<String, AppText> convertListToMap(List<AppText> list) {
+  return {for (var item in list) item.textId.toString(): item};
 }

@@ -37,104 +37,95 @@ class _UserCartsScreenState extends State<UserCartsScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     widget.updateIndex(0);
                   },
-                  child: Text("Recibidas",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height * 0.025,
-                        fontWeight: FontWeight.bold,
-                        color: widget.index == 0
-                            ? Colors.grey[700]
-                            : Colors.grey.withOpacity(0.5),
-                        decoration: widget.index == 0
-                            ? TextDecoration.underline
-                            : TextDecoration.none,
-                        decorationColor: Colors.grey,
-                      )),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Mis cartas",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.height * 0.025,
+                          fontWeight: FontWeight.bold,
+                          color: widget.index == 0
+                              ? Theme.of(context).colorScheme.secondary
+                              : Colors.grey.withOpacity(0.5),
+                        ),
+                      ),
+                      //pon un punto rojo si el index es 0
+                      widget.index == 0
+                          ? Container(
+                              width: MediaQuery.of(context).size.width * 0.03,
+                              height: MediaQuery.of(context).size.width * 0.03,
+                              decoration: const BoxDecoration(
+                                color: Colors.black,
+                                shape: BoxShape.circle,
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     widget.updateIndex(1);
                   },
-                  child: Text("Enviadas",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.height * 0.025,
-                        fontWeight: FontWeight.bold,
-                        color: widget.index == 1
-                            ? Colors.grey[700]
-                            : Colors.grey.withOpacity(0.5),
-                        decoration: widget.index == 1
-                            ? TextDecoration.underline
-                            : TextDecoration.none,
-                        decorationColor: Colors.grey,
-                      )),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Enviadas",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.height * 0.025,
+                          fontWeight: FontWeight.bold,
+                          color: widget.index == 1
+                              ? Theme.of(context).colorScheme.secondary
+                              : Colors.grey.withOpacity(0.5),
+                        ),
+                      ),
+                      //pon un punto rojo si el index es 1
+                      widget.index == 1
+                          ? Container(
+                              width: MediaQuery.of(context).size.width * 0.03,
+                              height: MediaQuery.of(context).size.width * 0.03,
+                              decoration: const BoxDecoration(
+                                color: Colors.black,
+                                shape: BoxShape.circle,
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
+          const Divider(),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.01),
           Expanded(
-            child: PageView.builder(
+            child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: widget.carts.length,
               itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.07),
-                      child: cartWidget(
-                        context,
-                        widget.carts[index],
+                return cartWidget(
+                  context,
+                  widget.carts[index],
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AnswerCartScreen(
+                          cart: widget.carts[index],
+                          userId: widget.userId,
+                          letraEmisor: widget.carts[index].letraEmisor,
+                          isFromBuzon: true,
+                          itsFromAnotherUser: widget.index == 1,
+                          onSend: () {
+                            return;
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                    Expanded(
-                      child: PageView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: widget.index == 0
-                            ? widget.carts[index].respuestas!.length
-                            //el intemCount sera de el numero de respuestas que tiene la carta y que el idReceptor sea el id del usuario
-                            : widget.carts[index].respuestas!
-                                .where((element) =>
-                                    element.idReceptor == widget.userId)
-                                .length,
-                        itemBuilder: (context, indexResponse) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width * 0.08),
-                            child: responseWidgetContainer(
-                                context,
-                                widget.index == 0
-                                    ? widget
-                                        .carts[index]
-                                        .respuestas![indexResponse]
-                                        .letraReceptor
-                                    : widget.carts[index].respuestas!
-                                        .where((element) =>
-                                            element.idReceptor == widget.userId)
-                                        .toList()[indexResponse]
-                                        .letraReceptor,
-                                widget.index == 0
-                                    ? widget.carts[index]
-                                        .respuestas![indexResponse].contenido
-                                    : widget.carts[index].respuestas!
-                                        .where((element) =>
-                                            element.idReceptor == widget.userId)
-                                        .toList()[indexResponse]
-                                        .contenido,
-                                widget.index),
-                          );
-                        },
-                      ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  ],
+                    );
+                  },
                 );
               },
             ),
@@ -208,3 +199,56 @@ Widget responseWidgetContainer(
     ),
   );
 }
+
+
+//  return Column(
+//                   children: [
+//                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+//                     Padding(
+//                       padding: EdgeInsets.symmetric(
+//                           horizontal: MediaQuery.of(context).size.width * 0.07),
+//                       child: cartWidget(
+//                         context,
+//                         widget.carts[index],
+//                       ),
+//                     ),
+//                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+//                     Expanded(
+//                       child: PageView.builder(
+//                         scrollDirection: Axis.horizontal,
+//                         itemCount: widget.index == 0
+//                             ? widget.carts[index].respuestas!.length
+//                             //el intemCount sera de el numero de respuestas que tiene la carta y que el idReceptor sea el id del usuario
+//                             : widget.carts[index].respuestas!
+//                                 .where((element) =>
+//                                     element.idReceptor == widget.userId)
+//                                 .length,
+//                         itemBuilder: (context, indexResponse) {
+//                           return Padding(
+//                             padding: EdgeInsets.symmetric(
+//                                 horizontal:
+//                                     MediaQuery.of(context).size.width * 0.08),
+//                             child: responseWidgetContainer(
+//                                 context,
+//                                 widget.index == 0
+//                                     ? widget
+//                                         .carts[index]
+//                                         .respuestas![indexResponse]
+//                                         .letraReceptor
+//                                     : widget.carts[index].respuestas!
+//                                         .where((element) =>
+//                                             element.idReceptor == widget.userId)
+//                                         .toList()[indexResponse]
+//                                         .letraReceptor,
+//                                 widget.index == 0
+//                                     ? widget.carts[index]
+//                                         .respuestas![indexResponse].contenido
+//                                     : widget.carts[index].respuestas!
+//                                         .where((element) =>
+//                                             element.idReceptor == widget.userId)
+//                                         .toList()[indexResponse]
+//                                         .contenido,
+//                                 widget.index),
+//                           );
+//                         },
+//                       ),

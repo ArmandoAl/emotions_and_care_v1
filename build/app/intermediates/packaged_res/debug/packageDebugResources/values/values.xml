@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">337730650555-r6vleke1rf2c8ghshgt142e77nn91cai.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">337730650555</string>
+    <string name="google_api_key" translatable="false">AIzaSyCHKnCAcbYf0FRGGUAuZfmioP7d1WIp8Ag</string>
+    <string name="google_app_id" translatable="false">1:337730650555:android:7219ef3af2acb372bcc49e</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCHKnCAcbYf0FRGGUAuZfmioP7d1WIp8Ag</string>
+    <string name="google_storage_bucket" translatable="false">emotionsandcareal.appspot.com</string>
+    <string name="project_id" translatable="false">emotionsandcareal</string>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>

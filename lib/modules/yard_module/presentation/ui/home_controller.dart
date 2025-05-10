@@ -26,6 +26,11 @@ class _HomeControllerState extends State<HomeController> {
     if (widget.begginState.registerPatientFlow == "registerSuccess") {
       context.read<HomeCubit>().getNotifications(widget.idUser);
     }
+
+    final UICubit uiProvider = context.read<UICubit>();
+    if (uiProvider.state.flowerProgress.isEmpty) {
+      uiProvider.getFlowerProgress(widget.idUser);
+    }
   }
 
   @override
@@ -70,7 +75,7 @@ class _HomeControllerState extends State<HomeController> {
         return previous.items != current.items;
       },
       builder: (builderContext, state) {
-        final notificationModel =
+        final NotificationModel? notificationModel =
             state.items.isEmpty ? null : state.items.first;
         return Scaffold(
           drawer: DrawerWidget(
@@ -82,24 +87,38 @@ class _HomeControllerState extends State<HomeController> {
               tap: () async {
                 if (notificationModel != null) {
                   final UICubit uiProvider = context.read<UICubit>();
-                  await showCustomDialog(
-                    context,
-                    uiProvider,
-                  );
 
-                  if (context.mounted &&
-                      (notificationModel.type ==
-                              NotificationType.notificacionNota ||
-                          notificationModel.type ==
-                              NotificationType.notificacionRecordatorio)) {
-                    builderContext
-                        .read<HomeCubit>()
-                        .deleteNotification(notificationModel.id);
-                  } else {
+                  if (notificationModel.idAchievement != null) {
+                    final achivement = getIt<UICubit>()
+                        .getAchivement(notificationModel.idAchievement!);
+
+                    if (achivement == null) {
+                      return;
+                    }
+
+                    await showStickerDialog(context, achivement);
+
                     if (context.mounted) {
                       builderContext
                           .read<HomeCubit>()
                           .deleteNotification(notificationModel.id);
+                    }
+                  } else {
+                    await showCustomDialog(
+                      context,
+                      uiProvider,
+                      widget.idUser,
+                    );
+
+                    if (context.mounted &&
+                        (notificationModel.type ==
+                            NotificationType.notificacionRecomendacion)) {
+                    } else {
+                      if (context.mounted) {
+                        builderContext
+                            .read<HomeCubit>()
+                            .deleteNotification(notificationModel.id);
+                      }
                     }
                   }
                 }

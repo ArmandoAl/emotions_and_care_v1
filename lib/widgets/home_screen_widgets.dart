@@ -1,73 +1,33 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import '../helpers/paths.dart';
 
-Widget macetaConPlanta(
-    BuildContext context,
-    bool customEnable,
-    UICubit uiProvider,
-    UIState uiState,
-    AnimationController? animationController,
-    Animation? animation) {
-  return GestureDetector(
-    onTap: () async {
-      if (customEnable == true) {
-        await showItemsDialog(context, "Tus plantas", 0, uiProvider, uiState);
-      }
-    },
-    child: SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: 200,
-      child: Stack(
-        children: [
-          Positioned(
-            bottom: 45,
-            left: MediaQuery.of(context).size.width * 0.345,
-            child: uiProvider.state.currentFlower != null
-                ? CachedNetworkImage(
-                    imageUrl: uiState.currentFlower!.flower
-                        .urls![uiState.currentFlower!.state].url,
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    height: MediaQuery.of(context).size.width * 0.3,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  )
-                : const SizedBox(),
-          ),
-          Positioned(
-            bottom: -11,
-            left: MediaQuery.of(context).size.width * 0.4,
-            child: Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                        const Color.fromARGB(255, 83, 79, 79).withOpacity(0.5),
-                    spreadRadius: 1,
-                    blurRadius: 10,
-                    offset: const Offset(-1, 12),
-                  ),
-                ],
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: customEnable && animationController != null
-                  ? AnimatedBuilder(
-                      animation: animationController,
-                      builder: (context, child) {
-                        return Image.asset(
-                          Assets.pot,
-                          color: animation!.value,
-                        );
-                      },
-                    )
-                  : Image.asset(
-                      Assets.pot,
-                    ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+Map<String, double> calculatePlantAndPotPosition(Size screenSize) {
+  double width = screenSize.width;
+  // Tamaño base
+  double basePotSize = width * 0.25;
+  double basePlantSize = width * 0.24;
+  double basePotBottom = width * 0.45;
+  double basePlantBottom = (basePotSize * 0.9) + basePotBottom + 10;
+
+  // Ajustes para dispositivos muy pequeños (ej. iPhone Mini)
+  if (width < 400) {
+    basePotSize *= 0.8;
+    basePlantSize *= 1;
+    basePotBottom = width * 0.55;
+    basePlantBottom = (basePotSize * 0.9) + basePotBottom;
+  }
+
+  // Ajustes para tablets (pantallas grandes)
+  if (width > 700) {
+    basePotSize *= 0.75;
+    basePlantSize *= 0.75;
+    basePotBottom = width * 0.25;
+    basePlantBottom = (basePotSize) + basePotBottom;
+  }
+
+  return {
+    "potSize": basePotSize,
+    "plantSize": basePlantSize,
+    "potBottom": basePotBottom,
+    "plantBottom": basePlantBottom,
+  };
 }

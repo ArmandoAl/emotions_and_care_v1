@@ -1,13 +1,23 @@
+import 'package:emotions_and_care_v1/modules/auth_module/presentation/ui/forgot_password_screen.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../config/assets/assets.dart';
 
 class LoginScreen extends StatefulWidget {
   final Future<void> Function(
       String email, String password, bool isRememberPassword) onLogin;
   final void Function() onRegister;
-  const LoginScreen(
-      {super.key, required this.onLogin, required this.onRegister});
+  final Future<bool> Function(String email) recoverPassword;
+  final Future<bool> Function(String mail, String code) validateCode;
+  final Future<bool> Function(String mail, String pasword) changePassword;
+
+  const LoginScreen({
+    super.key,
+    required this.onLogin,
+    required this.onRegister,
+    required this.recoverPassword,
+    required this.validateCode,
+    required this.changePassword,
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -92,8 +102,35 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             const Spacer(),
                             GestureDetector(
+                              onTap: () {
+                                // Navegar a la pantalla de recuperación de contraseña
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ForgotPasswordScreen(
+                                      recoverPassword: (String mail) async {
+                                        return await widget
+                                            .recoverPassword(mail);
+                                      },
+                                      validateCode:
+                                          (String mail, String code) async {
+                                        return await widget.validateCode(
+                                            mail, code);
+                                      },
+                                      changePassword:
+                                          (String mail, String pasword) async {
+                                        return await widget.changePassword(
+                                            mail, pasword);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
                               child: Text('¿Olvidaste tu contraseña?',
                                   style: TextStyle(
+                                      fontFamily:
+                                          'Gilroy', // Usa la fuente personalizada
+                                      fontWeight: FontWeight.w600,
                                       fontSize:
                                           MediaQuery.of(context).size.width *
                                               0.03,
@@ -148,6 +185,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   : const Text(
                                       'Iniciar sesión',
                                       style: TextStyle(
+                                        fontFamily:
+                                            'Gilroy', // Usa la fuente personalizada
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                         fontSize: 20,
                                       ),
@@ -216,6 +256,8 @@ Widget _customTextFieldWidget(
           children: [
             Text(hintText,
                 style: TextStyle(
+                    fontFamily: 'Gilroy', // Usa la fuente personalizada
+                    fontWeight: FontWeight.w600, // Gilroy-Regular
                     fontSize: MediaQuery.of(context).size.width * 0.04,
                     color: Colors.black)),
             const Spacer()

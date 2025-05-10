@@ -37,6 +37,15 @@ class _SearchSpecialistControllerState
         return Scaffold(
           appBar: AppBar(
             title: const Text("Buscar especialista"),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.info),
+                onPressed: () {
+                  showMessageDialog(context, "Informacion",
+                      "En este apartado se encuentra el catálogo de especialistas con los que te puedes vincular. |También puedes pedirle el código de vinculación a cualquier especialista de tu preferencia para agregarlo manualmente.");
+                },
+              ),
+            ],
           ),
           body: SearchSpecialistScreen(
             patientModel: widget.patientModel,
@@ -63,8 +72,8 @@ class _SearchSpecialistControllerState
                 ),
               );
             },
-            onFilterTap: () {
-              showFilterialog(context);
+            onFilterTap: () async {
+              await showFilterialog(context);
             },
             syncDirectByCode: (code) async {
               final res = await context
@@ -93,73 +102,151 @@ class _SearchSpecialistControllerState
   }
 }
 
-void showFilterialog(BuildContext context) {
-  showDialog(
+Future<void> showFilterialog(BuildContext context) async {
+  await showDialog(
     context: context,
     builder: (context) {
-      return AlertDialog(
-        title: const Text("Filtrar especialistas"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
+      return BlocBuilder<ScheduleCubit, ScheduleState>(
+        builder: (context, state) {
+          final filers = state.filters;
+
+          return AlertDialog(
+            title: const Text("Filtrar especialistas"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Text("Sexo: "),
-                Expanded(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    items: const [
-                      DropdownMenuItem(
-                        value: "Masculino",
-                        child: Text("Masculino"),
+                Row(
+                  children: [
+                    const Text("Sexo: "),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: filers["sexo"] ?? "Sin especificar",
+                        items: const [
+                          DropdownMenuItem(
+                            value: "Sin especificar",
+                            child: Text("Sin especificar"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Masculino",
+                            child: Text("Masculino"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Femenino",
+                            child: Text("Femenino"),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          context.read<ScheduleCubit>().addFilter(
+                                "sexo",
+                                value,
+                              );
+                        },
                       ),
-                      DropdownMenuItem(
-                        value: "Femenino",
-                        child: Text("Femenino"),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Text("Edad: "),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: filers["edad"] ?? "Sin especificar",
+                        items: const [
+                          DropdownMenuItem(
+                            value: "Sin especificar",
+                            child: Text("Sin especificar"),
+                          ),
+                          DropdownMenuItem(
+                            value: "20-30",
+                            child: Text("20-30"),
+                          ),
+                          DropdownMenuItem(
+                            value: "30-45",
+                            child: Text("30-45"),
+                          ),
+                          DropdownMenuItem(
+                            value: "45-100",
+                            child: Text("45+"),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          context.read<ScheduleCubit>().addFilter(
+                                "edad",
+                                value,
+                              );
+                        },
                       ),
-                    ],
-                    onChanged: (value) {},
-                  ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Text("Especialidad: "),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: filers["especialidad"] ?? "Sin especificar",
+                        items: const [
+                          DropdownMenuItem(
+                            value: "Sin especificar",
+                            child: Text("Sin especificar"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Psicoanálisis",
+                            child: Text("Psicoanálisis"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Cognitivo Conductual",
+                            child: Text("Cognitivo Conductual"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Psicología Clínica",
+                            child: Text("Psicología Clínica"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Psicología Educativa",
+                            child: Text("Psicología Educativa"),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          context.read<ScheduleCubit>().addFilter(
+                                "especialidad",
+                                value,
+                              );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            Row(
-              children: [
-                const Text("Especialidad: "),
-                Expanded(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    items: const [
-                      DropdownMenuItem(
-                        value: "Psicologo",
-                        child: Text("Psicologo"),
-                      ),
-                      DropdownMenuItem(
-                        value: "Psiquiatra",
-                        child: Text("Psiquiatra"),
-                      ),
-                    ],
-                    onChanged: (value) {},
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("Cancelar"),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("Filtrar"),
-          ),
-        ],
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Salir"),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<ScheduleCubit>().clearFilters();
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Limpiar"),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<ScheduleCubit>().filterSpecialist(state.filters);
+
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Filtrar"),
+              ),
+            ],
+          );
+        },
       );
     },
   );

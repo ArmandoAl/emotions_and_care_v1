@@ -4,7 +4,7 @@ import '../../../helpers/paths.dart';
 
 class CartRepository extends ICartRepository {
   @override
-  Future<GoalWithCart> addCart(
+  Future<CartWithAchivement> addCart(
       CartModel cart, int idUser, bool isPatient) async {
     try {
       final response = await http.post(
@@ -20,7 +20,7 @@ class CartRepository extends ICartRepository {
         throw Exception('Failed to add note');
       }
 
-      return GoalWithCart.fromJson(jsonDecode(response.body));
+      return CartWithAchivement.fromJson(jsonDecode(response.body));
     } catch (e) {
       throw Exception('Failed to add note');
     }
@@ -114,7 +114,7 @@ class CartRepository extends ICartRepository {
   }
 
   @override
-  Future<GoalWithResponseCart> addResponse(
+  Future<ResponseWithAchivement> addResponse(
       CartResponse cartResponse, int idCart) async {
     try {
       final response = await http.post(
@@ -130,7 +130,7 @@ class CartRepository extends ICartRepository {
         throw Exception('Failed to add response');
       }
 
-      return GoalWithResponseCart.fromJson(jsonDecode(response.body));
+      return ResponseWithAchivement.fromJson(jsonDecode(response.body));
     } catch (e) {
       throw Exception('Failed to add response');
     }

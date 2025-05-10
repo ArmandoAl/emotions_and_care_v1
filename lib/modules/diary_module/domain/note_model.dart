@@ -41,7 +41,8 @@ class NoteModel {
       title: json['title'],
       content: json['content'],
       emotion: EmotionModel.fromJson(json['emotion']),
-      createdAt: DateTime.parse(json['dateCreated']),
+      createdAt:
+          (DateTime.tryParse(json['dateCreated']) ?? DateTime.now()).toLocal(),
       visible: json['visible'],
     );
   }
@@ -51,7 +52,6 @@ class NoteModel {
       'title': title,
       'content': content,
       'emotion': emotion.toJson(),
-      //'FechaCreacion': createdAt.toIso8601String(),
       'visible': visible,
     };
   }
@@ -80,6 +80,33 @@ class GoalWithNote {
     return GoalWithNote(
       id: json['noteId'],
       goalModel: json['goal'] != null ? GoalModel.fromJson(json['goal']) : null,
+    );
+  }
+}
+
+class NoteWithAchivement {
+  final int id;
+  final int? achivementId;
+
+  NoteWithAchivement({
+    required this.id,
+    required this.achivementId,
+  });
+
+  NoteWithAchivement copyWith({
+    int? id,
+    int? achivementId,
+  }) {
+    return NoteWithAchivement(
+      id: id ?? this.id,
+      achivementId: achivementId ?? this.achivementId,
+    );
+  }
+
+  factory NoteWithAchivement.fromJson(Map<String, dynamic> json) {
+    return NoteWithAchivement(
+      id: json['noteId'],
+      achivementId: json['achievementId'],
     );
   }
 }

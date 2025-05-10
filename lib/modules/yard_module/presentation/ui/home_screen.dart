@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:emotions_and_care_v1/modules/yard_module/presentation/ui/goals_room.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../helpers/paths.dart';
+import 'maceta_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String route = 'home';
@@ -57,23 +59,20 @@ class StaticHomeScreen extends StatefulWidget {
 
 class _StaticHomeScreenState extends State<StaticHomeScreen>
     with TickerProviderStateMixin {
+  late UICubit uiProvider;
+  late BegginCubit userProvider;
   double _animationTop = 0;
   double _animationLeft = -0.2;
   double angle = 0;
   bool itGotTheEnd = false;
   AnimationController? _controller;
   Timer? _timer;
-
   AnimationController? _buttonController;
   Animation<Color?>? _buttonAnimation;
-
   AnimationController? _flashController;
   Animation<double>? _flashAnimation;
-
   StreamSubscription? _subscription;
-
-  late UICubit uiProvider;
-  late BegginCubit userProvider;
+  bool showPlane = true;
 
   @override
   void initState() {
@@ -114,19 +113,11 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           showMessageDialog(context, "¡Hola!",
-              "Te damos la bienvenida a Emotions&Care, una aplicación móvil diseñada para la detección y seguimiento de la salud mental de personas que se encuentran estudiando la universidad. |Sabemos que el camino universitario puede ser retador, pero no te preocupes, ¡Estamos aquí para apoyarte en cada paso del camino!. |Por favor, selecciona el menú para iniciar.",
+              "Emotions&Care es una aplicación móvil diseñada para la detección y seguimiento de la salud mental en estudiantes universitarios. |Al igual que una planta necesitas cuidados para crecer y mantenerte resiliente, tu bienestar emocional también requiere atención y dedicación. |Por favor, presiona 'Ok' para continuar tu registro en la app.",
               dimiss: false);
         });
       }
 
-      // if (widget.registerFlow != null &&
-      //     widget.registerFlow == "registerSuccess") {}
-
-      //revisar como haremos este dialog
-      // ¡Estás listo para despegar hacia el bienestar!
-      // Tu avión de recomendaciones diarias está aquí para guiarte.
-      // Recibirás recomendaciones diarias y personalizadas que te ayudarán a darle seguimiento tu salud mental
-      // Cada día, despegamos hacia nuevas posibilidades y pequeñas acciones que marcarán la diferencia en tu camino hacia el crecimiento personal.
       if (widget.registerFlow != null &&
           widget.registerFlow == "registerSuccess") {
         _controller = AnimationController(
@@ -176,12 +167,7 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 161, 210, 238),
-      ),
+    return SizedBox.expand(
       child: BlocBuilder<UICubit, UIState>(
           bloc: uiProvider,
           builder: (BuildContext context, UIState state) {
@@ -208,7 +194,7 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
             return Stack(
               children: [
                 uiProvider.state.selectedBackground != "null"
-                    ? SvgPicture.asset(
+                    ? Lottie.asset(
                         uiProvider.state.selectedBackground,
                         fit: BoxFit.cover,
                         width: double.infinity,
@@ -237,65 +223,23 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
                       ),
                     ),
                   ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  child: Column(
-                    children: [
-                      macetaConPlanta(
-                        context,
-                        false,
-                        uiProvider,
-                        state,
-                        null,
-                        null,
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(Assets.wood),
-                            fit: BoxFit.cover,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              blurRadius: 10,
-                              spreadRadius: 1,
-                            ),
-                          ],
-                        ),
-                        width: MediaQuery.of(context).size.width,
-                        height: 150,
-                      ),
-                    ],
+                Container(
+                  color: Colors.transparent,
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: PotWidget(
+                    customEnable: false,
+                    dimissPlane: (bool value) {
+                      setState(() {
+                        showPlane = !value;
+                      });
+                    },
+                    cubit: uiProvider,
+                    state: state,
                   ),
                 ),
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.05,
-                  left: MediaQuery.of(context).size.width * 0.08,
-                  child: stickerWidget(context, getStickerFromState(state, 0),
-                      null, null, uiProvider, state, 0, false),
-                ),
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.02,
-                  left: MediaQuery.of(context).size.width * 0.4,
-                  child: stickerWidget(context, getStickerFromState(state, 1),
-                      null, null, uiProvider, state, 1, false),
-                ),
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.04,
-                  right: MediaQuery.of(context).size.width * 0.09,
-                  child: stickerWidget(context, getStickerFromState(state, 2),
-                      null, null, uiProvider, state, 2, false),
-                ),
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.13,
-                  right: MediaQuery.of(context).size.width * 0.008,
-                  child: stickerWidget(context, getStickerFromState(state, 3),
-                      null, null, uiProvider, state, 3, false),
-                ),
-                Positioned(
-                  top: MediaQuery.of(context).size.height * 0.05,
+                  top: MediaQuery.of(context).size.height * 0.075,
                   left: MediaQuery.of(context).size.width * 0.01,
                   child: widget.registerFlow != null &&
                           widget.registerFlow == "register"
@@ -307,7 +251,7 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
                                   color:
                                       _buttonAnimation!.value ?? Colors.black,
                                   size:
-                                      MediaQuery.of(context).size.width * 0.1),
+                                      MediaQuery.of(context).size.width * 0.15),
                               onPressed: () {
                                 Scaffold.of(context).openDrawer();
                               },
@@ -317,17 +261,37 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
                       : Builder(builder: (context) {
                           return IconButton(
                             icon: Icon(Icons.menu,
-                                color: const Color(
-                                  0xff064ACB,
-                                ),
-                                size: MediaQuery.of(context).size.width * 0.1),
+                                color: Colors.white,
+                                size: MediaQuery.of(context).size.width * 0.12),
                             onPressed: () {
                               Scaffold.of(context).openDrawer();
                             },
                           );
                         }),
                 ),
-                widget.plane != null && _controller != null
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.085,
+                  right: MediaQuery.of(context).size.width * 0.01,
+                  child: widget.registerFlow != null &&
+                          widget.registerFlow == "register"
+                      ? Container()
+                      : Builder(builder: (context) {
+                          return IconButton(
+                            icon: Icon(Icons.auto_awesome,
+                                color: Colors.white,
+                                size:
+                                    MediaQuery.of(context).size.width * 0.075),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const GoalsRoom(),
+                                  ));
+                            },
+                          );
+                        }),
+                ),
+                widget.plane != null && _controller != null && showPlane
                     ? AnimatedBuilder(
                         animation: _controller!,
                         builder: (context, child) {
@@ -348,13 +312,10 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
                                       ..rotateZ(angle),
 
                                 alignment: Alignment.center,
-                                child: Lottie.asset(
-                                  Assets.paperPlaneAnimation,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.45,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.45,
-                                ),
+                                child: Lottie.asset(Assets.paperPlaneAnimation,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.45,
+                                    fit: BoxFit.cover),
                               ),
                             ),
                           );

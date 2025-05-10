@@ -251,8 +251,6 @@ Widget emotionsForWeekWidgetForStaticts(
 }
 
 Widget percentWidget(BuildContext context, double percent, Color color) {
-  //quiero que el widget tenga el tamaño del progreso, para poder simular una grafica de barras
-
   final percentHeight = MediaQuery.of(context).size.height * 0.18 * percent;
 
   return Container(
@@ -278,8 +276,7 @@ Widget emotionsForWeekWidget(
   int index,
   Map<String, List<NoteModel>> notasPorSemana,
 ) {
-  final semana = notasPorSemana.keys
-      .toList()[index]; // Obtener la clave (nombre de semana) en el índice dado
+  final semana = notasPorSemana.keys.toList()[index];
   final notesForWeek = notasPorSemana[semana]!;
 
   return Container(
@@ -328,7 +325,7 @@ Widget notesForDayWidget(
       .toList();
 
   return Container(
-    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+    margin: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
     child: Column(
       children: [
         const SizedBox(
@@ -353,8 +350,8 @@ Widget notesForDayWidget(
 
 Widget notePerDay(BuildContext context, List<NoteModel> notes, int index) {
   return GestureDetector(
-    onTap: () {
-      showNoteInfoFromBottomShet(context, notes[index]);
+    onTap: () async {
+      await showNoteInfoFromBottomShet(context, notes[index]);
     },
     child: Center(
       child: Text(notes[index].emotion.icon!,
@@ -367,15 +364,16 @@ Widget notePerDay(BuildContext context, List<NoteModel> notes, int index) {
 
 const List<String> days = ["L", "M", "M", "J", "V", "S", "D"];
 
-void showNoteInfoFromBottomShet(BuildContext context, NoteModel note) {
-  showModalBottomSheet(
+Future<void> showNoteInfoFromBottomShet(
+    BuildContext context, NoteModel note) async {
+  await showModalBottomSheet(
     context: context,
     builder: (context) {
       return Container(
         height: MediaQuery.of(context).size.height * 0.8,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: emotionColors[note.emotion.name]!.withOpacity(0.3),
+          color: emotionColors[note.emotion.name]!.withOpacity(0.5),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -425,7 +423,7 @@ void showNoteInfoFromBottomShet(BuildContext context, NoteModel note) {
                   Text(note.emotion.icon!,
                       style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width * 0.1,
-                          color: emotionColors[note.emotion.name]!)),
+                          color: Colors.black)),
                 ],
               ),
             ),
@@ -455,7 +453,7 @@ void showNoteInfoFromBottomShet(BuildContext context, NoteModel note) {
 }
 
 int getWeekNumber(DateTime date) {
-  DateTime firstDayOfYear = DateTime(date.year, 1, 1);
+  DateTime firstDayOfYear = DateTime(date.year, 1, 1).toLocal();
   int days = date.difference(firstDayOfYear).inDays;
   int weeknumber = ((days - date.weekday + 10) / 7).floor();
 

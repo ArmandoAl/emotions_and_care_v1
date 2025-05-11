@@ -53,9 +53,10 @@ class HomeCubit extends Cubit<HomeState> {
     emit(const HomeState());
   }
 
-  void changeNotificationCompleteStatud(int id, int pattientId) {
+  void changeNotificationCompleteStatud(
+      int notificationId, int idRecomendation, int pattientId) {
     final notifications = state.items.map((e) {
-      if (e.id == id) {
+      if (e.id == notificationId) {
         return e.copyWith(completed: !e.completed!);
       }
       return e;
@@ -63,7 +64,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     emit(state.copyWith(items: notifications));
 
-    repository.recomendationCompleted(id, pattientId);
+    repository.recomendationCompleted(idRecomendation, pattientId);
   }
 
   void deleteNotificationLocally(int idNotification) {

@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
-import 'package:emotions_and_care_v1/modules/yard_module/presentation/ui/goals_room.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../helpers/paths.dart';
 import 'maceta_widget.dart';
@@ -273,11 +271,11 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
                   top: MediaQuery.of(context).size.height * 0.085,
                   right: MediaQuery.of(context).size.width * 0.01,
                   child: widget.registerFlow != null &&
-                          widget.registerFlow == "register"
+                          widget.registerFlow != "registerSuccess"
                       ? Container()
                       : Builder(builder: (context) {
                           return IconButton(
-                            icon: Icon(Icons.auto_awesome,
+                            icon: Icon(Icons.edit,
                                 color: Colors.white,
                                 size:
                                     MediaQuery.of(context).size.width * 0.075),
@@ -285,8 +283,25 @@ class _StaticHomeScreenState extends State<StaticHomeScreen>
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const GoalsRoom(),
-                                  ));
+                                      builder: (context) => HomeScreen(
+                                            plane: null,
+                                            tap: () async {
+                                              final uiProvider =
+                                                  context.read<UICubit>();
+
+                                              if (uiProvider
+                                                      .state.currentFlower ==
+                                                  null) {
+                                                await showMessageDialog(
+                                                    context,
+                                                    "",
+                                                    'Por favor debes elegir una planta para poder continuar, haz clic en la maceta para elegir una.');
+                                              }
+                                            },
+                                            registerFlow: userProvider
+                                                .state.registerPatientFlow,
+                                            customEnable: true,
+                                          )));
                             },
                           );
                         }),

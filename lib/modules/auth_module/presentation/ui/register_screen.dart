@@ -31,7 +31,39 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController licenseController = TextEditingController();
   TextEditingController ageController = TextEditingController();
-  TextEditingController focusController = TextEditingController();
+
+  List<DropdownMenuItem<String>>? items = [
+    const DropdownMenuItem(
+      value: "Cognitivo-Conductual",
+      child: Text("Cognitivo-Conductual"),
+    ),
+    const DropdownMenuItem(
+      value: "Psicoanálisis",
+      child: Text("Psicoanálisis"),
+    ),
+    const DropdownMenuItem(
+      value: "Humanista",
+      child: Text("Humanista"),
+    ),
+    const DropdownMenuItem(
+      value: "Sistémico",
+      child: Text("Sistémico"),
+    ),
+    const DropdownMenuItem(
+      value: "Neuropsicológico",
+      child: Text("Neuropsicológico"),
+    ),
+    const DropdownMenuItem(
+      value: "Gestalt",
+      child: Text("Gestalt"),
+    ),
+    const DropdownMenuItem(
+      value: "Sexología",
+      child: Text("Sexología"),
+    ),
+  ];
+  String? selectedItem = "Cognitivo-Conductual";
+
   TextEditingController institutionController = TextEditingController();
   TextEditingController ubicationController = TextEditingController();
 
@@ -70,7 +102,6 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
     phoneController.dispose();
     licenseController.dispose();
     ageController.dispose();
-    focusController.dispose();
     institutionController.dispose();
     ubicationController.dispose();
     pageController.dispose();
@@ -112,7 +143,13 @@ class _RegisterProcessScreenState extends State<RegisterProcessScreen> {
                   ageController,
                   institutionController,
                   ubicationController,
-                  focusController,
+                  items,
+                  selectedItem!,
+                  (String value) {
+                    setState(() {
+                      selectedItem = value;
+                    });
+                  },
                   sex,
                   (String value) {
                     setState(() {
@@ -223,7 +260,9 @@ Widget registerForm(
   TextEditingController ageController,
   TextEditingController institutionController,
   TextEditingController ubicationController,
-  TextEditingController focusController,
+  List<DropdownMenuItem<String>>? items,
+  String selectedItem,
+  Function(String value) setSelectedItem,
   String sex,
   Function changeSex,
   TextEditingController? licenseController,
@@ -340,14 +379,30 @@ Widget registerForm(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
             if (!isPatient)
-              _customTextFieldForRegister(
-                  context,
-                  focusController,
-                  "Especialidad",
-                  Icons.credit_card,
-                  null,
-                  null,
-                  TextInputType.text),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.03,
+                    vertical: MediaQuery.of(context).size.height * 0.001),
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.05,
+                    vertical: MediaQuery.of(context).size.height * 0.001),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: DropdownButton(
+                    isExpanded: true,
+                    value: selectedItem,
+                    underline: Container(),
+                    items: items,
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down_outlined,
+                    ),
+                    onChanged: (String? value) {
+                      setSelectedItem(value!);
+                    }),
+              ),
             if (!isPatient)
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
@@ -449,7 +504,6 @@ Widget registerForm(
 
                   if (isPatient == false) {
                     if (licenseController!.text.isEmpty ||
-                        focusController.text.isEmpty ||
                         ageController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -523,7 +577,7 @@ Widget registerForm(
                           'jknbvibnrwevruibweqig4wufinj6hrveuheic4buwn4ivh2ug54ifwhvn6g354c8rytaejke7jrhaeg456k7el8kt7jrsteahrgef${passwordController.text}',
                       tokenForRelate: '',
                       bornDate: DateTime.now().toLocal(),
-                      focus: focusController.text,
+                      focus: selectedItem,
                       institution: institutionController.text,
                       ubication: ubicationController.text,
                     ));

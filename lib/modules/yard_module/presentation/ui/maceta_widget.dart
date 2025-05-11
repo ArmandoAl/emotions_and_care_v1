@@ -249,6 +249,7 @@ class _PotWidgetState extends State<PotWidget> with TickerProviderStateMixin {
                                         Assets.potSvgAssets,
                                         height: plantPotData['potSize'],
                                         fit: BoxFit.fill,
+                                        // ignore: deprecated_member_use
                                         color: _animation!.value,
                                       );
                                     },

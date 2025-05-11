@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_types_as_parameter_names
 import 'package:emotions_and_care_v1/modules/patients_request/presentation/ui/patient_request_controller.dart';
-
+import 'package:emotions_and_care_v1/modules/yard_module/presentation/ui/goals_room.dart';
 import '../../helpers/navigation_bloc.dart';
 import '../../helpers/paths.dart';
 
@@ -176,6 +176,19 @@ PreferredSizeWidget? _getAppBarFromState(
   switch (selectedItem) {
     case NavigationItem.home:
       return null;
+    case NavigationItem.goals:
+      return HeaderWidget(
+        title: 'Collección',
+        isForReturn: false,
+        actions: [
+          IconButton(
+              onPressed: () {
+                showMessageDialog(context, "Collección",
+                    "La colección es un espacio donde puedes ver tus logros, stickers y flores. |Puedes coleccionar stickers y flores al completar tus objetivos y retos. |Recuerda que cada sticker y flor tiene un significado especial, así que asegúrate de leer su descripción.");
+              },
+              icon: const Icon(Icons.info)),
+        ],
+      );
     case NavigationItem.test:
       return HeaderWidget(title: 'Cuestionarios', isForReturn: false, actions: [
         ElevatedButton(
@@ -265,6 +278,7 @@ PreferredSizeWidget? _getAppBarFromState(
 
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => NotesProgressScreen(
+                      isPattient: true,
                       notes: dailyCubit.state.notes,
                       patientModel: begginCubit.state.patientModel!)));
             },
@@ -321,6 +335,8 @@ Widget _getContentForState(
         changeIndex: (int) {},
         begginState: begginCubit.state,
       );
+    case NavigationItem.goals:
+      return const GoalsRoom();
     case NavigationItem.test:
       return TestController(
         patientModel: begginCubit.state.patientModel!,

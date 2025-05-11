@@ -25,7 +25,6 @@ class _GoalsRoomState extends State<GoalsRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderWidget(title: "Tu coleccion", isForReturn: true),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -34,7 +33,6 @@ class _GoalsRoomState extends State<GoalsRoom> {
             Expanded(
                 child: Column(
               children: [
-                const SizedBox(height: 15),
                 Row(
                   children: [
                     const SizedBox(width: 15),

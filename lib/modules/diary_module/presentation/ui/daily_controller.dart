@@ -90,6 +90,7 @@ class _DailyControllerState extends State<DailyController> {
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => NotesProgressScreen(
+                                    isPattient: widget.isPattient,
                                     notes: dailyCubit.state.notes,
                                     patientModel: widget.patientModel)));
                           },

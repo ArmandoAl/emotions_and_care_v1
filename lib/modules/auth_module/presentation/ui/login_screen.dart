@@ -156,8 +156,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05),
-                        SizedBox(
                           width: double.infinity,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -195,8 +193,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05),
                         const Row(children: [
                           Expanded(child: Divider()),
                           Padding(
@@ -206,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(child: Divider()),
                         ]),
                         SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.05),
+                            height: MediaQuery.of(context).size.height * 0.01),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

@@ -164,8 +164,6 @@ class ScheduleRepository implements IScheduleRepository {
   Future<bool> updateSchedule(DateModel date, int patientId, int specialistId,
       bool isFromSpecialist) async {
     try {
-      //imptime el json
-
       final response = await http.put(
         Uri.parse(
             '${Api.baseUrl}Cita/$patientId/actualizarCita/$isFromSpecialist/$specialistId'),

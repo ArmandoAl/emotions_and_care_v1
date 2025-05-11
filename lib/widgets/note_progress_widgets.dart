@@ -283,7 +283,6 @@ Widget emotionsForWeekWidget(
     width: MediaQuery.of(context).size.width * 0.95,
     height: MediaQuery.of(context).size.height * 0.3,
     margin: const EdgeInsets.symmetric(horizontal: 10.0),
-    padding: const EdgeInsets.all(10.0),
     decoration: BoxDecoration(
       color: const Color.fromARGB(183, 246, 246, 246),
       borderRadius: BorderRadius.circular(20),
@@ -333,7 +332,7 @@ Widget notesForDayWidget(
         ),
         Text(
           days[dayIndex % 7],
-          style: const TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 14),
         ),
         Expanded(
           child: ListView.builder(
@@ -355,9 +354,7 @@ Widget notePerDay(BuildContext context, List<NoteModel> notes, int index) {
     },
     child: Center(
       child: Text(notes[index].emotion.icon!,
-          style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width * 0.05,
-          )),
+          style: const TextStyle(fontSize: 20)),
     ),
   );
 }

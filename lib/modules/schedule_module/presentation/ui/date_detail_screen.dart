@@ -46,6 +46,7 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
   @override
   void initState() {
     super.initState();
+
     descriptionController.text = widget.dateModel!.description ?? '';
     date = widget.dateModel!.date!;
     placeController.text = widget.dateModel!.place ?? '';
@@ -628,7 +629,9 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
                 ),
                 if (widget.isPattient == true &&
                     widget.dateModel!.status == DateStatus.pendingToMatch &&
-                    isEditing == false)
+                    isEditing == false &&
+                    widget.dateModel!.confirmByPatient == false &&
+                    widget.dateModel!.confirmByEspetialist == true)
                   Column(
                     children: [
                       Text(
@@ -683,7 +686,7 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
                                       ),
                                       widget.dateModel!.patient!.id!,
                                       widget.especialistaModel!.id!,
-                                      !widget.isPattient,
+                                      widget.isPattient,
                                     );
 
                                 if (res == true && context.mounted) {
@@ -768,7 +771,9 @@ class _DateDetailScreenState extends State<DateDetailScreen> {
                         )),
                     if (widget.isPattient == true &&
                         widget.dateModel!.status == DateStatus.pendingToMatch &&
-                        isEditing == false)
+                        isEditing == false &&
+                        widget.dateModel!.confirmByPatient == false &&
+                        widget.dateModel!.confirmByEspetialist == true)
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor:

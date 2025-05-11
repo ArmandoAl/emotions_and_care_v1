@@ -1,4 +1,5 @@
 import 'package:emotions_and_care_v1/helpers/navigation_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../helpers/paths.dart';
 
@@ -46,6 +47,7 @@ class _DrawerWidgetState extends State<DrawerWidget>
     _NavigationItem(NavigationItem.dairy, 'Diario', Icons.mode_outlined),
     _NavigationItem(NavigationItem.community, 'Comunidad', Icons.people),
     _NavigationItem(NavigationItem.schedule, 'Agenda', Icons.book_sharp),
+    _NavigationItem(NavigationItem.goals, 'Colección', Icons.auto_awesome),
     _NavigationItem(NavigationItem.settings, 'Configuración', Icons.settings),
   ];
 
@@ -136,23 +138,40 @@ class _DrawerWidgetState extends State<DrawerWidget>
             Row(
               children: [
                 IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.of(context).pop();
 
-                      context.read<ScheduleCubit>().clean();
-                      context.read<HomeCubit>().clean();
-
-                      context.read<CommunityCubit>().clean();
-
-                      context.read<DailyCubit>().clean();
-
-                      context.read<TestCubit>().clean();
-
-                      context.read<UICubit>().clean();
-
-                      context.read<BegginCubit>().logout();
-
-                      context.read<PattientsDatesCubit>().clean();
+                      await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Emergencia'),
+                            content: const Text(
+                                '¿Quieres llamar a la línea de emergencia?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancelar'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  const String phoneNumber =
+                                      '800-911-2000'; // Número de emergencia
+                                  const String url =
+                                      'tel:$phoneNumber'; // URL para llamar
+                                  // Llama a la función launchUrlString
+                                  // para abrir la aplicación de teléfono
+                                  // y marcar el número
+                                  launchUrlString(url);
+                                },
+                                child: const Text('Llamar'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     icon: Icon(Icons.help,
                         size: MediaQuery.of(context).size.width * 0.1)),
@@ -225,5 +244,15 @@ Widget _menuItem({
       },
       selected: isSelected,
     );
+  }
+}
+
+Future<void> launchUrlString(String url) async {
+  // Implement the function to launch the URL
+  // This is a placeholder implementation
+  if (await canLaunchUrl(Uri.parse(url))) {
+    launchUrl(Uri.parse(url));
+  } else {
+    throw 'Could not launch $url';
   }
 }

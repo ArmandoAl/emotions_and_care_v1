@@ -70,8 +70,12 @@ class DefaultFirebaseOptions {
     messagingSenderId: '337730650555',
     projectId: 'emotionsandcareal',
     storageBucket: 'emotionsandcareal.appspot.com',
-    iosClientId: '337730650555-dgac5q7gc4sa6nqm742jrntdo2bhd0jq.apps.googleusercontent.com',
+    iosClientId:
+        '337730650555-dgac5q7gc4sa6nqm742jrntdo2bhd0jq.apps.googleusercontent.com',
     iosBundleId: 'com.example.emotionsandcare',
   );
-
 }
+
+// web       1:337730650555:web:f9629f09774e07edbcc49e
+// android   1:337730650555:android:7219ef3af2acb372bcc49e
+// ios       1:337730650555:ios:5705cc499b2040cbbcc49e

@@ -23,7 +23,7 @@ class _ScheduleControllerState extends State<ScheduleController> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.isPattient == false) {
         especialistaModel = getIt<BegginCubit>().state.specialistModel;
-        patientModel = null;
+        patientModel = getIt<BegginCubit>().state.patientModel;
         if (context.read<ScheduleCubit>().state.dates.isEmpty) {
           context
               .read<ScheduleCubit>()
@@ -44,7 +44,7 @@ class _ScheduleControllerState extends State<ScheduleController> {
 
     if (widget.isPattient == false) {
       especialistaModel = getIt<BegginCubit>().state.specialistModel;
-      patientModel = null;
+      patientModel = getIt<BegginCubit>().state.patientModel;
       if (context.read<ScheduleCubit>().state.dates.isEmpty) {
         context
             .read<ScheduleCubit>()
@@ -52,7 +52,7 @@ class _ScheduleControllerState extends State<ScheduleController> {
       }
     } else {
       patientModel = getIt<BegginCubit>().state.patientModel;
-      especialistaModel = null;
+      especialistaModel = getIt<BegginCubit>().state.patientModel!.specialist;
       context.read<ScheduleCubit>().getSchedule(patientModel!.id!);
     }
   }

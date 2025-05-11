@@ -20,6 +20,8 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   Future<void> initialize() async {
+    await _firebaseMessaging.setAutoInitEnabled(true);
+
     final String os = getPlattform();
     final NotificationSettings res = await _firebaseMessaging.requestPermission(
       alert: true,
@@ -56,10 +58,10 @@ class FirebaseNotificationsCubit extends Cubit<NotificationState> {
         if (os == 'android') {
           token = await _firebaseMessaging.getToken() ?? "";
         } else {
-          // token = await _firebaseMessaging.getToken(
-          //         vapidKey:
-          //             'BFNqfSXGTG1S09jgTrnKezuMoeIm4YKTmGpj-pSJ3I_bdJmwMjukbbo9y0DZ-LhU29hdKi1DWMhR4R8GDNTLlVA') ??
-          //     "";
+          token = await _firebaseMessaging.getToken(
+                  vapidKey:
+                      'BGy55eiZlgAsS4l_k7PWBoZIlCCE8LOZxP8dtg8atKjOYygUErmmgt3P_OWbS2hR2tVG8raf0aDojYzepCZcWi8') ??
+              "";
 
           print('Token: $token');
         }

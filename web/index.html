@@ -22,46 +22,15 @@
 <body>
   <script src="flutter_bootstrap.js" async></script>
   <script src="main.dart.js" type="application/javascript"></script>
-   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
-
-    <!-- Firebase Configuration -->
-    <script>
-      var firebaseConfig = {
-        apiKey: "...",
-        authDomain: "[YOUR_PROJECT].firebaseapp.com",
-        databaseURL: "https://[YOUR_PROJECT].firebaseio.com",
-        projectId: "[YOUR_PROJECT]",
-        storageBucket: "[YOUR_PROJECT].appspot.com",
-        messagingSenderId: "...",
-        appId: "1:...:web:...",
-        measurementId: "G-...",
-      };
-
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-
-      const messaging = firebase.messaging();
-
-      messaging.onBackgroundMessage((payload) => {
-        console.log("onBackgroundMessage", payload);
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then(function(registration) {
+        console.log('Service Worker Registered');
+      }).catch(function(err) {
+        console.log('Service Worker registration failed: ', err);
       });
-
-      messaging.onMessage((payload) => {
-        console.log("onMessage", payload);
-      });
-
-      messaging.onTokenRefresh((payload) => {
-        console.log("onTokenRefresh", payload);
-      });
-
-      messaging.requestPermission().then((permission) => {
-        console.log("requestPermission", permission);
-      });
-
-      messaging.getToken().then((token) => {
-        console.log("getToken", token);
-      });
-    </script>
+  }
+</script>
 </body>
 </html>

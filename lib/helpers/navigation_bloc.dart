@@ -37,6 +37,7 @@ enum NavigationItem {
   community,
   schedule,
   settings,
+  goals,
 
   //specialist
   patients,

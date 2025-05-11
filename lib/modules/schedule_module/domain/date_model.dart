@@ -70,8 +70,9 @@ class DateModel {
       description: json['description'],
       confirmByPatient: json['patientConfirm'],
       confirmByEspetialist: json['specialistConfirm'],
-      patient:
-          isPatient ? null : PatientModel.fromJson(json['patient'], isPatient),
+      patient: json['patient'] != null
+          ? PatientModel.fromJson(json['patient'], isPatient)
+          : null,
       done: json['done'],
       specialistNotes: json['specialistNotes'],
       status: DateStatus.values[json['status']],

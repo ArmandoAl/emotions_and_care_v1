@@ -145,13 +145,6 @@ Future<void> showCustomDialog(
         const Duration(milliseconds: 500), // Changed to 500ms for better effect
   );
 
-  // Remove or comment out the unused animation
-  // Animation<Color> animationn = ColorTween(
-  //   begin: Colors.white,
-  //   end: Colors.green,
-  // ).animate(animationController);
-
-  // Add scale animation
   Animation<double> scaleAnimation = Tween<double>(
     begin: 1.0,
     end: 1.1,
@@ -162,9 +155,7 @@ Future<void> showCustomDialog(
     ),
   );
 
-  //que este en ciclo infinito
   animationController.repeat(reverse: true);
-
   final userFlower = uiCubit.state.currentFlower;
 
   await showDialog(
@@ -254,6 +245,7 @@ Future<void> showCustomDialog(
                                     context
                                         .read<HomeCubit>()
                                         .changeNotificationCompleteStatud(
+                                          notificationModel?.id ?? 0,
                                           notificationModel?.idRecomendation ??
                                               0,
                                           pattientId,

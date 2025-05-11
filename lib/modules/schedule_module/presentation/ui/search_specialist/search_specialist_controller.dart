@@ -194,20 +194,32 @@ Future<void> showFilterialog(BuildContext context) async {
                             child: Text("Sin especificar"),
                           ),
                           DropdownMenuItem(
+                            value: "Cognitivo-Conductual",
+                            child: Text("Cognitivo-Conductual"),
+                          ),
+                          DropdownMenuItem(
                             value: "Psicoanálisis",
                             child: Text("Psicoanálisis"),
                           ),
                           DropdownMenuItem(
-                            value: "Cognitivo Conductual",
-                            child: Text("Cognitivo Conductual"),
+                            value: "Humanista",
+                            child: Text("Humanista"),
                           ),
                           DropdownMenuItem(
-                            value: "Psicología Clínica",
-                            child: Text("Psicología Clínica"),
+                            value: "Sistémico",
+                            child: Text("Sistémico"),
                           ),
                           DropdownMenuItem(
-                            value: "Psicología Educativa",
-                            child: Text("Psicología Educativa"),
+                            value: "Neuropsicológico",
+                            child: Text("Neuropsicológico"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Gestalt",
+                            child: Text("Gestalt"),
+                          ),
+                          DropdownMenuItem(
+                            value: "Sexología",
+                            child: Text("Sexología"),
                           ),
                         ],
                         onChanged: (value) {

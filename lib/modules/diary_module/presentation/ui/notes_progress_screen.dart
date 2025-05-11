@@ -4,8 +4,12 @@ class NotesProgressScreen extends StatefulWidget {
   static const String route = 'progress';
   final PatientModel patientModel;
   final List<NoteModel> notes;
+  final bool isPattient;
   const NotesProgressScreen(
-      {super.key, required this.patientModel, required this.notes});
+      {super.key,
+      required this.patientModel,
+      required this.notes,
+      required this.isPattient});
 
   @override
   State<NotesProgressScreen> createState() => _NotesProgressScreenState();
@@ -21,7 +25,9 @@ class _NotesProgressScreenState extends State<NotesProgressScreen> {
   void initState() {
     super.initState();
     notasPorSemana = organizarNotasPorSemana(
-      separarNotasPorSemanaYDia(widget.notes),
+      separarNotasPorSemanaYDia(widget.isPattient
+          ? widget.notes
+          : widget.notes.where((element) => element.visible == true).toList()),
     );
   }
 

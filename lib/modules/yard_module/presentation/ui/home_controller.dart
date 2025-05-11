@@ -113,6 +113,7 @@ class _HomeControllerState extends State<HomeController> {
                     if (context.mounted &&
                         (notificationModel.type ==
                             NotificationType.notificacionRecomendacion)) {
+                      return;
                     } else {
                       if (context.mounted) {
                         builderContext

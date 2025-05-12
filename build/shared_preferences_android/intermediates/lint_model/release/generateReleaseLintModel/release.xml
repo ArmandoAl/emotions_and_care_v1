@@ -1,0 +1,31 @@
+<variant
+    name="release"
+    package="io.flutter.plugins.sharedpreferences"
+    minSdkVersion="19"
+    targetSdkVersion="19"
+    mergedManifest="/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml"
+    manifestMergeReport="/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/outputs/logs/manifest-merger-release-report.txt"
+    proguardFiles="/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/intermediates/default_proguard_files/global/proguard-android.txt-8.7.3"
+    partialResultsDir="/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/intermediates/lint_partial_results/release/lintAnalyzeRelease/out">
+  <buildFeatures
+      namespacing="REQUIRED"/>
+  <sourceProviders>
+    <sourceProvider
+        manifests="src/main/AndroidManifest.xml"
+        javaDirectories="src/main/java:src/main/kotlin:src/release/java:src/release/kotlin"
+        resDirectories="src/main/res:src/release/res"
+        assetsDirectories="src/main/assets:src/release/assets"/>
+  </sourceProviders>
+  <testSourceProviders>
+  </testSourceProviders>
+  <testFixturesSourceProviders>
+  </testFixturesSourceProviders>
+  <artifact
+      classOutputs="/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/intermediates/javac/release/compileReleaseJavaWithJavac/classes:/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/tmp/kotlin-classes/release:/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/intermediates/compile_r_class_jar/release/generateReleaseRFile/R.jar"
+      type="MAIN"
+      applicationId="io.flutter.plugins.sharedpreferences"
+      generatedSourceFolders="/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/generated/ap_generated_sources/release/out"
+      generatedResourceFolders="/Users/armandoalvarado/Documents/emotionsandcarefront/build/shared_preferences_android/generated/res/resValues/release"
+      desugaredMethodsFiles="/Users/armandoalvarado/.gradle/caches/8.9/transforms/46dade0e43d661717a6029ebc1711fa3/transformed/D8BackportedDesugaredMethods.txt">
+  </artifact>
+</variant>

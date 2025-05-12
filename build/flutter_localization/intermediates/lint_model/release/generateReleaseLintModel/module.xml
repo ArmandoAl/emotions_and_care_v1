@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="/Users/armandoalvarado/.pub-cache/hosted/pub.dev/flutter_localization-0.2.3/android"
+    name=":flutter_localization"
+    type="LIBRARY"
+    maven="com.mastertipsy.flutter_localization:flutter_localization:1.0-SNAPSHOT"
+    agpVersion="8.7.3"
+    buildFolder="/Users/armandoalvarado/Documents/emotionsandcarefront/build/flutter_localization"
+    bootClassPath="/Users/armandoalvarado/Library/Android/sdk/platforms/android-34/android.jar:/Users/armandoalvarado/Library/Android/sdk/build-tools/34.0.0/core-lambda-stubs.jar"
+    javaSourceLevel="11"
+    compileTarget="android-34"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

@@ -1,0 +1,6 @@
+[
+    {
+        "merged": "com.mastertipsy.flutter_localization-release-25:/drawable-v21/notification_action_background.xml",
+        "source": "com.mastertipsy.flutter_localization-core-1.13.1-3:/drawable-v21/notification_action_background.xml"
+    }
+]

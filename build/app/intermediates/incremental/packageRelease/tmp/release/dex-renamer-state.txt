@@ -1,0 +1,4 @@
+#Sun May 11 14:58:34 PDT 2025
+base.0=/Users/armandoalvarado/Documents/emotionsandcarefront/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

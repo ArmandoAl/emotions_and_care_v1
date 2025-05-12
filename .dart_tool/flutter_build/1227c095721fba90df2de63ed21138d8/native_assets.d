@@ -1,0 +1,1 @@
+ /Users/armandoalvarado/Documents/emotionsandcarefront/.dart_tool/flutter_build/1227c095721fba90df2de63ed21138d8/native_assets.yaml: 

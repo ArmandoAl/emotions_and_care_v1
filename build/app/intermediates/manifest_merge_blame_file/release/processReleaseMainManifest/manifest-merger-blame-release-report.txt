@@ -1,0 +1,419 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.emotionsandcare"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="34" />
+10    <!--
+11         Required to query activities that can process text, see:
+12         https://developer.android.com/training/package-visibility and
+13         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+14
+15         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
+16    -->
+17    <queries>
+17-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:39:5-44:15
+18        <intent>
+18-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:40:9-43:18
+19            <action android:name="android.intent.action.PROCESS_TEXT" />
+19-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:41:13-72
+19-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:41:21-70
+20
+21            <data android:mimeType="text/plain" />
+21-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:42:13-50
+21-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:42:19-48
+22        </intent>
+23    </queries>
+24
+25    <uses-permission android:name="android.permission.INTERNET" />
+25-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:7:5-67
+25-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:7:22-64
+26    <uses-permission android:name="android.permission.WAKE_LOCK" />
+26-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:8:5-68
+26-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:8:22-65
+27    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Permissions options for the `notification` group -->
+27-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:9:5-79
+27-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:9:22-76
+28    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+28-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:11:5-77
+28-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:11:22-74
+29    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+29-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:26:5-82
+29-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:26:22-79
+30
+31    <permission
+31-->[androidx.core:core:1.13.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/4967a26742c54e5a25eb16a8384a90f2/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+32        android:name="com.example.emotionsandcare.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+32-->[androidx.core:core:1.13.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/4967a26742c54e5a25eb16a8384a90f2/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+33        android:protectionLevel="signature" />
+33-->[androidx.core:core:1.13.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/4967a26742c54e5a25eb16a8384a90f2/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+34
+35    <uses-permission android:name="com.example.emotionsandcare.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+35-->[androidx.core:core:1.13.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/4967a26742c54e5a25eb16a8384a90f2/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+35-->[androidx.core:core:1.13.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/4967a26742c54e5a25eb16a8384a90f2/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+36
+37    <application
+38        android:name="android.app.Application"
+38-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:4:9-42
+39        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+39-->[androidx.core:core:1.13.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/4967a26742c54e5a25eb16a8384a90f2/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+40        android:extractNativeLibs="true"
+41        android:icon="@mipmap/ic_launcher"
+41-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:5:9-43
+42        android:label="emotionsandcare" >
+42-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:3:9-40
+43        <activity
+43-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:6:9-27:20
+44            android:name="com.example.emotionsandcare.MainActivity"
+44-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:7:13-41
+45            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+45-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:12:13-163
+46            android:exported="true"
+46-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:8:13-36
+47            android:hardwareAccelerated="true"
+47-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:13:13-47
+48            android:launchMode="singleTop"
+48-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:9:13-43
+49            android:taskAffinity=""
+49-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:10:13-36
+50            android:theme="@style/LaunchTheme"
+50-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:11:13-47
+51            android:windowSoftInputMode="adjustResize" >
+51-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:14:13-55
+52
+53            <!--
+54                 Specifies an Android theme to apply to this Activity as soon as
+55                 the Android process has started. This theme is visible to the user
+56                 while the Flutter UI initializes. After that, this theme continues
+57                 to determine the Window background behind the Flutter UI.
+58            -->
+59            <meta-data
+59-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:19:13-22:17
+60                android:name="io.flutter.embedding.android.NormalTheme"
+60-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:20:15-70
+61                android:resource="@style/NormalTheme" />
+61-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:21:15-52
+62
+63            <intent-filter>
+63-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:23:13-26:29
+64                <action android:name="android.intent.action.MAIN" />
+64-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:24:17-68
+64-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:24:25-66
+65
+66                <category android:name="android.intent.category.LAUNCHER" />
+66-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:25:17-76
+66-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:25:27-74
+67            </intent-filter>
+68        </activity>
+69        <!--
+70             Don't delete the meta-data below.
+71             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+72        -->
+73        <meta-data
+73-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:30:9-32:33
+74            android:name="flutterEmbedding"
+74-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:31:13-44
+75            android:value="2" />
+75-->/Users/armandoalvarado/Documents/emotionsandcarefront/android/app/src/main/AndroidManifest.xml:32:13-30
+76
+77        <service
+77-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:14:9-17:72
+78            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingBackgroundService"
+78-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:15:13-107
+79            android:exported="false"
+79-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:16:13-37
+80            android:permission="android.permission.BIND_JOB_SERVICE" />
+80-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:17:13-69
+81        <service
+81-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:18:9-24:19
+82            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingService"
+82-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:19:13-97
+83            android:exported="false" >
+83-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:20:13-37
+84            <intent-filter>
+84-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:21:13-23:29
+85                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+85-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:22:17-78
+85-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:22:25-75
+86            </intent-filter>
+87        </service>
+88
+89        <receiver
+89-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:26:9-33:20
+90            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingReceiver"
+90-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:27:13-98
+91            android:exported="true"
+91-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:28:13-36
+92            android:permission="com.google.android.c2dm.permission.SEND" >
+92-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:29:13-73
+93            <intent-filter>
+93-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:30:13-32:29
+94                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+94-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:31:17-81
+94-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:31:25-78
+95            </intent-filter>
+96        </receiver>
+97
+98        <service
+98-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:35:9-39:19
+99            android:name="com.google.firebase.components.ComponentDiscoveryService"
+99-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:35:18-89
+100            android:directBootAware="true"
+100-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:32:13-43
+101            android:exported="false" >
+101-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:56:13-37
+102            <meta-data
+102-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:36:13-38:85
+103                android:name="com.google.firebase.components:io.flutter.plugins.firebase.messaging.FlutterFirebaseAppRegistrar"
+103-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:37:17-128
+104                android:value="com.google.firebase.components.ComponentRegistrar" />
+104-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:38:17-82
+105            <meta-data
+105-->[:firebase_core] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_core/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:9:13-11:85
+106                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+106-->[:firebase_core] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_core/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:10:17-124
+107                android:value="com.google.firebase.components.ComponentRegistrar" />
+107-->[:firebase_core] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_core/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:11:17-82
+108            <meta-data
+108-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:57:13-59:85
+109                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar"
+109-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:58:17-122
+110                android:value="com.google.firebase.components.ComponentRegistrar" />
+110-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:59:17-82
+111            <meta-data
+111-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:60:13-62:85
+112                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+112-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:61:17-119
+113                android:value="com.google.firebase.components.ComponentRegistrar" />
+113-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:62:17-82
+114            <meta-data
+114-->[com.google.firebase:firebase-installations:18.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/0efa88a46665fd16f5e994a37de3c5de/transformed/jetified-firebase-installations-18.0.0/AndroidManifest.xml:15:13-17:85
+115                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+115-->[com.google.firebase:firebase-installations:18.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/0efa88a46665fd16f5e994a37de3c5de/transformed/jetified-firebase-installations-18.0.0/AndroidManifest.xml:16:17-130
+116                android:value="com.google.firebase.components.ComponentRegistrar" />
+116-->[com.google.firebase:firebase-installations:18.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/0efa88a46665fd16f5e994a37de3c5de/transformed/jetified-firebase-installations-18.0.0/AndroidManifest.xml:17:17-82
+117            <meta-data
+117-->[com.google.firebase:firebase-installations:18.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/0efa88a46665fd16f5e994a37de3c5de/transformed/jetified-firebase-installations-18.0.0/AndroidManifest.xml:18:13-20:85
+118                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+118-->[com.google.firebase:firebase-installations:18.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/0efa88a46665fd16f5e994a37de3c5de/transformed/jetified-firebase-installations-18.0.0/AndroidManifest.xml:19:17-127
+119                android:value="com.google.firebase.components.ComponentRegistrar" />
+119-->[com.google.firebase:firebase-installations:18.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/0efa88a46665fd16f5e994a37de3c5de/transformed/jetified-firebase-installations-18.0.0/AndroidManifest.xml:20:17-82
+120            <meta-data
+120-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/35711bde0e494ba53d3c6529ee37ef5c/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
+121                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+121-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/35711bde0e494ba53d3c6529ee37ef5c/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:13:17-116
+122                android:value="com.google.firebase.components.ComponentRegistrar" />
+122-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/35711bde0e494ba53d3c6529ee37ef5c/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:14:17-82
+123            <meta-data
+123-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:35:13-37:85
+124                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+124-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:36:17-109
+125                android:value="com.google.firebase.components.ComponentRegistrar" />
+125-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:37:17-82
+126            <meta-data
+126-->[com.google.firebase:firebase-datatransport:18.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/96cb108e172568851afdac8812e752c7/transformed/jetified-firebase-datatransport-18.2.0/AndroidManifest.xml:25:13-27:85
+127                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+127-->[com.google.firebase:firebase-datatransport:18.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/96cb108e172568851afdac8812e752c7/transformed/jetified-firebase-datatransport-18.2.0/AndroidManifest.xml:26:17-115
+128                android:value="com.google.firebase.components.ComponentRegistrar" />
+128-->[com.google.firebase:firebase-datatransport:18.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/96cb108e172568851afdac8812e752c7/transformed/jetified-firebase-datatransport-18.2.0/AndroidManifest.xml:27:17-82
+129        </service>
+130
+131        <provider
+131-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:41:9-45:38
+132            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingInitProvider"
+132-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:42:13-102
+133            android:authorities="com.example.emotionsandcare.flutterfirebasemessaginginitprovider"
+133-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:43:13-88
+134            android:exported="false"
+134-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:44:13-37
+135            android:initOrder="99" />
+135-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:45:13-35
+136
+137        <activity
+137-->[:url_launcher_android] /Users/armandoalvarado/Documents/emotionsandcarefront/build/url_launcher_android/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:8:9-11:74
+138            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+138-->[:url_launcher_android] /Users/armandoalvarado/Documents/emotionsandcarefront/build/url_launcher_android/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:9:13-74
+139            android:exported="false"
+139-->[:url_launcher_android] /Users/armandoalvarado/Documents/emotionsandcarefront/build/url_launcher_android/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:10:13-37
+140            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+140-->[:url_launcher_android] /Users/armandoalvarado/Documents/emotionsandcarefront/build/url_launcher_android/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:11:13-71
+141
+142        <receiver
+142-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:29:9-40:20
+143            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+143-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:30:13-78
+144            android:exported="true"
+144-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:31:13-36
+145            android:permission="com.google.android.c2dm.permission.SEND" >
+145-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:32:13-73
+146            <intent-filter>
+146-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:30:13-32:29
+147                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+147-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:31:17-81
+147-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:31:25-78
+148            </intent-filter>
+149
+150            <meta-data
+150-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:37:13-39:40
+151                android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED"
+151-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:38:17-92
+152                android:value="true" />
+152-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:39:17-37
+153        </receiver>
+154        <!--
+155             FirebaseMessagingService performs security checks at runtime,
+156             but set to not exported to explicitly avoid allowing another app to call it.
+157        -->
+158        <service
+158-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:46:9-53:19
+159            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+159-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:47:13-82
+160            android:directBootAware="true"
+160-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:48:13-43
+161            android:exported="false" >
+161-->[com.google.firebase:firebase-messaging:24.1.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/136ccde14e6883d1228c5ba9906c5f88/transformed/jetified-firebase-messaging-24.1.1/AndroidManifest.xml:49:13-37
+162            <intent-filter android:priority="-500" >
+162-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:21:13-23:29
+163                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+163-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:22:17-78
+163-->[:firebase_messaging] /Users/armandoalvarado/Documents/emotionsandcarefront/build/firebase_messaging/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml:22:25-75
+164            </intent-filter>
+165        </service>
+166
+167        <uses-library
+167-->[androidx.window:window:1.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/dbc2d83f96dd6d38b054a6584a50f475/transformed/jetified-window-1.2.0/AndroidManifest.xml:23:9-25:40
+168            android:name="androidx.window.extensions"
+168-->[androidx.window:window:1.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/dbc2d83f96dd6d38b054a6584a50f475/transformed/jetified-window-1.2.0/AndroidManifest.xml:24:13-54
+169            android:required="false" />
+169-->[androidx.window:window:1.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/dbc2d83f96dd6d38b054a6584a50f475/transformed/jetified-window-1.2.0/AndroidManifest.xml:25:13-37
+170        <uses-library
+170-->[androidx.window:window:1.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/dbc2d83f96dd6d38b054a6584a50f475/transformed/jetified-window-1.2.0/AndroidManifest.xml:26:9-28:40
+171            android:name="androidx.window.sidecar"
+171-->[androidx.window:window:1.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/dbc2d83f96dd6d38b054a6584a50f475/transformed/jetified-window-1.2.0/AndroidManifest.xml:27:13-51
+172            android:required="false" />
+172-->[androidx.window:window:1.2.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/dbc2d83f96dd6d38b054a6584a50f475/transformed/jetified-window-1.2.0/AndroidManifest.xml:28:13-37
+173
+174        <provider
+174-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:23:9-28:39
+175            android:name="com.google.firebase.provider.FirebaseInitProvider"
+175-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:24:13-77
+176            android:authorities="com.example.emotionsandcare.firebaseinitprovider"
+176-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:25:13-72
+177            android:directBootAware="true"
+177-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:26:13-43
+178            android:exported="false"
+178-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:27:13-37
+179            android:initOrder="100" />
+179-->[com.google.firebase:firebase-common:21.0.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/924ed54bc8dfadcb816525f683c048b6/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:28:13-36
+180
+181        <activity
+181-->[com.google.android.gms:play-services-base:18.1.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/7c067b63e160827571bd47f1bac7895d/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:20:9-22:45
+182            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+182-->[com.google.android.gms:play-services-base:18.1.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/7c067b63e160827571bd47f1bac7895d/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:20:19-85
+183            android:exported="false"
+183-->[com.google.android.gms:play-services-base:18.1.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/7c067b63e160827571bd47f1bac7895d/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:22:19-43
+184            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+184-->[com.google.android.gms:play-services-base:18.1.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/7c067b63e160827571bd47f1bac7895d/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:21:19-78
+185
+186        <provider
+186-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/489721b25fe124236049234ae07c4c47/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:24:9-32:20
+187            android:name="androidx.startup.InitializationProvider"
+187-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/489721b25fe124236049234ae07c4c47/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:25:13-67
+188            android:authorities="com.example.emotionsandcare.androidx-startup"
+188-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/489721b25fe124236049234ae07c4c47/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:26:13-68
+189            android:exported="false" >
+189-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/489721b25fe124236049234ae07c4c47/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:27:13-37
+190            <meta-data
+190-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/489721b25fe124236049234ae07c4c47/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+191                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+191-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/489721b25fe124236049234ae07c4c47/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+192                android:value="androidx.startup" />
+192-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/489721b25fe124236049234ae07c4c47/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+193            <meta-data
+193-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+194                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+194-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+195                android:value="androidx.startup" />
+195-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+196        </provider>
+197
+198        <meta-data
+198-->[com.google.android.gms:play-services-basement:18.3.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/46484674f2b87386716baf1fb382e8be/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:21:9-23:69
+199            android:name="com.google.android.gms.version"
+199-->[com.google.android.gms:play-services-basement:18.3.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/46484674f2b87386716baf1fb382e8be/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:22:13-58
+200            android:value="@integer/google_play_services_version" />
+200-->[com.google.android.gms:play-services-basement:18.3.0] /Users/armandoalvarado/.gradle/caches/8.9/transforms/46484674f2b87386716baf1fb382e8be/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:23:13-66
+201
+202        <receiver
+202-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+203            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+203-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+204            android:directBootAware="false"
+204-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+205            android:enabled="true"
+205-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+206            android:exported="true"
+206-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+207            android:permission="android.permission.DUMP" >
+207-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+208            <intent-filter>
+208-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+209                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+209-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+209-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+210            </intent-filter>
+211            <intent-filter>
+211-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+212                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+212-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+212-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+213            </intent-filter>
+214            <intent-filter>
+214-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+215                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+215-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+215-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+216            </intent-filter>
+217            <intent-filter>
+217-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+218                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+218-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+218-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/armandoalvarado/.gradle/caches/8.9/transforms/c2c2ebc9a0ffbd8741460ec52d417bcf/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+219            </intent-filter>
+220        </receiver>
+221
+222        <service
+222-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/bb8ca809d4fcc4a411f74a693f1e6f33/transformed/jetified-transport-backend-cct-3.1.9/AndroidManifest.xml:28:9-34:19
+223            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+223-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/bb8ca809d4fcc4a411f74a693f1e6f33/transformed/jetified-transport-backend-cct-3.1.9/AndroidManifest.xml:29:13-103
+224            android:exported="false" >
+224-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/bb8ca809d4fcc4a411f74a693f1e6f33/transformed/jetified-transport-backend-cct-3.1.9/AndroidManifest.xml:30:13-37
+225            <meta-data
+225-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/bb8ca809d4fcc4a411f74a693f1e6f33/transformed/jetified-transport-backend-cct-3.1.9/AndroidManifest.xml:31:13-33:39
+226                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+226-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/bb8ca809d4fcc4a411f74a693f1e6f33/transformed/jetified-transport-backend-cct-3.1.9/AndroidManifest.xml:32:17-94
+227                android:value="cct" />
+227-->[com.google.android.datatransport:transport-backend-cct:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/bb8ca809d4fcc4a411f74a693f1e6f33/transformed/jetified-transport-backend-cct-3.1.9/AndroidManifest.xml:33:17-36
+228        </service>
+229        <service
+229-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/b4b810ba1641bd399b4303f31f228917/transformed/jetified-transport-runtime-3.1.9/AndroidManifest.xml:26:9-30:19
+230            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+230-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/b4b810ba1641bd399b4303f31f228917/transformed/jetified-transport-runtime-3.1.9/AndroidManifest.xml:27:13-117
+231            android:exported="false"
+231-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/b4b810ba1641bd399b4303f31f228917/transformed/jetified-transport-runtime-3.1.9/AndroidManifest.xml:28:13-37
+232            android:permission="android.permission.BIND_JOB_SERVICE" >
+232-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/b4b810ba1641bd399b4303f31f228917/transformed/jetified-transport-runtime-3.1.9/AndroidManifest.xml:29:13-69
+233        </service>
+234
+235        <receiver
+235-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/b4b810ba1641bd399b4303f31f228917/transformed/jetified-transport-runtime-3.1.9/AndroidManifest.xml:32:9-34:40
+236            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+236-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/b4b810ba1641bd399b4303f31f228917/transformed/jetified-transport-runtime-3.1.9/AndroidManifest.xml:33:13-132
+237            android:exported="false" />
+237-->[com.google.android.datatransport:transport-runtime:3.1.9] /Users/armandoalvarado/.gradle/caches/8.9/transforms/b4b810ba1641bd399b4303f31f228917/transformed/jetified-transport-runtime-3.1.9/AndroidManifest.xml:34:13-37
+238    </application>
+239
+240</manifest>

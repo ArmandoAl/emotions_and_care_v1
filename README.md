@@ -4,6 +4,40 @@
 
 Este repositorio es el **cliente móvil y web**. Habla con un backend REST en Azure y usa Firebase para push, assets y hosting.
 
+<p align="center">
+  <img src="docs/screenshots/04-overview.png" alt="Emotions & Care — jardín, comunidad y recompensas" width="620">
+</p>
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="33%">
+      <img src="docs/screenshots/01-jardin.png" alt="Jardín con planta en fase 3" width="150">
+      <br><sub><b>Jardín</b> — planta, fase y stickers</sub>
+    </td>
+    <td align="center" valign="top" width="33%">
+      <img src="docs/screenshots/03-cuestionario.png" alt="Cuestionario psicométrico" width="150">
+      <br><sub><b>Cuestionarios</b> — progreso 4 de 20</sub>
+    </td>
+    <td align="center" valign="top" width="33%">
+      <img src="docs/screenshots/06-coleccion.png" alt="Colección de plantas, stickers y logros" width="150">
+      <br><sub><b>Colección</b> — flores, stickers, logros</sub>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="50%">
+      <img src="docs/screenshots/02-modulos.png" alt="Especialistas, test y diario" width="260">
+      <br><sub><b>Especialistas · Tests · Diario</b></sub>
+    </td>
+    <td align="center" valign="top" width="50%">
+      <img src="docs/screenshots/05-objetivos.png" alt="Objetivos de la fase 3" width="260">
+      <br><sub><b>Objetivos</b> — lo que hace crecer la planta</sub>
+    </td>
+  </tr>
+</table>
+
 ---
 
 ## Por qué este proyecto importa (en 30 segundos)

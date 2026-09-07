@@ -1,1 +1,0 @@
-com.mastertipsy.flutter_localization
